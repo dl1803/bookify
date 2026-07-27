@@ -6,4 +6,9 @@
     </style>
 
     <style name="Theme.Bookify" parent="Base.Theme.Bookify" />
+
+    <style name="BottomNavTheme" parent="ThemeOverlay.Material3.BottomNavigationView">
+        <!-- Đổi màu bóng nền (Active Indicator): nâu nhạt -->
+        <item name="colorSecondaryContainer">@color/brown_light</item>
+    </style>
 </resources>

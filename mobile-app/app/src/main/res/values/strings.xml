@@ -1,3 +1,41 @@
 <resources>
     <string name="app_name">Bookify</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_explore">Explore</string>
+    <string name="nav_create">Create</string>
+    <string name="nav_alerts">Alerts</string>
+    <string name="nav_profile">Profile</string>
+
+    <!-- Profile Screen -->
+    <string name="profile_name">Emily Reader</string>
+    <string name="profile_bio">Lost in the pages of classic literature. Exploring the intersections of history, philosophy, and cozy mysteries.</string>
+    <string name="profile_followers_label">Followers</string>
+    <string name="profile_followers_count">1.2k</string>
+    <string name="profile_following_label">Following</string>
+    <string name="profile_following_count">350</string>
+    <string name="btn_follow">Follow</string>
+
+    <!-- Tabs -->
+    <string name="tab_my_posts">My Posts</string>
+    <string name="tab_currently_reading">Currently Reading</string>
+    <string name="tab_saved_books">Saved Books</string>
+
+    <!-- Book Grid -->
+    <string name="book1_title">The Silent Echo</string>
+    <string name="book1_author">Arthur Pendelton</string>
+    <string name="book1_rating">4.8</string>
+
+    <string name="book2_title">Roots of Thought</string>
+    <string name="book2_author">Elena Vance</string>
+    <string name="book2_rating">4.5</string>
+
+    <string name="book3_title">Currents</string>
+    <string name="book3_author">Marcus Thorne</string>
+    <string name="book3_rating">4.9</string>
+
+    <string name="book4_title">Lost Time</string>
+    <string name="book4_author">Sarah Jenkins</string>
+    <string name="book4_rating">4.2</string>
+
+    <string name="add_new_book">Add New</string>
 </resources>
