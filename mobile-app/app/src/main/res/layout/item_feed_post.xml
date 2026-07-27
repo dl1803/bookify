@@ -168,11 +168,15 @@
 
             <!-- Like Button -->
             <LinearLayout
+                android:id="@+id/btnLike"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
+                android:clickable="true"
+                android:focusable="true"
                 android:paddingEnd="16dp">
                 <ImageView
+                    android:id="@+id/imgLike"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/ic_favorite"
@@ -189,9 +193,12 @@
 
             <!-- Comment Button -->
             <LinearLayout
+                android:id="@+id/btnComment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
+                android:clickable="true"
+                android:focusable="true"
                 android:paddingEnd="16dp">
                 <ImageView
                     android:layout_width="24dp"
@@ -215,8 +222,11 @@
 
             <!-- Share Button -->
             <ImageView
+                android:id="@+id/btnShare"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
+                android:clickable="true"
+                android:focusable="true"
                 android:src="@drawable/ic_share"
                 app:tint="#555555" />
         </LinearLayout>

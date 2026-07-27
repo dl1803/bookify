@@ -188,9 +188,10 @@
                 app:tabIndicatorColor="@color/brown_primary"
                 app:tabIndicatorHeight="3dp"
                 app:tabMode="fixed"
+                app:tabGravity="fill"
                 app:tabRippleColor="@color/surface_container"
                 app:tabSelectedTextColor="@color/brown_primary"
-                app:tabTextAppearance="@style/TextAppearance.Material3.TitleSmall"
+                app:tabTextAppearance="@style/ProfileTabTextStyle"
                 app:tabTextColor="@color/on_surface_variant">
 
                 <com.google.android.material.tabs.TabItem

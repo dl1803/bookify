@@ -12,8 +12,12 @@ import java.util.List;
 public class PostRepository {
 
     private static PostRepository instance;
+    private final MutableLiveData<List<PostModel>> postsLiveData = new MutableLiveData<>();
+    private final List<PostModel> postsList = new ArrayList<>();
 
-    private PostRepository() {}
+    private PostRepository() {
+        initDefaultPosts();
+    }
 
     public static synchronized PostRepository getInstance() {
         if (instance == null) {
@@ -22,11 +26,8 @@ public class PostRepository {
         return instance;
     }
 
-    public LiveData<List<PostModel>> getHomeFeedPosts() {
-        MutableLiveData<List<PostModel>> liveData = new MutableLiveData<>();
-        List<PostModel> posts = new ArrayList<>();
-
-        posts.add(new PostModel(
+    private void initDefaultPosts() {
+        postsList.add(new PostModel(
                 "Emily Reader",
                 "2 hours ago",
                 "Just finished re-reading 'The Silent Echo'. Arthur Pendelton's storytelling is absolutely captivating and mysterious!",
@@ -38,7 +39,7 @@ public class PostRepository {
                 8
         ));
 
-        posts.add(new PostModel(
+        postsList.add(new PostModel(
                 "Elena Vance",
                 "5 hours ago",
                 "Exploring the deep roots of philosophy and nature today. A peaceful afternoon with an insightful book.",
@@ -50,7 +51,7 @@ public class PostRepository {
                 3
         ));
 
-        posts.add(new PostModel(
+        postsList.add(new PostModel(
                 "Marcus Thorne",
                 "1 day ago",
                 "A modern masterpiece about life currents and human connections. Highly recommended for every literature lover!",
@@ -62,7 +63,7 @@ public class PostRepository {
                 14
         ));
 
-        posts.add(new PostModel(
+        postsList.add(new PostModel(
                 "Sarah Jenkins",
                 "2 days ago",
                 "Revisiting classic themes of time, nostalgia, and memory. Couldn't put it down!",
@@ -74,7 +75,40 @@ public class PostRepository {
                 11
         ));
 
-        liveData.setValue(posts);
-        return liveData;
+        postsLiveData.setValue(new ArrayList<>(postsList));
+    }
+
+    public LiveData<List<PostModel>> getHomeFeedPosts() {
+        return postsLiveData;
+    }
+
+    public void createPost(String content, String bookTitle, String bookAuthor, int bookCoverResId) {
+        PostModel newPost = new PostModel(
+                "Emily Reader",
+                "Just now",
+                content,
+                bookTitle != null ? bookTitle : "The Silent Echo",
+                bookAuthor != null ? bookAuthor : "Arthur Pendelton",
+                R.drawable.profile_avatar,
+                bookCoverResId != 0 ? bookCoverResId : R.drawable.book_cover_1,
+                0,
+                0
+        );
+        postsList.add(0, newPost);
+        postsLiveData.setValue(new ArrayList<>(postsList));
+    }
+
+    public void toggleLike(int position) {
+        if (position >= 0 && position < postsList.size()) {
+            PostModel post = postsList.get(position);
+            if (post.isLiked()) {
+                post.setLiked(false);
+                post.setLikesCount(Math.max(0, post.getLikesCount() - 1));
+            } else {
+                post.setLiked(true);
+                post.setLikesCount(post.getLikesCount() + 1);
+            }
+            postsLiveData.setValue(new ArrayList<>(postsList));
+        }
     }
 }

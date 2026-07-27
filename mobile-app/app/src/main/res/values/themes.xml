@@ -11,4 +11,12 @@
         <!-- Đổi màu bóng nền (Active Indicator): nâu nhạt -->
         <item name="colorSecondaryContainer">@color/brown_light</item>
     </style>
+
+    <style name="ProfileTabTextStyle" parent="TextAppearance.Material3.TitleSmall">
+        <item name="android:textSize">13sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:singleLine">true</item>
+    </style>
 </resources>

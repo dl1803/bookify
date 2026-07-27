@@ -10,6 +10,7 @@ public class PostModel {
     private int bookCoverResId;
     private int likesCount;
     private int commentsCount;
+    private boolean isLiked;
 
     public PostModel(String userName, String postTime, String postContent, String bookTitle, String bookAuthor, int userAvatarResId, int bookCoverResId, int likesCount, int commentsCount) {
         this.userName = userName;
@@ -21,6 +22,7 @@ public class PostModel {
         this.bookCoverResId = bookCoverResId;
         this.likesCount = likesCount;
         this.commentsCount = commentsCount;
+        this.isLiked = false;
     }
 
     public String getUserName() {
@@ -55,7 +57,19 @@ public class PostModel {
         return likesCount;
     }
 
+    public void setLikesCount(int likesCount) {
+        this.likesCount = likesCount;
+    }
+
     public int getCommentsCount() {
         return commentsCount;
+    }
+
+    public boolean isLiked() {
+        return isLiked;
+    }
+
+    public void setLiked(boolean liked) {
+        isLiked = liked;
     }
 }

@@ -21,4 +21,12 @@ public class HomeViewModel extends ViewModel {
     public LiveData<List<PostModel>> getPosts() {
         return postsLiveData;
     }
+
+    public void createNewPost(String content, String bookTitle, String bookAuthor, int bookCoverResId) {
+        repository.createPost(content, bookTitle, bookAuthor, bookCoverResId);
+    }
+
+    public void toggleLike(int position) {
+        repository.toggleLike(position);
+    }
 }
