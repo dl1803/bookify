@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@android:color/white"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="2dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="#EAEAEA">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="18dp">
+
+        <!-- Avatar -->
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imgCurrentUserAvatar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
+            android:src="@drawable/profile_avatar" />
+
+        <!-- Ô nhập Text -->
+        <EditText
+            android:id="@+id/etPostInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:background="@drawable/bg_rounded_light_brown"
+            android:hint="Share your latest read..."
+            android:minHeight="80dp"
+            android:gravity="top|start"
+            android:padding="12dp"
+            android:textColorHint="#888888"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/imgCurrentUserAvatar"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Nút đính kèm Ảnh -->
+        <ImageView
+            android:id="@+id/btnAttachImage"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_marginTop="12dp"
+            android:padding="6dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_image"
+            app:layout_constraintStart_toStartOf="@id/etPostInput"
+            app:layout_constraintTop_toBottomOf="@id/etPostInput"
+            app:tint="@color/brown_bold" />
+
+        <!-- Nút đính kèm Sách -->
+        <ImageView
+            android:id="@+id/btnAttachBook"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="8dp"
+            android:padding="6dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_book"
+            app:layout_constraintBottom_toBottomOf="@id/btnAttachImage"
+            app:layout_constraintStart_toEndOf="@id/btnAttachImage"
+            app:layout_constraintTop_toTopOf="@id/btnAttachImage"
+            app:tint="@color/brown_bold" />
+
+        <!-- Nút Đăng  -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnPost"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:text="Post"
+            android:textAllCaps="false"
+            android:textSize="14sp"
+            app:cornerRadius="20dp"
+            app:backgroundTint="@color/brown_primary"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="@id/btnAttachImage"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/btnAttachImage" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>
