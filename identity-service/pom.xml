@@ -1,50 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.2.5</version>
-		<relativePath/> <!-- lookup parent from repository -->
-	</parent>
-	<groupId>com.devteria</groupId>
+		<version>4.1.0</version>
+		<relativePath/> </parent>
+
+	<groupId>com.dl1803</groupId>
 	<artifactId>identity-service</artifactId>
-	<name>identity-service</name>
 	<version>0.0.1-SNAPSHOT</version>
+	<name>identity-service</name>
 	<description>Identity service</description>
+
 	<properties>
-		<java.version>21</java.version>
-		<projectlombok-lombok.version>1.18.30</projectlombok-lombok.version>
-		<mapstruct.version>1.5.5.Final</mapstruct.version>
+		<java.version>25</java.version>
+
+		<lombok.version>1.18.46</lombok.version>
+
+		<mapstruct.version>1.6.3</mapstruct.version>
 		<lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
-		<spotless.version>2.43.0</spotless.version>
+		<spotless.version>3.1.0</spotless.version>
 	</properties>
+<!-- Hỗ trợ Test integration với TestContainer giúp test giống môi trường thật
+Unit Test
+      │
+      ▼
+ Service
+      │
+      ▼
+ Repository
+      │
+      ▼
+ Docker
+      │
+      ▼
+ MySQL thật
+ Testcontainers sẽ:
+tự chạy Docker
+tạo MySQL
+chạy test
+xóa MySQL
+=> không cần cài MySQL riêng.
+-->
+	<dependencyManagement>
+		<dependencies>
+<!--Quản lý version cho tất cả module Testcontainers-->
+			<dependency>
+				<groupId>org.testcontainers</groupId>
+				<artifactId>testcontainers-bom</artifactId>
+				<version>1.21.4</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.datatype</groupId>
-			<artifactId>jackson-datatype-jsr310</artifactId>
-		</dependency>
+<!--JPA-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
+<!-- Hỗ trợ Mock Unit Test : @AutoConfigurationMockMvc-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webmvc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webmvc-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+<!---->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-crypto -->
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-crypto</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.mysql</groupId>
@@ -52,52 +84,88 @@
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+<!--LomBok-->
+		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>${projectlombok-lombok.version}</version>
-			<scope>provided</scope>
+			<version>${lombok.version}</version>
+			<optional>true</optional>
 		</dependency>
+<!--Map Struct-->
 		<dependency>
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct</artifactId>
 			<version>${mapstruct.version}</version>
 		</dependency>
+<!--Bcrypt-->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-crypto</artifactId>
+		</dependency>
+<!--J son Web Token-->
+		<dependency>
+			<groupId>com.nimbusds</groupId>
+			<artifactId>nimbus-jose-jwt</artifactId>
+			<version>9.37.3</version>
+		</dependency>
+<!--Oauth2 - chứa cả nimbus nên có thể xóa nimbus đi-->
+<!--JWT là 1 phần của oauth2 -> tận dụng 1 phần để xác thực JWT chứ ch đi sâu oauth2-->
+<!--Bật cơ chế Spring Security -> Spring sẽ chặn các request kh được xác thực hợp lệ-->
+<!--Phải cấu hình các request để chạy các api khả dụng tùy role-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+		</dependency>
+<!--Hỗ trợ viết unit test : gồm các dependences JUnit, Spring Test, AssertJ, Mockito, JsonPath,...-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+<!-- Source: https://mvnrepository.com/artifact/com.h2database/h2 -->
+<!-- H2 database : database ảo -> dùng để test Unittest-->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>test</scope>
+		</dependency>
+<!--Hỗ trợ mockuser để lấy context -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
+<!--Test integration với TestContainer-->
+<!--module để Testcontainers làm việc với JUnit5 : @Testcontainers-->
 		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<version>2.2.224</version>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>junit-jupiter</artifactId>
 			<scope>test</scope>
 		</dependency>
+<!--module tạo Docker MySQL: chứa class MySQLContainer -> new MySQLContainer() để dùng .-->
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>mysql</artifactId>
+			<scope>test</scope>
+		</dependency>
+<!--Swagger-->
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.8.9</version>
+		</dependency>
 	</dependencies>
+
+
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<excludes>
-						<exclude>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</exclude>
-					</excludes>
-				</configuration>
-			</plugin>
-			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>${maven-compiler-plugin.version}</version>
 				<configuration>
 					<source>${java.version}</source>
 					<target>${java.version}</target>
@@ -105,7 +173,7 @@
 						<path>
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>
-							<version>${projectlombok-lombok.version}</version>
+							<version>${lombok.version}</version>
 						</path>
 						<path>
 							<groupId>org.projectlombok</groupId>
@@ -118,71 +186,116 @@
 							<version>${mapstruct.version}</version>
 						</path>
 					</annotationProcessorPaths>
-					<compilerArgs>
-						<arg>-Amapstruct.suppressGeneratorTimestamp=true</arg>
-						<arg>-Amapstruct.defaultComponentModel=spring</arg>
-						<arg>-Amapstruct.verbose=true</arg>
-					</compilerArgs>
 				</configuration>
 			</plugin>
+
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+<!--Thêm plugin Jacoco để dùng code coverage : là con số thể hiện project đc cover bao nhiêu % bởi unit test , càng cao -> unit test cao tương ứng, dự án thực tế yêu cầu tối thiểu 80%
+	đánh giá dựa trên số unit test testcase cover(như UserController, UserService,...mỗi cái là 1 testcase unit test) đc bao nhiêu % tổng code base
+-->
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.8.12</version>
+
 				<executions>
+
+					<!-- chạy agent trước khi test -->
 					<execution>
 						<goals>
 							<goal>prepare-agent</goal>
 						</goals>
 					</execution>
+
+					<!-- sinh report sau khi test -->
 					<execution>
 						<id>report</id>
-						<phase>prepare-package</phase>
+						<phase>test</phase>
 						<goals>
 							<goal>report</goal>
 						</goals>
 					</execution>
+
 				</executions>
 				<configuration>
 					<excludes>
-						<exclude>com/devteria/identity/dto/**</exclude>
-						<exclude>com/devteria/identity/entity/**</exclude>
-						<exclude>com/devteria/identity/mapper/**</exclude>
-						<exclude>com/devteria/identity/configuration/**</exclude>
+						<exclude>com/dl1803/identity/dto/**</exclude>
+						<exclude>com/dl1803/identity/entity/**</exclude>
+						<exclude>com/dl1803/identity/mapper/**</exclude>
+						<exclude>com/dl1803/identity/configuration/**</exclude>
+
 					</excludes>
 				</configuration>
 			</plugin>
+
 			<plugin>
+				<!-- Plugin Spotless dùng để format source code -->
 				<groupId>com.diffplug.spotless</groupId>
+				<!-- Tên plugin -->
 				<artifactId>spotless-maven-plugin</artifactId>
+				<!-- Phiên bản plugin -->
 				<version>${spotless.version}</version>
 				<configuration>
+					<!-- Chỉ áp dụng cho file Java -->
 					<java>
-						<removeUnusedImports />
+						<!-- Xóa các import không được sử dụng -->
+						<removeUnusedImports/>
+						<!-- Bật/Tắt format bằng comment:
+                             // spotless:off
+                             // spotless:on
+                             để bỏ qua một đoạn code -->
 						<toggleOffOn/>
+						<!-- Xóa khoảng trắng dư ở cuối mỗi dòng -->
 						<trimTrailingWhitespace/>
+						<!-- Luôn thêm 1 dòng trống ở cuối file -->
 						<endWithNewline/>
+						<!-- Quy tắc thụt lề -->
 						<indent>
+							<!-- Dùng Tab thay vì Space -->
 							<tabs>true</tabs>
+							<!-- Nếu dùng Space thì 1 Tab = 4 Space -->
 							<spacesPerTab>4</spacesPerTab>
 						</indent>
+						<!-- Format code theo chuẩn Palantir Java Format -->
 						<palantirJavaFormat/>
+						<!-- Quy định thứ tự import -->
 						<importOrder>
-							<!-- Specify either order or file, but not both -->
+							<!--
+                            Import sẽ được sắp xếp theo thứ tự:
+                            1. java.*
+                            2. jakarta.*
+                            3. org.*
+                            4. com.*
+                            5. com.diffplug.*
+                            -->
 							<order>java,jakarta,org,com,com.diffplug,</order>
 						</importOrder>
 					</java>
 				</configuration>
 				<executions>
 					<execution>
+						<!-- Plugin chạy ở giai đoạn compile -->
 						<phase>compile</phase>
 						<goals>
-							<goal>apply</goal>
+							<!-- Tự động format code -->
+						<goal>apply</goal>
+							<!-- Tự động check format code ; kh auto apply-->
+						<!--<goal>check</goal>-->
 						</goals>
 					</execution>
 				</executions>
 			</plugin>
 		</plugins>
 	</build>
-
 </project>
