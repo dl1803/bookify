@@ -15,4 +15,5 @@ CLAUDE.md
 DWorkspaceBESpringBootbookifymobile*
 app/build/
 .vscode/
-
+.agents/
+.agent/

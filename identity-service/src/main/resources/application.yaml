@@ -17,3 +17,7 @@ jwt:
   signerKey: 3415d379af090e6190a06429d5a7d40d7c612c1d15a7b5aa7c2502060f69afb3
   valid-duration: 900
   refreshable-duration: 1800
+app:
+  services:
+    profile: http://localhost:8081/profile
+
