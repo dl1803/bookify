@@ -4,6 +4,9 @@ import java.util.HashSet;
 import java.util.List;
 
 import com.dl1803.identity.entity.Role;
+import com.dl1803.identity.mapper.ProfileMapper;
+import com.dl1803.identity.repository.httpclient.ProfileClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -42,6 +45,9 @@ public class UserService {
 
     PasswordEncoder passwordEncoder;
 
+    ProfileClient profileClient;
+    ProfileMapper profileMapper;
+
     public UserResponse createUser(UserCreationRequest request) {
 
         log.info("Service: Create User");
@@ -58,6 +64,12 @@ public class UserService {
         } catch (DataIntegrityViolationException e) {
             throw new AppException(ErrorCode.USER_EXISTED);
         }
+
+        var profileRequest = profileMapper.toProfileCreationRequest(request);
+
+        profileRequest.setUserId(user.getId());
+
+        profileClient.createProfile(profileRequest);
 
         return userMapper.toUserResponse(user);
     }

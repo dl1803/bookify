@@ -13,7 +13,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import com.dl1803.identity.dto.response.ApiResponse;
 import com.dl1803.identity.exception.ErrorCode;
 
-import tools.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
