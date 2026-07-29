@@ -153,8 +153,15 @@ public class BookifyDialogHelper {
         });
 
         view.findViewById(R.id.optionItemReport).setOnClickListener(v -> {
-            Toast.makeText(context, "Logged out of Bookify", Toast.LENGTH_SHORT).show();
             dialog.dismiss();
+            com.example.bookify.data.repository.AuthRepository.getInstance().logout();
+            Toast.makeText(context, "Đã đăng xuất tài khoản", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(context, com.example.bookify.ui.auth.LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            context.startActivity(intent);
+            if (context instanceof android.app.Activity) {
+                ((android.app.Activity) context).finish();
+            }
         });
 
         dialog.show();
