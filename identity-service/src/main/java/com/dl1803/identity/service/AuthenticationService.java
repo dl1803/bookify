@@ -85,7 +85,7 @@ public class AuthenticationService {
         if (!authenticated) throw new AppException(ErrorCode.UNAUTHENTICATED);
 
         var token = generateToken(user);
-        return AuthenticationResponse.builder().token(token).authenticated(true).build();
+        return AuthenticationResponse.builder().token(token).build();
     }
 
     public void logout(
@@ -125,7 +125,7 @@ public class AuthenticationService {
 
         var token = generateToken(
                 user);
-        return AuthenticationResponse.builder().token(token).authenticated(true).build();
+        return AuthenticationResponse.builder().token(token).build();
     }
 
     private SignedJWT verifyToken(
