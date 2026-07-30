@@ -32,13 +32,16 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText etDob;
     private EditText etCity;
     private EditText etPassword;
+    private EditText etConfirmPassword;
     private ImageButton btnTogglePassword;
+    private ImageButton btnToggleConfirmPassword;
     private CheckBox cbTerms;
     private Button btnRegister;
     private TextView tvGoToLogin;
 
     private AuthViewModel authViewModel;
     private boolean isPasswordVisible = false;
+    private boolean isConfirmPasswordVisible = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +60,9 @@ public class RegisterActivity extends AppCompatActivity {
         etDob = findViewById(R.id.etDob);
         etCity = findViewById(R.id.etCity);
         etPassword = findViewById(R.id.etPassword);
+        etConfirmPassword = findViewById(R.id.etConfirmPassword);
         btnTogglePassword = findViewById(R.id.btnTogglePassword);
+        btnToggleConfirmPassword = findViewById(R.id.btnToggleConfirmPassword);
         cbTerms = findViewById(R.id.cbTerms);
         btnRegister = findViewById(R.id.btnRegister);
         tvGoToLogin = findViewById(R.id.tvGoToLogin);
@@ -69,10 +74,10 @@ public class RegisterActivity extends AppCompatActivity {
         authViewModel.getIsLoading().observe(this, isLoading -> {
             if (isLoading) {
                 btnRegister.setEnabled(false);
-                btnRegister.setText("Đang tạo tài khoản...");
+                btnRegister.setText("Creating account...");
             } else {
                 btnRegister.setEnabled(true);
-                btnRegister.setText("Đăng ký");
+                btnRegister.setText("Register");
             }
         });
 
@@ -86,7 +91,7 @@ public class RegisterActivity extends AppCompatActivity {
         authViewModel.getRegisterSuccess().observe(this, isSuccess -> {
             if (Boolean.TRUE.equals(isSuccess)) {
                 triggerHapticFeedback();
-                Toast.makeText(this, "Đăng ký thành công! Vui lòng đăng nhập.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Registration successful! Please sign in.", Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                 intent.putExtra("REGISTERED_USERNAME", etUsername.getText().toString().trim());
@@ -113,6 +118,7 @@ public class RegisterActivity extends AppCompatActivity {
         etDob.addTextChangedListener(watcher);
         etCity.addTextChangedListener(watcher);
         etPassword.addTextChangedListener(watcher);
+        etConfirmPassword.addTextChangedListener(watcher);
 
         // DOB Date Picker
         etDob.setOnClickListener(v -> showDatePicker());
@@ -130,6 +136,19 @@ public class RegisterActivity extends AppCompatActivity {
             etPassword.setSelection(etPassword.getText().length());
         });
 
+        // Confirm Password visibility toggle
+        btnToggleConfirmPassword.setOnClickListener(v -> {
+            isConfirmPasswordVisible = !isConfirmPasswordVisible;
+            if (isConfirmPasswordVisible) {
+                etConfirmPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                btnToggleConfirmPassword.setImageResource(R.drawable.ic_visibility_off);
+            } else {
+                etConfirmPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                btnToggleConfirmPassword.setImageResource(R.drawable.ic_visibility);
+            }
+            etConfirmPassword.setSelection(etConfirmPassword.getText().length());
+        });
+
         // Submit Register
         btnRegister.setOnClickListener(v -> {
             clearAllFieldErrors();
@@ -140,66 +159,77 @@ public class RegisterActivity extends AppCompatActivity {
             String dob = etDob.getText().toString().trim();
             String city = etCity.getText().toString().trim();
             String password = etPassword.getText().toString().trim();
+            String confirmPassword = etConfirmPassword.getText().toString().trim();
             boolean termsAccepted = cbTerms.isChecked();
 
             // 1. Username Validation (@Size(min = 4))
             if (username.isEmpty()) {
-                showFieldError(etUsername, "Username không được để trống");
+                showFieldError(etUsername, "Username cannot be empty");
                 return;
             }
             if (username.length() < 4) {
-                showFieldError(etUsername, "Username phải chứa ít nhất 4 ký tự");
+                showFieldError(etUsername, "Username must be at least 4 characters");
                 return;
             }
 
             // 2. First Name Validation
             if (firstName.isEmpty()) {
-                showFieldError(etFirstName, "Tên không được để trống");
+                showFieldError(etFirstName, "First name cannot be empty");
                 return;
             }
 
             // 3. Last Name Validation
             if (lastName.isEmpty()) {
-                showFieldError(etLastName, "Họ không được để trống");
+                showFieldError(etLastName, "Last name cannot be empty");
                 return;
             }
 
             // 4. DOB Validation (@DobConstraint(min = 18))
             if (dob.isEmpty()) {
-                showFieldError(etDob, "Vui lòng chọn ngày sinh");
+                showFieldError(etDob, "Please select date of birth");
                 return;
             }
             if (!isAgeAtLeast18(dob)) {
-                showFieldError(etDob, "Bạn phải từ 18 tuổi trở lên");
+                showFieldError(etDob, "You must be 18 years or older");
                 return;
             }
 
             // 5. City Validation
             if (city.isEmpty()) {
-                showFieldError(etCity, "Thành phố không được để trống");
+                showFieldError(etCity, "City cannot be empty");
                 return;
             }
 
             // 6. Password Validation (@Size(min = 6))
             if (password.isEmpty()) {
-                showFieldError(etPassword, "Mật khẩu không được để trống");
+                showFieldError(etPassword, "Password cannot be empty");
                 return;
             }
             if (password.length() < 6) {
-                showFieldError(etPassword, "Mật khẩu phải chứa ít nhất 6 ký tự");
+                showFieldError(etPassword, "Password must be at least 6 characters");
                 return;
             }
 
-            // 7. Terms Checkbox Validation
+            // 7. Confirm Password Validation
+            if (confirmPassword.isEmpty()) {
+                showFieldError(etConfirmPassword, "Confirm password cannot be empty");
+                return;
+            }
+            if (!password.equals(confirmPassword)) {
+                showFieldError(etConfirmPassword, "Passwords do not match");
+                return;
+            }
+
+            // 8. Terms Checkbox Validation
             if (!termsAccepted) {
                 triggerHapticFeedback();
-                Toast.makeText(this, "Bạn phải đồng ý với Điều khoản dịch vụ và Chính sách bảo mật", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "You must agree to the Terms of Service and Privacy Policy", Toast.LENGTH_SHORT).show();
                 cbTerms.requestFocus();
                 return;
             }
 
             triggerHapticFeedback();
-            authViewModel.register(username, firstName, lastName, dob, city, password, termsAccepted);
+            authViewModel.register(username, firstName, lastName, dob, city, password, confirmPassword, termsAccepted);
         });
 
         // Go to Login Screen
@@ -285,6 +315,7 @@ public class RegisterActivity extends AppCompatActivity {
         clearFieldError(etDob);
         clearFieldError(etCity);
         clearFieldError(etPassword);
+        clearFieldError(etConfirmPassword);
     }
 
     private void triggerHapticFeedback() {

@@ -112,6 +112,9 @@
             android:layout_weight="1"
             android:text="Save to Library"
             android:textColor="@color/white"
+            android:textSize="13sp"
+            android:textAllCaps="false"
+            android:maxLines="1"
             app:backgroundTint="@color/brown_primary"
             app:cornerRadius="24dp" />
 
@@ -124,6 +127,9 @@
             android:layout_weight="1"
             android:text="Share Book"
             android:textColor="@color/tertiary"
+            android:textSize="13sp"
+            android:textAllCaps="false"
+            android:maxLines="1"
             app:cornerRadius="24dp"
             app:strokeColor="@color/outline" />
     </LinearLayout>

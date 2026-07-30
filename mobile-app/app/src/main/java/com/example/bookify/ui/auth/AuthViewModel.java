@@ -40,19 +40,19 @@ public class AuthViewModel extends ViewModel {
 
     public void login(String username, String password) {
         if (username == null || username.trim().isEmpty()) {
-            errorMessage.setValue("Vui lòng nhập Username");
+            errorMessage.setValue("Please enter a username");
             return;
         }
         if (username.trim().length() < 4) {
-            errorMessage.setValue("Username phải chứa ít nhất 4 ký tự");
+            errorMessage.setValue("Username must be at least 4 characters");
             return;
         }
         if (password == null || password.trim().isEmpty()) {
-            errorMessage.setValue("Vui lòng nhập Mật khẩu");
+            errorMessage.setValue("Please enter a password");
             return;
         }
         if (password.length() < 6) {
-            errorMessage.setValue("Mật khẩu phải chứa ít nhất 6 ký tự");
+            errorMessage.setValue("Password must be at least 6 characters");
             return;
         }
 
@@ -74,45 +74,53 @@ public class AuthViewModel extends ViewModel {
         });
     }
 
-    public void register(String username, String firstName, String lastName, String dob, String city, String password, boolean termsAccepted) {
+    public void register(String username, String firstName, String lastName, String dob, String city, String password, String confirmPassword, boolean termsAccepted) {
         if (username == null || username.trim().isEmpty()) {
-            errorMessage.setValue("Username không được để trống");
+            errorMessage.setValue("Username cannot be empty");
             return;
         }
         if (username.trim().length() < 4) {
-            errorMessage.setValue("Username phải chứa ít nhất 4 ký tự");
+            errorMessage.setValue("Username must be at least 4 characters");
             return;
         }
         if (firstName == null || firstName.trim().isEmpty()) {
-            errorMessage.setValue("Tên không được để trống");
+            errorMessage.setValue("First name cannot be empty");
             return;
         }
         if (lastName == null || lastName.trim().isEmpty()) {
-            errorMessage.setValue("Họ không được để trống");
+            errorMessage.setValue("Last name cannot be empty");
             return;
         }
         if (dob == null || dob.trim().isEmpty()) {
-            errorMessage.setValue("Vui lòng chọn ngày sinh");
+            errorMessage.setValue("Please select your date of birth");
             return;
         }
         if (!isAgeAtLeast18(dob)) {
-            errorMessage.setValue("Bạn phải từ 18 tuổi trở lên");
+            errorMessage.setValue("You must be 18 years or older");
             return;
         }
         if (city == null || city.trim().isEmpty()) {
-            errorMessage.setValue("Thành phố không được để trống");
+            errorMessage.setValue("City cannot be empty");
             return;
         }
         if (password == null || password.trim().isEmpty()) {
-            errorMessage.setValue("Mật khẩu không được để trống");
+            errorMessage.setValue("Password cannot be empty");
             return;
         }
         if (password.length() < 6) {
-            errorMessage.setValue("Mật khẩu phải chứa ít nhất 6 ký tự");
+            errorMessage.setValue("Password must be at least 6 characters");
+            return;
+        }
+        if (confirmPassword == null || confirmPassword.trim().isEmpty()) {
+            errorMessage.setValue("Confirm password cannot be empty");
+            return;
+        }
+        if (!password.equals(confirmPassword)) {
+            errorMessage.setValue("Passwords do not match");
             return;
         }
         if (!termsAccepted) {
-            errorMessage.setValue("Bạn phải đồng ý với Điều khoản dịch vụ và Chính sách bảo mật");
+            errorMessage.setValue("You must agree to the Terms of Service and Privacy Policy");
             return;
         }
 
