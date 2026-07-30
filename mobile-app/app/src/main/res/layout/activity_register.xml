@@ -61,7 +61,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="24dp"
-                android:text="Tạo tài khoản mới để trải nghiệm đọc sách cùng cộng đồng."
+                android:text="@string/register_subtitle"
                 android:textColor="@color/on_surface_variant"
                 android:textSize="13sp"
                 android:gravity="center" />
@@ -70,7 +70,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tên người dùng"
+                android:text="@string/label_username"
                 android:textColor="@color/on_surface"
                 android:textSize="13sp"
                 android:textStyle="bold"
@@ -95,7 +95,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@null"
-                    android:hint="Nhập tên người dùng"
+                    android:hint="@string/hint_username"
                     android:inputType="text"
                     android:paddingStart="40dp"
                     android:paddingEnd="12dp"
@@ -122,7 +122,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Tên"
+                        android:text="@string/label_first_name"
                         android:textColor="@color/on_surface"
                         android:textSize="13sp"
                         android:textStyle="bold"
@@ -133,7 +133,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
                         android:background="@drawable/bg_input_field"
-                        android:hint="Tên"
+                        android:hint="@string/hint_first_name"
                         android:inputType="textPersonName"
                         android:paddingStart="12dp"
                         android:paddingEnd="12dp"
@@ -153,7 +153,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Họ"
+                        android:text="@string/label_last_name"
                         android:textColor="@color/on_surface"
                         android:textSize="13sp"
                         android:textStyle="bold"
@@ -164,7 +164,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
                         android:background="@drawable/bg_input_field"
-                        android:hint="Họ"
+                        android:hint="@string/hint_last_name"
                         android:inputType="textPersonName"
                         android:paddingStart="12dp"
                         android:paddingEnd="12dp"
@@ -179,7 +179,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Ngày sinh"
+                android:text="@string/label_dob"
                 android:textColor="@color/on_surface"
                 android:textSize="13sp"
                 android:textStyle="bold"
@@ -210,7 +210,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Thành phố"
+                android:text="@string/label_city"
                 android:textColor="@color/on_surface"
                 android:textSize="13sp"
                 android:textStyle="bold"
@@ -235,7 +235,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@null"
-                    android:hint="Tên thành phố nơi bạn sống"
+                    android:hint="@string/hint_city"
                     android:inputType="text"
                     android:paddingStart="40dp"
                     android:paddingEnd="12dp"
@@ -248,7 +248,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Mật khẩu"
+                android:text="@string/label_password"
                 android:textColor="@color/on_surface"
                 android:textSize="13sp"
                 android:textStyle="bold"
@@ -273,7 +273,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@null"
-                    android:hint="Nhập mật khẩu (tối thiểu 6 ký tự)"
+                    android:hint="@string/hint_password_register"
                     android:inputType="textPassword"
                     android:paddingStart="40dp"
                     android:paddingEnd="44dp"
@@ -290,6 +290,54 @@
                     android:src="@drawable/ic_visibility"
                     app:tint="@color/outline"
                     android:contentDescription="Toggle password visibility" />
+            </FrameLayout>
+
+            <!-- Confirm Password Field -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_confirm_password"
+                android:textColor="@color/on_surface"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="4dp" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_input_field"
+                android:layout_marginBottom="16dp">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_gravity="center_vertical|start"
+                    android:layout_marginStart="12dp"
+                    android:src="@drawable/ic_lock"
+                    app:tint="@color/outline" />
+
+                <EditText
+                    android:id="@+id/etConfirmPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:hint="@string/hint_confirm_password"
+                    android:inputType="textPassword"
+                    android:paddingStart="40dp"
+                    android:paddingEnd="44dp"
+                    android:textColor="@color/on_surface"
+                    android:textColorHint="@color/outline"
+                    android:textSize="14sp" />
+
+                <ImageButton
+                    android:id="@+id/btnToggleConfirmPassword"
+                    android:layout_width="44dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical|end"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_visibility"
+                    app:tint="@color/outline"
+                    android:contentDescription="Toggle confirm password visibility" />
             </FrameLayout>
 
             <!-- Terms Checkbox -->
@@ -310,7 +358,7 @@
                     android:id="@+id/tvTermsLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Tôi đồng ý với các Điều khoản dịch vụ và Chính sách bảo mật."
+                    android:text="@string/terms_agreement"
                     android:textColor="@color/on_surface_variant"
                     android:textSize="12sp"
                     android:lineSpacingExtra="2dp" />
@@ -323,7 +371,7 @@
                 android:layout_height="50dp"
                 android:background="@drawable/bg_btn_primary"
                 app:backgroundTint="@null"
-                android:text="Đăng ký"
+                android:text="@string/btn_register"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -341,7 +389,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Đã có tài khoản? "
+                    android:text="@string/prompt_has_account"
                     android:textColor="@color/on_surface_variant"
                     android:textSize="14sp" />
 
@@ -349,7 +397,7 @@
                     android:id="@+id/tvGoToLogin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Đăng nhập"
+                    android:text="@string/btn_login"
                     android:textColor="@color/brown_primary"
                     android:textSize="14sp"
                     android:textStyle="bold"

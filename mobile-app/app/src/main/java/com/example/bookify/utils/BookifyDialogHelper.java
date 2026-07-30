@@ -47,7 +47,7 @@ public class BookifyDialogHelper {
         tvRating.setText(rating != null ? rating.replace("⭐", "").trim() : "4.8");
 
         btnSaveBook.setOnClickListener(v -> {
-            btnSaveBook.setText("Saved to Library ✓");
+            btnSaveBook.setText("Saved ✓");
             btnSaveBook.setEnabled(false);
             Toast.makeText(context, "Added '" + title + "' to your Saved Books library!", Toast.LENGTH_SHORT).show();
         });
@@ -155,7 +155,7 @@ public class BookifyDialogHelper {
         view.findViewById(R.id.optionItemReport).setOnClickListener(v -> {
             dialog.dismiss();
             com.example.bookify.data.repository.AuthRepository.getInstance().logout();
-            Toast.makeText(context, "Đã đăng xuất tài khoản", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Logged out successfully", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(context, com.example.bookify.ui.auth.LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             context.startActivity(intent);

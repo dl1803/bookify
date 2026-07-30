@@ -83,10 +83,10 @@ public class LoginActivity extends AppCompatActivity {
         authViewModel.getIsLoading().observe(this, isLoading -> {
             if (isLoading) {
                 btnLogin.setEnabled(false);
-                btnLogin.setText("Đang đăng nhập...");
+                btnLogin.setText("Signing in...");
             } else {
                 btnLogin.setEnabled(true);
-                btnLogin.setText("Đăng nhập");
+                btnLogin.setText("Sign In");
             }
         });
 
@@ -100,7 +100,7 @@ public class LoginActivity extends AppCompatActivity {
         authViewModel.getAuthSuccessUser().observe(this, user -> {
             if (user != null) {
                 triggerHapticFeedback();
-                Toast.makeText(this, "Chào mừng " + user.getFullName() + "!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Welcome " + user.getFullName() + "!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                 startActivity(intent);
                 finish();
@@ -148,20 +148,20 @@ public class LoginActivity extends AppCompatActivity {
             String password = etPassword.getText().toString().trim();
 
             if (username.isEmpty()) {
-                showFieldError(etUsername, "Tên đăng nhập không được để trống");
+                showFieldError(etUsername, "Username cannot be empty");
                 return;
             }
             if (username.length() < 4) {
-                showFieldError(etUsername, "Username phải chứa ít nhất 4 ký tự");
+                showFieldError(etUsername, "Username must be at least 4 characters");
                 return;
             }
 
             if (password.isEmpty()) {
-                showFieldError(etPassword, "Mật khẩu không được để trống");
+                showFieldError(etPassword, "Password cannot be empty");
                 return;
             }
             if (password.length() < 6) {
-                showFieldError(etPassword, "Mật khẩu phải chứa ít nhất 6 ký tự");
+                showFieldError(etPassword, "Password must be at least 6 characters");
                 return;
             }
 
@@ -172,13 +172,13 @@ public class LoginActivity extends AppCompatActivity {
         // Google Login Mock
         btnGoogleLogin.setOnClickListener(v -> {
             triggerHapticFeedback();
-            Toast.makeText(this, "Đăng nhập với Google đang kết nối...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Connecting to Google Sign-In...", Toast.LENGTH_SHORT).show();
             authViewModel.login("google_user", "123456");
         });
 
         // Forgot password
         tvForgotPassword.setOnClickListener(v -> {
-            Toast.makeText(this, "Tính năng lấy lại mật khẩu sẽ sớm khả dụng", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Forgot password feature will be available soon", Toast.LENGTH_SHORT).show();
         });
 
         // Go to Register Screen

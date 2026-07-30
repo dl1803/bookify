@@ -37,6 +37,11 @@
             android:name=".ui.profile.ProfileActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
+
+        <activity
+            android:name=".ui.alerts.AlertsActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
     </application>
 
 </manifest>

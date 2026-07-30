@@ -101,9 +101,9 @@ public class HomeActivity extends AppCompatActivity {
                 popupMenu.getMenu().add("Feed Filters");
                 popupMenu.getMenu().add("Trending Books");
                 popupMenu.getMenu().add("Settings");
-                popupMenu.getMenu().add("Đăng xuất");
+                popupMenu.getMenu().add("Log Out");
                 popupMenu.setOnMenuItemClickListener(item -> {
-                    if ("Đăng xuất".equals(item.getTitle())) {
+                    if ("Log Out".equals(item.getTitle())) {
                         performLogout();
                     } else {
                         Toast.makeText(this, item.getTitle() + " selected", Toast.LENGTH_SHORT).show();
@@ -117,7 +117,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void performLogout() {
         com.example.bookify.data.repository.AuthRepository.getInstance().logout();
-        Toast.makeText(this, "Đã đăng xuất tài khoản", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Logged out successfully", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(HomeActivity.this, com.example.bookify.ui.auth.LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
@@ -263,8 +263,10 @@ public class HomeActivity extends AppCompatActivity {
                     Toast.makeText(this, "Explore section coming soon!", Toast.LENGTH_SHORT).show();
                     return false;
                 } else if (itemId == R.id.nav_alerts) {
-                    Toast.makeText(this, "Notifications section coming soon!", Toast.LENGTH_SHORT).show();
-                    return false;
+                    Intent intent = new Intent(HomeActivity.this, com.example.bookify.ui.alerts.AlertsActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                    return true;
                 }
                 return false;
             });

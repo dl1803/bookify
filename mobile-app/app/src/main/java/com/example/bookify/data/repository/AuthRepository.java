@@ -51,13 +51,13 @@ public class AuthRepository {
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             authLoadingState.setValue(false);
             if (username == null || username.trim().isEmpty()) {
-                String err = "Tên đăng nhập không được để trống";
+                String err = "Username cannot be empty";
                 authErrorState.setValue(err);
                 if (callback != null) callback.onError(err);
                 return;
             }
             if (password == null || password.length() < 4) {
-                String err = "Mật khẩu phải có ít nhất 4 ký tự";
+                String err = "Password must be at least 4 characters";
                 authErrorState.setValue(err);
                 if (callback != null) callback.onError(err);
                 return;
@@ -69,7 +69,7 @@ public class AuthRepository {
                     "Emily",
                     "Reader",
                     "15/08/1998",
-                    "Hà Nội"
+                    "Hanoi"
             );
             currentUserLiveData.setValue(user);
             if (callback != null) callback.onSuccess(user);
@@ -83,13 +83,13 @@ public class AuthRepository {
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             authLoadingState.setValue(false);
             if (userModel.getUsername() == null || userModel.getUsername().trim().isEmpty()) {
-                String err = "Tên người dùng không được để trống";
+                String err = "Username cannot be empty";
                 authErrorState.setValue(err);
                 if (callback != null) callback.onError(err);
                 return;
             }
             if (password == null || password.length() < 4) {
-                String err = "Mật khẩu phải có ít nhất 4 ký tự";
+                String err = "Password must be at least 4 characters";
                 authErrorState.setValue(err);
                 if (callback != null) callback.onError(err);
                 return;

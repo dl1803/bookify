@@ -3,7 +3,7 @@
     <string name="nav_home">Home</string>
     <string name="nav_explore">Explore</string>
     <string name="nav_create">Create</string>
-    <string name="nav_alerts">Alerts</string>
+    <string name="nav_alerts">Notifications</string>
     <string name="nav_profile">Profile</string>
 
     <!-- Profile Screen -->
@@ -38,4 +38,34 @@
     <string name="book4_rating">4.2</string>
 
     <string name="add_new_book">Add New</string>
+
+    <!-- Auth Screens -->
+    <string name="login_title">Welcome Back</string>
+    <string name="login_subtitle">Start your reading journey today.</string>
+    <string name="label_username">Username</string>
+    <string name="hint_username">Enter username</string>
+    <string name="label_password">Password</string>
+    <string name="hint_password">Enter password</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="btn_login">Sign In</string>
+    <string name="divider_or">OR</string>
+    <string name="btn_google_signin">Continue with Google</string>
+    <string name="prompt_no_account">Don\'t have an account? </string>
+    <string name="btn_register_now">Sign up now</string>
+
+    <string name="register_title">Create Account</string>
+    <string name="register_subtitle">Create a new account to join our reading community.</string>
+    <string name="label_first_name">First Name</string>
+    <string name="hint_first_name">First name</string>
+    <string name="label_last_name">Last Name</string>
+    <string name="hint_last_name">Last name</string>
+    <string name="label_dob">Date of Birth</string>
+    <string name="label_city">City</string>
+    <string name="hint_city">City where you live</string>
+    <string name="hint_password_register">Enter password</string>
+    <string name="label_confirm_password">Confirm Password</string>
+    <string name="hint_confirm_password">Re-enter password</string>
+    <string name="terms_agreement">I agree to the Terms of Service and Privacy Policy.</string>
+    <string name="btn_register">Register</string>
+    <string name="prompt_has_account">Already have an account? </string>
 </resources>

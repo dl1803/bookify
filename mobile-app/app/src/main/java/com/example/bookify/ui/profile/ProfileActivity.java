@@ -241,8 +241,11 @@ public class ProfileActivity extends AppCompatActivity {
                     Toast.makeText(this, "Explore feature coming soon!", Toast.LENGTH_SHORT).show();
                     return false;
                 } else if (itemId == R.id.nav_alerts) {
-                    Toast.makeText(this, "Notifications feature coming soon!", Toast.LENGTH_SHORT).show();
-                    return false;
+                    Intent intent = new Intent(ProfileActivity.this, com.example.bookify.ui.alerts.AlertsActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                    finish();
+                    return true;
                 }
                 return false;
             });
