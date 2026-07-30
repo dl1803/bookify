@@ -13,5 +13,5 @@ import java.util.List;
 public interface UserProfileMapper {
     UserProfile toUserProfile(ProfileCreationRequest request);
     UserProfileResponse toUserProfileResponse(UserProfile entity);
-
+    List<UserProfileResponse> toListUserProfileResponse(List<UserProfile> list);
 }

@@ -1,5 +1,6 @@
 package com.dl1803.identity.exception;
 
+import java.text.ParseException;
 import java.util.Map;
 import java.util.Objects;
 
@@ -27,6 +28,7 @@ public class GlobalExceptionHandler {
         apiResponse.setMessage(ErrorCode.UNCATEGORIZED_EXCEPTION.getMessage());
         return ResponseEntity.badRequest().body(apiResponse);
     }
+
 
     @ExceptionHandler(value = AppException.class)
     ResponseEntity<ApiResponse> handlingAppException(AppException e) {
