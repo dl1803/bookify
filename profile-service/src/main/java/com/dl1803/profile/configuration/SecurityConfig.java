@@ -1,4 +1,4 @@
-package com.dl1803.identity.configuration;
+package com.dl1803.profile.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -19,11 +19,6 @@ import org.springframework.web.filter.CorsFilter;
 public class SecurityConfig {
 
     private static final String[] PUBLIC_ENDPOINT = {
-        "/users/registration",
-        "/auth/token",
-        "/auth/introspect",
-        "/auth/logout",
-        "/auth/refresh",
         "/swagger-ui/**",
         "/v3/api-docs/**"
     };
