@@ -21,6 +21,7 @@ public class UserProfileController {
         return userProfileService.getProfile(profileId);
     }
 
+
     @GetMapping("/users")
     List<UserProfileResponse> getAllProfiles(){
         return userProfileService.getAllProfiles();
