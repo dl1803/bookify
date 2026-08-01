@@ -19,6 +19,7 @@ import org.springframework.web.filter.CorsFilter;
 public class SecurityConfig {
 
     private static final String[] PUBLIC_ENDPOINT = {
+        "/internal/users",
         "/swagger-ui/**",
         "/v3/api-docs/**"
     };
@@ -54,34 +55,13 @@ public class SecurityConfig {
     }
 
     @Bean
-    public CorsFilter corsFilter() {
-        CorsConfiguration corsConfiguration = new CorsConfiguration(); // tạo 1 obj chứa cấu hình luật cors
-        corsConfiguration.addAllowedOrigin(
-                "http://localhost:3000");
-        corsConfiguration.addAllowedMethod("*");
-        corsConfiguration.addAllowedHeader(
-                "*");
-
-        UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource =
-                new UrlBasedCorsConfigurationSource(); // tạo 1 cái map để lưu các luật
-        urlBasedCorsConfigurationSource.registerCorsConfiguration(
-                "/**", corsConfiguration);
-
-        CorsFilter corsFilter = new CorsFilter(
-                urlBasedCorsConfigurationSource);
-        return corsFilter;
-    }
-
-    @Bean
     JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
-        jwtGrantedAuthoritiesConverter.setAuthorityPrefix(
-                "");
+        jwtGrantedAuthoritiesConverter.setAuthorityPrefix("");
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
         return jwtAuthenticationConverter;
     }
-
 
 
 }
