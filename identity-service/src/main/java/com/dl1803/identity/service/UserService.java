@@ -6,6 +6,7 @@ import java.util.List;
 import com.dl1803.identity.entity.Role;
 import com.dl1803.identity.mapper.ProfileMapper;
 import com.dl1803.identity.repository.httpclient.ProfileClient;
+import org.apache.commons.fileupload.RequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.prepost.PostAuthorize;
@@ -28,6 +29,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 @Slf4j
 @Service

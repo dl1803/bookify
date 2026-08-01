@@ -1,6 +1,7 @@
 package com.dl1803.profile.controller;
 
 import com.dl1803.profile.dto.request.ProfileCreationRequest;
+import com.dl1803.profile.dto.response.ApiResponse;
 import com.dl1803.profile.dto.response.UserProfileResponse;
 import com.dl1803.profile.service.UserProfileService;
 import lombok.AccessLevel;
@@ -17,13 +18,18 @@ public class UserProfileController {
     UserProfileService userProfileService;
 
     @GetMapping("/users/{profileId}")
-    UserProfileResponse getProfile(@PathVariable String profileId){
-        return userProfileService.getProfile(profileId);
+    ApiResponse<UserProfileResponse> getProfile(@PathVariable String profileId){
+        return ApiResponse.<UserProfileResponse>builder()
+                .result( userProfileService.getProfile(profileId))
+                .build();
+
     }
 
 
     @GetMapping("/users")
-    List<UserProfileResponse> getAllProfiles(){
-        return userProfileService.getAllProfiles();
+    ApiResponse<List<UserProfileResponse>> getAllProfiles(){
+        return ApiResponse.<List<UserProfileResponse>>builder()
+                .result(userProfileService.getAllProfiles())
+                .build();
     }
 }
