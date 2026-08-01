@@ -60,16 +60,10 @@ public class AlertsActivity extends AppCompatActivity {
         MaterialToolbar topAppBar = findViewById(R.id.topAppBar);
         if (topAppBar != null) {
             topAppBar.setNavigationOnClickListener(v -> {
-                PopupMenu popupMenu = new PopupMenu(this, v);
-                popupMenu.getMenu().add("Mark All as Read");
-                popupMenu.getMenu().add("Notification Settings");
-                popupMenu.getMenu().add("Clear History");
-                popupMenu.setOnMenuItemClickListener(item -> {
-                    Toast.makeText(this, item.getTitle() + " selected", Toast.LENGTH_SHORT).show();
-                    return true;
-                });
-                popupMenu.show();
+                com.example.bookify.ui.menu.GlobalMenuDrawerFragment.newInstance()
+                        .show(getSupportFragmentManager(), "GlobalMenu");
             });
+            // Note: If you want to keep the PopupMenu, you should move it to an options menu (setOnMenuItemClickListener)
         }
     }
 

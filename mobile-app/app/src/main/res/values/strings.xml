@@ -68,4 +68,10 @@
     <string name="terms_agreement">I agree to the Terms of Service and Privacy Policy.</string>
     <string name="btn_register">Register</string>
     <string name="prompt_has_account">Already have an account? </string>
+    <!-- Menu Global -->
+    <string name="menu_message">Message</string>
+    <string name="menu_friends">Friends</string>
+    <string name="menu_groups">Groups</string>
+    <string name="menu_account_settings">Account settings</string>
+    <string name="menu_logout">Log out</string>
 </resources>

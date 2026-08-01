@@ -10,9 +10,14 @@
     <color name="on_surface">#1B1C1C</color>
     <color name="on_surface_variant">#55433E</color>
     <color name="tertiary">#74554B</color>
+    <color name="primary_fixed">#FFDBD1</color>
+    <color name="surface_container_low">#F6F3F2</color>
+    <color name="surface_container_lowest">#FFFFFF</color>
     <color name="surface_container">#F0EDED</color>
     <color name="outline">#88726D</color>
     <color name="outline_variant">#DAC1BA</color>
     <color name="star_yellow">#FFC107</color>
     <color name="like_red">#E53935</color>
+    <color name="text_dark_gray">#424242</color>
+    <color name="error_red">#D32F2F</color>
 </resources>
