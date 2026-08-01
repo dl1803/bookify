@@ -97,20 +97,8 @@ public class HomeActivity extends AppCompatActivity {
         MaterialToolbar topAppBar = findViewById(R.id.topAppBar);
         if (topAppBar != null) {
             topAppBar.setNavigationOnClickListener(v -> {
-                PopupMenu popupMenu = new PopupMenu(this, v);
-                popupMenu.getMenu().add("Feed Filters");
-                popupMenu.getMenu().add("Trending Books");
-                popupMenu.getMenu().add("Settings");
-                popupMenu.getMenu().add("Log Out");
-                popupMenu.setOnMenuItemClickListener(item -> {
-                    if ("Log Out".equals(item.getTitle())) {
-                        performLogout();
-                    } else {
-                        Toast.makeText(this, item.getTitle() + " selected", Toast.LENGTH_SHORT).show();
-                    }
-                    return true;
-                });
-                popupMenu.show();
+                com.example.bookify.ui.menu.GlobalMenuDrawerFragment.newInstance()
+                        .show(getSupportFragmentManager(), "GlobalMenu");
             });
         }
     }

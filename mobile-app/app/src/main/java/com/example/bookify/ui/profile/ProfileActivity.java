@@ -32,7 +32,9 @@ import com.google.android.material.tabs.TabLayout;
 public class ProfileActivity extends AppCompatActivity {
 
     private ProfileViewModel viewModel;
-    private MaterialButton btnFollow;
+    private MaterialButton btnFriendPrimary;
+    private MaterialButton btnFriendChat;
+    private View layoutActionButtons;
     private NestedScrollView scrollViewContent;
     private TextView tvProfileName;
     private TextView tvProfileBio;
@@ -54,7 +56,9 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
         scrollViewContent = findViewById(R.id.scroll_view_content);
-        btnFollow = findViewById(R.id.btn_follow);
+        btnFriendPrimary = findViewById(R.id.btn_friend_primary);
+        btnFriendChat = findViewById(R.id.btn_friend_chat);
+        layoutActionButtons = findViewById(R.id.layout_action_buttons);
         tvProfileName = findViewById(R.id.tv_profile_name);
         tvProfileBio = findViewById(R.id.tv_profile_bio);
         layoutBooksGrid = findViewById(R.id.layout_books_grid);
@@ -83,22 +87,38 @@ public class ProfileActivity extends AppCompatActivity {
     private void setupViewModel() {
         viewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
 
-        // Observe follow status
-        viewModel.getIsFollowing().observe(this, isFollowing -> {
-            if (btnFollow != null) {
-                if (isFollowing) {
-                    btnFollow.setText("Following ✓");
-                    btnFollow.setBackgroundTintList(ColorStateList.valueOf(
-                            ContextCompat.getColor(this, R.color.surface_container)
-                    ));
-                    btnFollow.setTextColor(ContextCompat.getColor(this, R.color.brown_primary));
-                } else {
-                    btnFollow.setText("Follow");
-                    btnFollow.setBackgroundTintList(ColorStateList.valueOf(
-                            ContextCompat.getColor(this, R.color.brown_primary)
-                    ));
-                    btnFollow.setTextColor(ContextCompat.getColor(this, R.color.white));
-                }
+        // Observe friend status
+        viewModel.getFriendState().observe(this, state -> {
+            if (layoutActionButtons == null || btnFriendPrimary == null || btnFriendChat == null) return;
+
+            if (state == ProfileViewModel.FriendState.SELF) {
+                layoutActionButtons.setVisibility(View.GONE);
+                return;
+            }
+
+            layoutActionButtons.setVisibility(View.VISIBLE);
+
+            switch (state) {
+                case NOT_FRIEND:
+                    btnFriendPrimary.setText("Add Friend");
+                    btnFriendPrimary.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.brown_primary)));
+                    btnFriendPrimary.setTextColor(ContextCompat.getColor(this, R.color.white));
+                    btnFriendChat.setVisibility(View.GONE);
+                    break;
+                case REQUEST_SENT:
+                    btnFriendPrimary.setText("Cancel");
+                    btnFriendPrimary.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.surface_container)));
+                    btnFriendPrimary.setTextColor(ContextCompat.getColor(this, R.color.brown_primary));
+                    btnFriendChat.setVisibility(View.GONE);
+                    break;
+                case FRIEND:
+                    btnFriendPrimary.setText("Friend ✓");
+                    btnFriendPrimary.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.surface_container)));
+                    btnFriendPrimary.setTextColor(ContextCompat.getColor(this, R.color.brown_primary));
+                    btnFriendChat.setVisibility(View.VISIBLE);
+                    break;
+                default:
+                    break;
             }
         });
     }
@@ -123,17 +143,25 @@ public class ProfileActivity extends AppCompatActivity {
             });
         }
 
-        // Follow Button Click
-        if (btnFollow != null) {
-            btnFollow.setOnClickListener(v -> {
-                viewModel.toggleFollowStatus();
-                Boolean isFollowing = viewModel.getIsFollowing().getValue();
-                if (isFollowing != null && isFollowing) {
-                    Toast.makeText(this, "You are now following Emily Reader!", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(this, "Unfollowed Emily Reader", Toast.LENGTH_SHORT).show();
+        // Friend Button Click (Cycles state for demo purposes)
+        if (btnFriendPrimary != null) {
+            btnFriendPrimary.setOnClickListener(v -> {
+                viewModel.cycleFriendState();
+                ProfileViewModel.FriendState state = viewModel.getFriendState().getValue();
+                if (state == ProfileViewModel.FriendState.REQUEST_SENT) {
+                    Toast.makeText(this, "Friend request sent to Emily Reader!", Toast.LENGTH_SHORT).show();
+                } else if (state == ProfileViewModel.FriendState.FRIEND) {
+                    Toast.makeText(this, "You are now friends with Emily Reader!", Toast.LENGTH_SHORT).show();
+                } else if (state == ProfileViewModel.FriendState.NOT_FRIEND) {
+                    Toast.makeText(this, "Canceled request/Unfriended Emily Reader", Toast.LENGTH_SHORT).show();
                 }
             });
+        }
+
+        if (btnFriendChat != null) {
+            btnFriendChat.setOnClickListener(v -> 
+                Toast.makeText(this, "Opening chat with Emily...", Toast.LENGTH_SHORT).show()
+            );
         }
 
         // More Options Button with Modern Bottom Sheet

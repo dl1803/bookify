@@ -1,0 +1,263 @@
+<!DOCTYPE html><html class="light" lang="vi" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Playfair+Display:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-fixed-variant": "#5d4037",
+                    "surface-tint": "#96472f",
+                    "on-secondary-container": "#63635f",
+                    "surface-container": "#f0eded",
+                    "tertiary-fixed": "#ffdbd0",
+                    "on-secondary-fixed": "#1b1c19",
+                    "on-tertiary-fixed": "#2c160e",
+                    "on-secondary": "#ffffff",
+                    "surface-container-low": "#f6f3f2",
+                    "on-surface-variant": "#55433e",
+                    "surface-dim": "#dcd9d9",
+                    "primary-fixed": "#ffdbd1",
+                    "surface-variant": "#e4e2e1",
+                    "secondary-fixed": "#e4e2dd",
+                    "primary-container": "#b25d43",
+                    "inverse-on-surface": "#f3f0f0",
+                    "surface-container-highest": "#e4e2e1",
+                    "primary-fixed-dim": "#ffb59f",
+                    "surface-container-lowest": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "on-primary": "#ffffff",
+                    "on-error": "#ffffff",
+                    "on-tertiary-container": "#fffbff",
+                    "on-surface": "#1b1c1c",
+                    "on-primary-fixed": "#3a0a00",
+                    "error": "#ba1a1a",
+                    "surface-bright": "#fcf9f8",
+                    "on-secondary-fixed-variant": "#474744",
+                    "on-primary-container": "#fffbff",
+                    "surface-container-high": "#eae7e7",
+                    "primary": "#93452d",
+                    "outline": "#88726d",
+                    "inverse-primary": "#ffb59f",
+                    "tertiary": "#74554b",
+                    "secondary-fixed-dim": "#c8c6c2",
+                    "tertiary-fixed-dim": "#e7bdb1",
+                    "secondary": "#5e5e5b",
+                    "on-tertiary": "#ffffff",
+                    "tertiary-container": "#8f6d62",
+                    "on-primary-fixed-variant": "#78311a",
+                    "error-container": "#ffdad6",
+                    "inverse-surface": "#303030",
+                    "background": "#fcf9f8",
+                    "surface": "#fcf9f8",
+                    "on-background": "#1b1c1c",
+                    "secondary-container": "#e1dfdb",
+                    "outline-variant": "#dac1ba"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "section-gap": "48px",
+                    "unit": "8px",
+                    "gutter": "16px",
+                    "container-margin-desktop": "40px",
+                    "container-margin-mobile": "20px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "label-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "headline-lg-mobile": ["Playfair Display"],
+                    "headline-md": ["Playfair Display"],
+                    "headline-lg": ["Playfair Display"],
+                    "display-lg": ["Playfair Display"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "500"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        
+        .drawer-mask {
+            background-color: rgba(27, 28, 28, 0.4);
+            backdrop-filter: blur(4px);
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar-drawer {
+            transform: translateX(-100%);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sidebar-drawer.open {
+            transform: translateX(0);
+        }
+
+        .nav-item-active {
+            background-color: #ffdbd1; /* primary-fixed */
+            color: #93452d; /* primary */
+        }
+        
+        .nav-item-hover:hover {
+            background-color: #f0eded; /* surface-container */
+        }
+
+        .reading-texture {
+            background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
+        }
+
+        /* Adjust bottom nav for overlay compatibility */
+        .bottom-nav {
+            transition: transform 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden" style="overflow: hidden;">
+<!-- TOP APP BAR -->
+<header class="docked full-width top-0 sticky z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 flex justify-between items-center px-container-margin-mobile h-16 w-full">
+<button class="text-primary hover:bg-surface-container transition-colors p-2 rounded-full active:scale-90 transition-transform" id="open-drawer">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<span class="font-headline-md text-headline-md font-bold text-primary tracking-tight">Bookify</span>
+<button class="text-primary hover:bg-surface-container transition-colors p-2 rounded-full active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</button>
+</header>
+<!-- MAIN CONTENT CANVAS -->
+<main class="max-w-[1120px] mx-auto px-container-margin-mobile md:px-container-margin-desktop py-8">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="col-span-2 space-y-section-gap">
+<section>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-6">Xin chào, Emily</h2>
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_4px_12px_rgba(147,69,45,0.05)] border border-outline-variant/20">
+<p class="text-on-surface-variant">Chào mừng bạn trở lại với hành trình đọc sách của mình.</p>
+</div>
+</section>
+</div>
+</div>
+</main>
+<!-- SIDEBAR DRAWER OVERLAY (Trải dọc nguyên trang) -->
+<div class="fixed inset-0 z-[60] opacity-0 transition-opacity duration-300 drawer-mask opacity-100" id="drawer-overlay">
+<!-- SIDEBAR CONTENT -->
+<aside class="sidebar-drawer fixed top-0 left-0 h-full w-[280px] bg-surface-bright shadow-2xl flex flex-col z-[70] reading-texture open" id="sidebar">
+<!-- DRAWER HEADER -->
+<div class="p-8 pt-12 bg-surface-container-low border-b border-outline-variant/20">
+<div class="flex flex-col items-start gap-4">
+<div class="w-16 h-16 rounded-full border-2 border-primary-fixed p-1 bg-surface-container-lowest">
+<img class="w-full h-full rounded-full object-cover" data-alt="A professional yet warm portrait of a young woman named Emily" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCXjCWRxg9tT0yCoLrgHr-0PAfnhKMtOvfd3tBNDSuMUVnBQhySHtm7jKvgtJDehTwc0gdLxGRCfJ8cNwYz6G9E5elKjHhALW28var3KL9oTJ2sL9UCvR16Ru-MQ-eARuUQhmgC5XbSTGq76YiiYsxg-sD8i0VEeAMRm7VcJneYxSBC8n2ZHDt0CGYor18v3ehXOWSl-fUcHwRWrnrBN7peaXksX6cRv5j_graw1e6ly3ssvzvGtohCMfxoutYoho7TzENvIyRd6dM">
+</div>
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface">Emily Reader</h2>
+<p class="font-label-md text-label-md text-on-surface-variant">Thành viên mọt sách</p>
+</div>
+</div>
+</div>
+<!-- NAVIGATION LINKS -->
+<nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto"><a class="flex items-center gap-4 px-4 py-3 rounded-xl nav-item-active transition-all active:scale-95 group" href="#"><span class="material-symbols-outlined text-primary" data-icon="mail" style="font-variation-settings: 'FILL' 1;">mail</span><span class="font-label-md text-label-md">Message</span></a><a class="flex items-center gap-4 px-4 py-3 rounded-xl text-on-surface-variant nav-item-hover transition-all active:scale-95 group" href="#"><span class="material-symbols-outlined group-hover:text-primary transition-colors" data-icon="person">person</span><span class="font-label-md text-label-md">Friends</span></a><a class="flex items-center gap-4 px-4 py-3 rounded-xl text-on-surface-variant nav-item-hover transition-all active:scale-95 group" href="#"><span class="material-symbols-outlined group-hover:text-primary transition-colors" data-icon="groups">groups</span><span class="font-label-md text-label-md">Groups</span></a><div class="h-px bg-outline-variant/30 mx-4 my-4"></div><a class="flex items-center gap-4 px-4 py-3 rounded-xl text-on-surface-variant nav-item-hover transition-all active:scale-95 group" href="#"><span class="material-symbols-outlined group-hover:text-primary transition-colors" data-icon="settings">settings</span><span class="font-label-md text-label-md">Settings</span></a><button class="flex items-center gap-4 w-full px-4 py-3 rounded-xl text-error hover:bg-error-container/20 transition-all active:scale-95 group mt-auto"><span class="material-symbols-outlined text-[20px]" data-icon="logout">logout</span><span class="font-label-sm text-label-sm font-bold">Logout</span></button></nav>
+</aside>
+</div>
+<!-- BOTTOM NAVBAR -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full bg-surface/90 backdrop-blur-lg border-t border-outline-variant/20 flex justify-around items-center pt-2 pb-safe px-4 h-16 z-40 rounded-t-xl shadow-[0_-4px_12px_0_rgba(147,69,45,0.05)] bottom-nav">
+<div class="flex flex-col items-center justify-center text-primary font-bold">
+<span class="material-symbols-outlined" data-icon="home" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+<span class="font-label-sm text-label-sm">Explore</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined" data-icon="add_circle">add_circle</span>
+<span class="font-label-sm text-label-sm">Create</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="font-label-sm text-label-sm">Alerts</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</div>
+</nav>
+<script>
+        const openBtn = document.getElementById('open-drawer');
+        const overlay = document.getElementById('drawer-overlay');
+        const sidebar = document.getElementById('sidebar');
+
+        function toggleDrawer(isOpen) {
+            if (isOpen) {
+                overlay.classList.remove('pointer-events-none');
+                overlay.classList.add('opacity-100');
+                sidebar.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            } else {
+                overlay.classList.add('pointer-events-none');
+                overlay.classList.remove('opacity-100');
+                sidebar.classList.remove('open');
+                document.body.style.overflow = '';
+            }
+        }
+
+        openBtn.addEventListener('click', () => toggleDrawer(true));
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) toggleDrawer(false);
+        });
+
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, false);
+
+        document.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleGesture();
+        }, false);
+
+        function handleGesture() {
+            if (touchEndX - touchStartX > 100 && touchStartX < 50) {
+                toggleDrawer(true);
+            }
+            if (touchStartX - touchEndX > 100 && sidebar.classList.contains('open')) {
+                toggleDrawer(false);
+            }
+        }
+        
+        // Open drawer for initial preview as in the screenshot state
+        setTimeout(() => {
+            toggleDrawer(true);
+        }, 800);
+    </script>
+
+
+</body></html>

@@ -119,23 +119,19 @@ public class BookifyDialogHelper {
 
         TextView tvTitle1 = view.findViewById(R.id.tvOptionTitle1);
         TextView tvSub1 = view.findViewById(R.id.tvOptionSubtitle1);
+        ImageView imgIcon1 = view.findViewById(R.id.imgOptionIcon1);
         tvTitle1.setText("Edit Profile");
         tvSub1.setText("Update name, avatar, and bio");
+        imgIcon1.setImageResource(R.drawable.ic_profile);
 
         TextView tvTitle2 = view.findViewById(R.id.tvOptionTitle2);
         TextView tvSub2 = view.findViewById(R.id.tvOptionSubtitle2);
         tvTitle2.setText("Share Profile Link");
         tvSub2.setText("Send your profile link to friends");
 
-        TextView tvTitle3 = view.findViewById(R.id.tvOptionTitle3);
-        TextView tvSub3 = view.findViewById(R.id.tvOptionSubtitle3);
-        tvTitle3.setText("Account Settings");
-        tvSub3.setText("Manage privacy, notifications, and theme");
-
-        TextView tvTitle4 = view.findViewById(R.id.tvOptionTitle4);
-        TextView tvSub4 = view.findViewById(R.id.tvOptionSubtitle4);
-        tvTitle4.setText("Log Out");
-        tvSub4.setText("Sign out of your Bookify account");
+        // Hide unused options
+        view.findViewById(R.id.optionItemAction).setVisibility(View.GONE);
+        view.findViewById(R.id.optionItemReport).setVisibility(View.GONE);
 
         view.findViewById(R.id.optionItemSave).setOnClickListener(v -> {
             dialog.dismiss();
@@ -145,23 +141,6 @@ public class BookifyDialogHelper {
         view.findViewById(R.id.optionItemShare).setOnClickListener(v -> {
             dialog.dismiss();
             if (onShareProfile != null) onShareProfile.run();
-        });
-
-        view.findViewById(R.id.optionItemAction).setOnClickListener(v -> {
-            Toast.makeText(context, "Opening Settings...", Toast.LENGTH_SHORT).show();
-            dialog.dismiss();
-        });
-
-        view.findViewById(R.id.optionItemReport).setOnClickListener(v -> {
-            dialog.dismiss();
-            com.example.bookify.data.repository.AuthRepository.getInstance().logout();
-            Toast.makeText(context, "Logged out successfully", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(context, com.example.bookify.ui.auth.LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            context.startActivity(intent);
-            if (context instanceof android.app.Activity) {
-                ((android.app.Activity) context).finish();
-            }
         });
 
         dialog.show();
