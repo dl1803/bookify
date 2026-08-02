@@ -1,5 +1,6 @@
-package com.dl1803.profile.configuration;
+package com.dl1803.notification.configuration;
 
+import com.dl1803.notification.configuration.JwtAuthenticationEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,9 +10,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -19,10 +17,9 @@ import org.springframework.web.filter.CorsFilter;
 public class SecurityConfig {
 
     private static final String[] PUBLIC_ENDPOINT = {
-        "/internal/users",
-        "/swagger-ui/**",
-        "/v3/api-docs/**"
-    };
+            "/email/send",
+            "/swagger-ui/**",
+            "/v3/api-docs/**"};
 
     @Autowired
     private CustomJwtDecoder customJwtDecoder;
@@ -31,27 +28,19 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
 
         httpSecurity.authorizeHttpRequests(request -> {
-            request.requestMatchers(PUBLIC_ENDPOINT)
-                    .permitAll()
-                    .anyRequest()
-                    .authenticated();
+            request.requestMatchers(PUBLIC_ENDPOINT).permitAll().anyRequest().authenticated();
         });
 
-        httpSecurity.oauth2ResourceServer(
-                oauth2 -> {
-                    oauth2.jwt(jwtConfigurer -> {
-                                jwtConfigurer
-                                        .decoder(customJwtDecoder)
-                                        .jwtAuthenticationConverter(
-                                                jwtAuthenticationConverter());
-                            })
-                            .authenticationEntryPoint(
-                                    new JwtAuthenticationEntryPoint());
-                });
-
-        httpSecurity.cors(cors -> {}).csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable());
-        return httpSecurity
-                .build();
+        httpSecurity.oauth2ResourceServer(oauth2 -> {
+            oauth2.jwt(jwtConfigurer -> {
+                        jwtConfigurer
+                                .decoder(customJwtDecoder)
+                                .jwtAuthenticationConverter(jwtAuthenticationConverter());
+                    })
+                    .authenticationEntryPoint(new JwtAuthenticationEntryPoint());
+        });
+        httpSecurity.csrf(csrf -> csrf.disable());
+        return httpSecurity.build();
     }
 
     @Bean
@@ -62,6 +51,4 @@ public class SecurityConfig {
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
         return jwtAuthenticationConverter;
     }
-
-
 }
