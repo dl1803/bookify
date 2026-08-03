@@ -68,7 +68,6 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void setupPickers() {
-        // Image Picker Launcher
         imagePickerLauncher = registerForActivityResult(
                 new ActivityResultContracts.GetContent(),
                 uri -> {
@@ -79,7 +78,6 @@ public class HomeActivity extends AppCompatActivity {
                 }
         );
 
-        // PDF Book File Picker Launcher
         pdfPickerLauncher = registerForActivityResult(
                 new ActivityResultContracts.GetContent(),
                 uri -> {
@@ -115,7 +113,6 @@ public class HomeActivity extends AppCompatActivity {
     private void setupCreatePostSection() {
         etPostInput = findViewById(R.id.etPostInput);
 
-        // Upload Image
         findViewById(R.id.btnAttachImage).setOnClickListener(v -> {
             try {
                 imagePickerLauncher.launch("image/*");
@@ -128,7 +125,6 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        // Upload Book (PDF)
         findViewById(R.id.btnAttachBook).setOnClickListener(v -> {
             try {
                 pdfPickerLauncher.launch("application/pdf");
@@ -149,10 +145,8 @@ public class HomeActivity extends AppCompatActivity {
                 return;
             }
 
-            // Create post in ViewModel
             viewModel.createNewPost(content, selectedBookTitle, selectedBookAuthor, selectedBookCoverResId);
             
-            // Clear input & UI feedback
             etPostInput.setText("");
             etPostInput.clearFocus();
             hideKeyboard();

@@ -28,7 +28,6 @@ public class GlobalMenuDrawerFragment extends DialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Apply Translucent NoTitleBar style to allow edge-to-edge span vertically and proper dimming
         setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Translucent_NoTitleBar);
     }
 
@@ -42,7 +41,6 @@ public class GlobalMenuDrawerFragment extends DialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         
-        // Setup click listeners for each menu item
         setupClickListeners(view);
     }
 
@@ -84,7 +82,6 @@ public class GlobalMenuDrawerFragment extends DialogFragment {
             dismiss();
         });
         
-        // Close menu if user taps on the empty space of the header or root
         view.setOnClickListener(v -> {
             dismiss();
         });
@@ -101,28 +98,23 @@ public class GlobalMenuDrawerFragment extends DialogFragment {
         super.onStart();
         Dialog dialog = getDialog();
         if (dialog != null && dialog.getWindow() != null) {
-            dialog.setCanceledOnTouchOutside(true); // Close when touching outside
+            dialog.setCanceledOnTouchOutside(true); 
             
             Window window = dialog.getWindow();
             
-            // Background transparent for the dialog window itself to remove black borders
             window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             
-            // Enable Dim behind
             window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-            window.setDimAmount(0.6f); // 60% opacity dim for better contrast
+            window.setDimAmount(0.6f); 
             
-            // Draw edge-to-edge and fix black status/navigation bars
             androidx.core.view.WindowCompat.setDecorFitsSystemWindows(window, false);
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(Color.TRANSPARENT);
             window.setNavigationBarColor(Color.TRANSPARENT);
 
-            // Set position to Left, height match_parent, width wrap_content (280dp as defined in xml)
             window.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
             window.setGravity(Gravity.START | Gravity.TOP);
             
-            // Custom sliding animation
             window.setWindowAnimations(R.style.DialogAnimationSlideLeft);
         }
     }

@@ -63,7 +63,6 @@ public class AlertsActivity extends AppCompatActivity {
                 com.example.bookify.ui.menu.GlobalMenuDrawerFragment.newInstance()
                         .show(getSupportFragmentManager(), "GlobalMenu");
             });
-            // Note: If you want to keep the PopupMenu, you should move it to an options menu (setOnMenuItemClickListener)
         }
     }
 
@@ -90,7 +89,6 @@ public class AlertsActivity extends AppCompatActivity {
     private List<NotificationModel> generateMockNotifications() {
         List<NotificationModel> list = new ArrayList<>();
 
-        // Section: TODAY
         list.add(new NotificationModel("TODAY"));
         list.add(new NotificationModel(
                 "n1",
@@ -125,7 +123,6 @@ public class AlertsActivity extends AppCompatActivity {
                 false
         ));
 
-        // Section: YESTERDAY
         list.add(new NotificationModel("YESTERDAY"));
         list.add(new NotificationModel(
                 "n4",

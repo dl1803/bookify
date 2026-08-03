@@ -27,6 +27,39 @@
             android:layout_height="wrap_content"
             android:paddingBottom="24dp">
 
+            <!-- Friends Count Badge (Top Left) -->
+            <LinearLayout
+                android:id="@+id/layout_friends_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="26dp"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/bg_rounded_light_brown"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="4dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+                
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:contentDescription="Friends"
+                    android:src="@drawable/ic_menu_friends"
+                    app:tint="@color/brown_primary" />
+                    
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_friends_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:text="120"
+                    android:textColor="@color/brown_primary"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
             <!-- More Button (Top Right) -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_more"
@@ -94,65 +127,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_profile_name" />
 
-            <!-- Stats Section (Followers & Following) -->
-            <LinearLayout
-                android:id="@+id/layout_stats"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_profile_bio">
-
-                <!-- Followers -->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="32dp"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/profile_followers_label"
-                        android:textColor="@color/on_surface_variant"
-                        android:textSize="13sp" />
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/profile_followers_count"
-                        android:textColor="@color/on_surface"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <!-- Following -->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/profile_following_label"
-                        android:textColor="@color/on_surface_variant"
-                        android:textSize="13sp" />
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/profile_following_count"
-                        android:textColor="@color/on_surface"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-            </LinearLayout>
-
             <!-- Action Buttons Section -->
             <LinearLayout
                 android:id="@+id/layout_action_buttons"
@@ -163,7 +137,7 @@
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/layout_stats">
+                app:layout_constraintTop_toBottomOf="@id/tv_profile_bio">
 
                 <!-- Primary Friend Action Button (Add Friend / Cancel / Friend) -->
                 <com.google.android.material.button.MaterialButton

@@ -87,7 +87,6 @@ public class ProfileActivity extends AppCompatActivity {
     private void setupViewModel() {
         viewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
 
-        // Observe friend status
         viewModel.getFriendState().observe(this, state -> {
             if (layoutActionButtons == null || btnFriendPrimary == null || btnFriendChat == null) return;
 
@@ -124,26 +123,35 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void setupProfileInteractions() {
-        // Avatar Click -> Launch Avatar Image Picker
         if (imgAvatar != null) {
             imgAvatar.setOnClickListener(v -> {
                 try {
                     avatarPickerLauncher.launch("image/*");
                 } catch (Exception e) {
+                    com.example.bookify.data.model.UserModel user = com.example.bookify.data.repository.AuthRepository.getInstance().getCurrentUser().getValue();
+                    if (user == null) {
+                        user = new com.example.bookify.data.model.UserModel("emily", "emily@example.com", "Emily", "Reader", "15/08/1998", "Hanoi");
+                    }
                     BookifyDialogHelper.showEditProfileDialog(
                             this,
-                            tvProfileName.getText().toString(),
+                            user,
                             tvProfileBio.getText().toString(),
-                            (newName, newBio) -> {
-                                tvProfileName.setText(newName);
+                            (newFirstName, newLastName, newDob, newCity, newBio) -> {
+                                tvProfileName.setText(newFirstName + " " + newLastName);
                                 tvProfileBio.setText(newBio);
+                                com.example.bookify.data.model.UserModel u = com.example.bookify.data.repository.AuthRepository.getInstance().getCurrentUser().getValue();
+                                if (u != null) {
+                                    u.setFirstName(newFirstName);
+                                    u.setLastName(newLastName);
+                                    u.setDob(newDob);
+                                    u.setCity(newCity);
+                                }
                             }
                     );
                 }
             });
         }
 
-        // Friend Button Click (Cycles state for demo purposes)
         if (btnFriendPrimary != null) {
             btnFriendPrimary.setOnClickListener(v -> {
                 viewModel.cycleFriendState();
@@ -164,19 +172,31 @@ public class ProfileActivity extends AppCompatActivity {
             );
         }
 
-        // More Options Button with Modern Bottom Sheet
         findViewById(R.id.btn_more).setOnClickListener(v -> 
             BookifyDialogHelper.showProfileMoreOptionsBottomSheet(
                     this,
-                    () -> BookifyDialogHelper.showEditProfileDialog(
-                            this,
-                            tvProfileName.getText().toString(),
-                            tvProfileBio.getText().toString(),
-                            (newName, newBio) -> {
-                                tvProfileName.setText(newName);
-                                tvProfileBio.setText(newBio);
-                            }
-                    ),
+                    () -> {
+                        com.example.bookify.data.model.UserModel user = com.example.bookify.data.repository.AuthRepository.getInstance().getCurrentUser().getValue();
+                        if (user == null) {
+                            user = new com.example.bookify.data.model.UserModel("emily", "emily@example.com", "Emily", "Reader", "15/08/1998", "Hanoi");
+                        }
+                        BookifyDialogHelper.showEditProfileDialog(
+                                this,
+                                user,
+                                tvProfileBio.getText().toString(),
+                                (newFirstName, newLastName, newDob, newCity, newBio) -> {
+                                    tvProfileName.setText(newFirstName + " " + newLastName);
+                                    tvProfileBio.setText(newBio);
+                                    com.example.bookify.data.model.UserModel u = com.example.bookify.data.repository.AuthRepository.getInstance().getCurrentUser().getValue();
+                                    if (u != null) {
+                                        u.setFirstName(newFirstName);
+                                        u.setLastName(newLastName);
+                                        u.setDob(newDob);
+                                        u.setCity(newCity);
+                                    }
+                                }
+                        );
+                    },
                     () -> {
                         Intent sendIntent = new Intent();
                         sendIntent.setAction(Intent.ACTION_SEND);
@@ -187,16 +207,11 @@ public class ProfileActivity extends AppCompatActivity {
             )
         );
 
-        // Stats Click
-        findViewById(R.id.layout_stats).setOnClickListener(v -> 
-            Toast.makeText(this, "Followers: 1.2k | Following: 350", Toast.LENGTH_SHORT).show()
-        );
     }
 
     private void setupTabs() {
         TabLayout tabLayout = findViewById(R.id.tab_layout_profile);
         if (tabLayout != null) {
-            // Select 3rd tab "Saved Books" as default
             TabLayout.Tab savedBooksTab = tabLayout.getTabAt(2);
             if (savedBooksTab != null) {
                 savedBooksTab.select();

@@ -21,14 +21,13 @@ import com.google.android.material.button.MaterialButton;
 public class BookifyDialogHelper {
 
     public interface OnProfileUpdateListener {
-        void onProfileUpdated(String newName, String newBio);
+        void onProfileUpdated(String newFirstName, String newLastName, String newDob, String newCity, String newBio);
     }
 
     public interface OnBookSelectedListener {
         void onBookSelected(String title, String author, int coverResId);
     }
 
-    // Show Book Detail Bottom Sheet Dialog
     public static void showBookDetailBottomSheet(Context context, String title, String author, int coverResId, String rating) {
         BottomSheetDialog dialog = new BottomSheetDialog(context);
         View view = LayoutInflater.from(context).inflate(R.layout.dialog_book_detail_bottom_sheet, null);
@@ -64,7 +63,6 @@ public class BookifyDialogHelper {
         dialog.show();
     }
 
-    // Show Modern Post More Options Bottom Sheet Dialog
     public static void showPostMoreOptionsBottomSheet(Context context, PostModel post) {
         BottomSheetDialog dialog = new BottomSheetDialog(context);
         View view = LayoutInflater.from(context).inflate(R.layout.dialog_more_options_bottom_sheet, null);
@@ -75,13 +73,11 @@ public class BookifyDialogHelper {
         tvTitle.setText("Post Options");
         tvSubtitle.setText("Post by " + post.getUserName());
 
-        // Item 1: Save Post
         view.findViewById(R.id.optionItemSave).setOnClickListener(v -> {
             Toast.makeText(context, "Saved post to your library!", Toast.LENGTH_SHORT).show();
             dialog.dismiss();
         });
 
-        // Item 2: Share / Copy Link
         view.findViewById(R.id.optionItemShare).setOnClickListener(v -> {
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
@@ -91,13 +87,11 @@ public class BookifyDialogHelper {
             dialog.dismiss();
         });
 
-        // Item 3: View Author Profile
         view.findViewById(R.id.optionItemAction).setOnClickListener(v -> {
             Toast.makeText(context, "Viewing " + post.getUserName() + "'s profile", Toast.LENGTH_SHORT).show();
             dialog.dismiss();
         });
 
-        // Item 4: Report / Hide Post
         view.findViewById(R.id.optionItemReport).setOnClickListener(v -> {
             Toast.makeText(context, "Post hidden from feed", Toast.LENGTH_SHORT).show();
             dialog.dismiss();
@@ -106,7 +100,6 @@ public class BookifyDialogHelper {
         dialog.show();
     }
 
-    // Show Modern Profile More Options Bottom Sheet Dialog
     public static void showProfileMoreOptionsBottomSheet(Context context, Runnable onEditProfile, Runnable onShareProfile) {
         BottomSheetDialog dialog = new BottomSheetDialog(context);
         View view = LayoutInflater.from(context).inflate(R.layout.dialog_more_options_bottom_sheet, null);
@@ -129,7 +122,6 @@ public class BookifyDialogHelper {
         tvTitle2.setText("Share Profile Link");
         tvSub2.setText("Send your profile link to friends");
 
-        // Hide unused options
         view.findViewById(R.id.optionItemAction).setVisibility(View.GONE);
         view.findViewById(R.id.optionItemReport).setVisibility(View.GONE);
 
@@ -146,7 +138,6 @@ public class BookifyDialogHelper {
         dialog.show();
     }
 
-    // Show Comment Section Bottom Sheet Dialog with dynamic comment insertion
     public static void showCommentsBottomSheet(Context context, PostModel post) {
         BottomSheetDialog dialog = new BottomSheetDialog(context);
         View view = LayoutInflater.from(context).inflate(R.layout.dialog_comments_bottom_sheet, null);
@@ -168,7 +159,6 @@ public class BookifyDialogHelper {
                 return;
             }
 
-            // Dynamically inflate and append new comment line component
             View commentLineView = LayoutInflater.from(context).inflate(R.layout.item_comment_line, layoutCommentsList, false);
             TextView tvAuthor = commentLineView.findViewById(R.id.tvCommentAuthor);
             TextView tvTime = commentLineView.findViewById(R.id.tvCommentTime);
@@ -191,18 +181,29 @@ public class BookifyDialogHelper {
         dialog.show();
     }
 
-    // Show Edit Profile Dialog
-    public static void showEditProfileDialog(Context context, String currentName, String currentBio, OnProfileUpdateListener listener) {
+    public static void showEditProfileDialog(Context context, com.example.bookify.data.model.UserModel currentUser, String currentBio, OnProfileUpdateListener listener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         View view = LayoutInflater.from(context).inflate(R.layout.dialog_edit_profile, null);
         builder.setView(view);
 
-        EditText etName = view.findViewById(R.id.dialogEtName);
+        EditText etUsername = view.findViewById(R.id.dialogEtUsername);
+        EditText etEmail = view.findViewById(R.id.dialogEtEmail);
+        EditText etFirstName = view.findViewById(R.id.dialogEtFirstName);
+        EditText etLastName = view.findViewById(R.id.dialogEtLastName);
+        EditText etDob = view.findViewById(R.id.dialogEtDob);
+        EditText etCity = view.findViewById(R.id.dialogEtCity);
         EditText etBio = view.findViewById(R.id.dialogEtBio);
         MaterialButton btnSave = view.findViewById(R.id.dialogBtnSaveProfile);
         MaterialButton btnCancel = view.findViewById(R.id.dialogBtnCancelProfile);
 
-        etName.setText(currentName);
+        if (currentUser != null) {
+            etUsername.setText(currentUser.getUsername());
+            etEmail.setText(currentUser.getEmail());
+            etFirstName.setText(currentUser.getFirstName());
+            etLastName.setText(currentUser.getLastName());
+            etDob.setText(currentUser.getDob());
+            etCity.setText(currentUser.getCity());
+        }
         etBio.setText(currentBio);
 
         AlertDialog dialog = builder.create();
@@ -211,16 +212,19 @@ public class BookifyDialogHelper {
         }
 
         btnSave.setOnClickListener(v -> {
-            String newName = etName.getText().toString().trim();
+            String newFirstName = etFirstName.getText().toString().trim();
+            String newLastName = etLastName.getText().toString().trim();
+            String newDob = etDob.getText().toString().trim();
+            String newCity = etCity.getText().toString().trim();
             String newBio = etBio.getText().toString().trim();
 
-            if (newName.isEmpty()) {
-                Toast.makeText(context, "Name cannot be empty!", Toast.LENGTH_SHORT).show();
+            if (newFirstName.isEmpty()) {
+                Toast.makeText(context, "First Name cannot be empty!", Toast.LENGTH_SHORT).show();
                 return;
             }
 
             if (listener != null) {
-                listener.onProfileUpdated(newName, newBio);
+                listener.onProfileUpdated(newFirstName, newLastName, newDob, newCity, newBio);
             }
             Toast.makeText(context, "Profile updated successfully!", Toast.LENGTH_SHORT).show();
             dialog.dismiss();
@@ -231,7 +235,6 @@ public class BookifyDialogHelper {
         dialog.show();
     }
 
-    // Show Attach Book Dialog
     public static void showAttachBookDialog(Context context, OnBookSelectedListener listener) {
         String[] bookTitles = {"The Silent Echo", "Roots of Thought", "Currents", "Lost Time"};
         String[] bookAuthors = {"Arthur Pendelton", "Elena Vance", "Marcus Thorne", "Sarah Jenkins"};

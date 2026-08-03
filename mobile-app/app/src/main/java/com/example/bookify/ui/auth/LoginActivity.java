@@ -72,7 +72,6 @@ public class LoginActivity extends AppCompatActivity {
         tvForgotPassword = findViewById(R.id.tvForgotPassword);
         tvGoToRegister = findViewById(R.id.tvGoToRegister);
 
-        // Autofill sample account for easy testing
         etUsername.setText("admin");
         etPassword.setText("123456");
     }
@@ -109,7 +108,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void setupListeners() {
-        // Clear field errors on text change
         etUsername.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -126,7 +124,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override public void afterTextChanged(Editable s) {}
         });
 
-        // Toggle password visibility
         btnTogglePassword.setOnClickListener(v -> {
             isPasswordVisible = !isPasswordVisible;
             if (isPasswordVisible) {
@@ -139,7 +136,6 @@ public class LoginActivity extends AppCompatActivity {
             etPassword.setSelection(etPassword.getText().length());
         });
 
-        // Submit Login
         btnLogin.setOnClickListener(v -> {
             clearFieldError(etUsername);
             clearFieldError(etPassword);
@@ -169,19 +165,16 @@ public class LoginActivity extends AppCompatActivity {
             authViewModel.login(username, password);
         });
 
-        // Google Login Mock
         btnGoogleLogin.setOnClickListener(v -> {
             triggerHapticFeedback();
             Toast.makeText(this, "Connecting to Google Sign-In...", Toast.LENGTH_SHORT).show();
             authViewModel.login("google_user", "123456");
         });
 
-        // Forgot password
         tvForgotPassword.setOnClickListener(v -> {
             Toast.makeText(this, "Forgot password feature will be available soon", Toast.LENGTH_SHORT).show();
         });
 
-        // Go to Register Screen
         tvGoToRegister.setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(intent);

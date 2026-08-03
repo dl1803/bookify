@@ -74,13 +74,17 @@ public class AuthViewModel extends ViewModel {
         });
     }
 
-    public void register(String username, String firstName, String lastName, String dob, String city, String password, String confirmPassword, boolean termsAccepted) {
+    public void register(String username, String email, String firstName, String lastName, String dob, String city, String password, String confirmPassword, boolean termsAccepted) {
         if (username == null || username.trim().isEmpty()) {
             errorMessage.setValue("Username cannot be empty");
             return;
         }
         if (username.trim().length() < 4) {
             errorMessage.setValue("Username must be at least 4 characters");
+            return;
+        }
+        if (email == null || email.trim().isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            errorMessage.setValue("Please enter a valid email");
             return;
         }
         if (firstName == null || firstName.trim().isEmpty()) {
@@ -127,7 +131,7 @@ public class AuthViewModel extends ViewModel {
         isLoading.setValue(true);
         errorMessage.setValue(null);
 
-        UserModel newUser = new UserModel(username, firstName, lastName, dob, city);
+        UserModel newUser = new UserModel(username, email, firstName, lastName, dob, city);
 
         authRepository.register(newUser, password, new AuthRepository.AuthCallback() {
             @Override

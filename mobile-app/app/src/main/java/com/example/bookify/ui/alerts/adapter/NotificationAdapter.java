@@ -75,24 +75,20 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             ItemViewHolder itemHolder = (ItemViewHolder) holder;
             Context context = itemHolder.itemView.getContext();
 
-            // Set Avatar
             if (model.getAvatarResId() != 0) {
                 itemHolder.imgAvatar.setImageResource(model.getAvatarResId());
             } else {
                 itemHolder.imgAvatar.setImageResource(R.drawable.profile_avatar);
             }
 
-            // Set Rich Formatted Text
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 itemHolder.tvContent.setText(Html.fromHtml(model.getContentText(), Html.FROM_HTML_MODE_LEGACY));
             } else {
                 itemHolder.tvContent.setText(Html.fromHtml(model.getContentText()));
             }
 
-            // Set Time
             itemHolder.tvTimeAgo.setText(model.getTimeAgo());
 
-            // Unread styling
             if (model.isUnread()) {
                 itemHolder.viewUnreadDot.setVisibility(View.VISIBLE);
                 itemHolder.cardContainer.setCardBackgroundColor(Color.parseColor("#FFF7F5"));
@@ -101,7 +97,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 itemHolder.cardContainer.setCardBackgroundColor(Color.WHITE);
             }
 
-            // Follow Back Button
             if (model.getType() == NotificationModel.NotificationType.FOLLOW) {
                 itemHolder.btnFollowAction.setVisibility(View.VISIBLE);
                 if (model.isFollowing()) {
@@ -124,7 +119,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 itemHolder.btnFollowAction.setVisibility(View.GONE);
             }
 
-            // Click listener
             itemHolder.cardContainer.setOnClickListener(v -> {
                 int curPos = itemHolder.getAdapterPosition();
                 if (curPos == RecyclerView.NO_POSITION) return;
@@ -139,7 +133,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
             });
 
-            // Long Click / Hold effect listener
             itemHolder.cardContainer.setOnLongClickListener(v -> {
                 int curPos = itemHolder.getAdapterPosition();
                 if (curPos == RecyclerView.NO_POSITION) return false;
