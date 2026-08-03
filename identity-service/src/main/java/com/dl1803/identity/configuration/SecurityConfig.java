@@ -53,7 +53,7 @@ public class SecurityConfig {
                                     new JwtAuthenticationEntryPoint());
                 });
 
-        httpSecurity.cors(cors -> {}).csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable());
+        httpSecurity.csrf(csrf -> csrf.disable());
         return httpSecurity
                 .build();
     }
