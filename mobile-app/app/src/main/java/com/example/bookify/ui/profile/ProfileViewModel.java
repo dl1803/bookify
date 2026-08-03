@@ -11,7 +11,7 @@ public class ProfileViewModel extends ViewModel {
     }
 
     private final MutableLiveData<FriendState> friendStateLiveData = new MutableLiveData<>(FriendState.SELF);
-    private final MutableLiveData<Integer> selectedTabLiveData = new MutableLiveData<>(2); // Default to "Saved Books" (index 2)
+    private final MutableLiveData<Integer> selectedTabLiveData = new MutableLiveData<>(2); 
     private final MutableLiveData<Integer> followersCountLiveData = new MutableLiveData<>(1200);
 
     public LiveData<FriendState> getFriendState() {
@@ -45,7 +45,6 @@ public class ProfileViewModel extends ViewModel {
                 break;
         }
 
-        // Dummy stats logic
         Integer currentCount = followersCountLiveData.getValue();
         int count = currentCount != null ? currentCount : 1200;
         if (friendStateLiveData.getValue() == FriendState.FRIEND) {

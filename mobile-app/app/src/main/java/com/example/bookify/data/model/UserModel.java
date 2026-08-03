@@ -2,13 +2,15 @@ package com.example.bookify.data.model;
 
 public class UserModel {
     private String username;
+    private String email;
     private String firstName;
     private String lastName;
     private String dob;
     private String city;
 
-    public UserModel(String username, String firstName, String lastName, String dob, String city) {
+    public UserModel(String username, String email, String firstName, String lastName, String dob, String city) {
         this.username = username;
+        this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.dob = dob;
@@ -21,6 +23,14 @@ public class UserModel {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getFirstName() {

@@ -64,7 +64,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         holder.tvLikesCount.setText(String.valueOf(post.getLikesCount()));
         holder.tvCommentsCount.setText(String.valueOf(post.getCommentsCount()));
 
-        // Heart Like Visual Feedback (Red Color when Liked)
         int redColor = ContextCompat.getColor(holder.itemView.getContext(), R.color.like_red);
         if (post.isLiked()) {
             holder.imgLike.setColorFilter(redColor);
@@ -74,7 +73,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             holder.tvLikesCount.setTextColor(Color.parseColor("#555555"));
         }
 
-        // Like Click with Heart Pop Micro-Animation
         holder.btnLike.setOnClickListener(v -> {
             int pos = holder.getAdapterPosition();
             if (pos != RecyclerView.NO_POSITION && listener != null) {

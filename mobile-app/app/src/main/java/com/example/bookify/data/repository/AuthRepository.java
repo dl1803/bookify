@@ -16,7 +16,6 @@ public class AuthRepository {
     private final MutableLiveData<String> authErrorState = new MutableLiveData<>(null);
 
     private AuthRepository() {
-        // No session stored initially
     }
 
     public static synchronized AuthRepository getInstance() {
@@ -47,7 +46,6 @@ public class AuthRepository {
         authLoadingState.setValue(true);
         authErrorState.setValue(null);
 
-        // Simulate network delay
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             authLoadingState.setValue(false);
             if (username == null || username.trim().isEmpty()) {
@@ -63,9 +61,9 @@ public class AuthRepository {
                 return;
             }
 
-            // Success mock user on login
             UserModel user = new UserModel(
                     username,
+                    "emily@example.com",
                     "Emily",
                     "Reader",
                     "15/08/1998",
@@ -95,7 +93,6 @@ public class AuthRepository {
                 return;
             }
 
-            // Do not save registered user to session memory
             if (callback != null) callback.onSuccess(userModel);
         }, 1200);
     }

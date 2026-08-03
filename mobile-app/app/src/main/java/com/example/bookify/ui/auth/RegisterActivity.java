@@ -27,6 +27,7 @@ import java.util.Locale;
 public class RegisterActivity extends AppCompatActivity {
 
     private EditText etUsername;
+    private EditText etEmail;
     private EditText etFirstName;
     private EditText etLastName;
     private EditText etDob;
@@ -55,6 +56,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void initViews() {
         etUsername = findViewById(R.id.etUsername);
+        etEmail = findViewById(R.id.etEmail);
         etFirstName = findViewById(R.id.etFirstName);
         etLastName = findViewById(R.id.etLastName);
         etDob = findViewById(R.id.etDob);
@@ -103,7 +105,6 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void setupListeners() {
-        // Clear error text & red border when user edits field
         TextWatcher watcher = new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -113,6 +114,7 @@ public class RegisterActivity extends AppCompatActivity {
         };
 
         etUsername.addTextChangedListener(watcher);
+        etEmail.addTextChangedListener(watcher);
         etFirstName.addTextChangedListener(watcher);
         etLastName.addTextChangedListener(watcher);
         etDob.addTextChangedListener(watcher);
@@ -120,10 +122,8 @@ public class RegisterActivity extends AppCompatActivity {
         etPassword.addTextChangedListener(watcher);
         etConfirmPassword.addTextChangedListener(watcher);
 
-        // DOB Date Picker
         etDob.setOnClickListener(v -> showDatePicker());
 
-        // Password visibility toggle
         btnTogglePassword.setOnClickListener(v -> {
             isPasswordVisible = !isPasswordVisible;
             if (isPasswordVisible) {
@@ -136,7 +136,6 @@ public class RegisterActivity extends AppCompatActivity {
             etPassword.setSelection(etPassword.getText().length());
         });
 
-        // Confirm Password visibility toggle
         btnToggleConfirmPassword.setOnClickListener(v -> {
             isConfirmPasswordVisible = !isConfirmPasswordVisible;
             if (isConfirmPasswordVisible) {
@@ -149,11 +148,11 @@ public class RegisterActivity extends AppCompatActivity {
             etConfirmPassword.setSelection(etConfirmPassword.getText().length());
         });
 
-        // Submit Register
         btnRegister.setOnClickListener(v -> {
             clearAllFieldErrors();
 
             String username = etUsername.getText().toString().trim();
+            String email = etEmail.getText().toString().trim();
             String firstName = etFirstName.getText().toString().trim();
             String lastName = etLastName.getText().toString().trim();
             String dob = etDob.getText().toString().trim();
@@ -162,7 +161,6 @@ public class RegisterActivity extends AppCompatActivity {
             String confirmPassword = etConfirmPassword.getText().toString().trim();
             boolean termsAccepted = cbTerms.isChecked();
 
-            // 1. Username Validation (@Size(min = 4))
             if (username.isEmpty()) {
                 showFieldError(etUsername, "Username cannot be empty");
                 return;
@@ -172,19 +170,25 @@ public class RegisterActivity extends AppCompatActivity {
                 return;
             }
 
-            // 2. First Name Validation
+            if (email.isEmpty()) {
+                showFieldError(etEmail, "Email cannot be empty");
+                return;
+            }
+            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                showFieldError(etEmail, "Please enter a valid email");
+                return;
+            }
+
             if (firstName.isEmpty()) {
                 showFieldError(etFirstName, "First name cannot be empty");
                 return;
             }
 
-            // 3. Last Name Validation
             if (lastName.isEmpty()) {
                 showFieldError(etLastName, "Last name cannot be empty");
                 return;
             }
 
-            // 4. DOB Validation (@DobConstraint(min = 18))
             if (dob.isEmpty()) {
                 showFieldError(etDob, "Please select date of birth");
                 return;
@@ -194,13 +198,11 @@ public class RegisterActivity extends AppCompatActivity {
                 return;
             }
 
-            // 5. City Validation
             if (city.isEmpty()) {
                 showFieldError(etCity, "City cannot be empty");
                 return;
             }
 
-            // 6. Password Validation (@Size(min = 6))
             if (password.isEmpty()) {
                 showFieldError(etPassword, "Password cannot be empty");
                 return;
@@ -210,7 +212,6 @@ public class RegisterActivity extends AppCompatActivity {
                 return;
             }
 
-            // 7. Confirm Password Validation
             if (confirmPassword.isEmpty()) {
                 showFieldError(etConfirmPassword, "Confirm password cannot be empty");
                 return;
@@ -220,7 +221,6 @@ public class RegisterActivity extends AppCompatActivity {
                 return;
             }
 
-            // 8. Terms Checkbox Validation
             if (!termsAccepted) {
                 triggerHapticFeedback();
                 Toast.makeText(this, "You must agree to the Terms of Service and Privacy Policy", Toast.LENGTH_SHORT).show();
@@ -229,10 +229,9 @@ public class RegisterActivity extends AppCompatActivity {
             }
 
             triggerHapticFeedback();
-            authViewModel.register(username, firstName, lastName, dob, city, password, confirmPassword, termsAccepted);
+            authViewModel.register(username, email, firstName, lastName, dob, city, password, confirmPassword, termsAccepted);
         });
 
-        // Go to Login Screen
         tvGoToLogin.setOnClickListener(v -> {
             finish();
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
@@ -242,7 +241,7 @@ public class RegisterActivity extends AppCompatActivity {
     private void showDatePicker() {
         clearFieldError(etDob);
         Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR) - 20; // default 20 years ago
+        int year = calendar.get(Calendar.YEAR) - 20; 
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
@@ -310,6 +309,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void clearAllFieldErrors() {
         clearFieldError(etUsername);
+        clearFieldError(etEmail);
         clearFieldError(etFirstName);
         clearFieldError(etLastName);
         clearFieldError(etDob);

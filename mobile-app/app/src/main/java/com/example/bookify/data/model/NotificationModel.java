@@ -18,16 +18,14 @@ public class NotificationModel {
     private int avatarResId;
     private NotificationType type;
     private boolean isUnread;
-    private String sectionTitle; // For section headers "TODAY" / "YESTERDAY"
+    private String sectionTitle; 
     private boolean isFollowing;
 
-    // Constructor for Section Header
     public NotificationModel(String sectionTitle) {
         this.type = NotificationType.HEADER;
         this.sectionTitle = sectionTitle;
     }
 
-    // Constructor for Item Notification
     public NotificationModel(String id, String userName, String contentText, String timeAgo, int avatarResId, NotificationType type, boolean isUnread, boolean isFollowing) {
         this.id = id;
         this.userName = userName;
