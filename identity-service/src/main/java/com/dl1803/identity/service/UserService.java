@@ -3,12 +3,14 @@ package com.dl1803.identity.service;
 import java.util.HashSet;
 import java.util.List;
 
+import com.dl1803.event.dto.NotificationEvent;
 import com.dl1803.identity.entity.Role;
 import com.dl1803.identity.mapper.ProfileMapper;
 import com.dl1803.identity.repository.httpclient.ProfileClient;
 import org.apache.commons.fileupload.RequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -51,6 +53,8 @@ public class UserService {
     ProfileClient profileClient;
     ProfileMapper profileMapper;
 
+    KafkaTemplate<String, Object> kafkaTemplate;
+
     public UserResponse createUser(UserCreationRequest request) {
 
         log.info("Service: Create User");
@@ -72,9 +76,22 @@ public class UserService {
 
         profileRequest.setUserId(user.getId());
 
-        profileClient.createProfile(profileRequest);
+        var profile = profileClient.createProfile(profileRequest);
 
-        return userMapper.toUserResponse(user);
+        NotificationEvent notificationEvent = NotificationEvent.builder()
+                .channel("EMAIL")
+                .recipient(request.getEmail())
+                .subject("Welcom to bookify!!!")
+                .body("Hello, " + request.getUsername())
+                .build();
+
+        //public message to Kafka
+        kafkaTemplate.send("notification-delivery", notificationEvent);
+
+        var userCreationResponse = userMapper.toUserResponse(user);
+        userCreationResponse.setId(profile.getResult().getId());
+
+        return userCreationResponse;
     }
 
     @PreAuthorize("hasRole('ADMIN')")

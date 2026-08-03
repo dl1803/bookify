@@ -1,13 +1,15 @@
 package com.dl1803.profile.entity;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
+
+import java.time.LocalDate;
+
 import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Property;
 import org.springframework.data.neo4j.core.support.UUIDStringGenerator;
 
-import java.time.LocalDate;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Data
 @Builder
@@ -23,9 +25,11 @@ public class UserProfile {
     @Property("userId")
     String userId; // userId của IdentityS
 
+    String username;
+    String email;
+
     String firstName;
     String lastName;
     LocalDate dob;
     String city;
-
 }

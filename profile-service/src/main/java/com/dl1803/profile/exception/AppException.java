@@ -1,6 +1,5 @@
 package com.dl1803.profile.exception;
 
-
 public class AppException extends RuntimeException {
     private ErrorCode errorCode;
 
