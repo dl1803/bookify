@@ -162,8 +162,8 @@ public class AuthenticationService {
         JWSHeader jwsHeader = new JWSHeader(JWSAlgorithm.HS512);
 
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
-                .subject(user.getUsername())
-                .issuer("identity-service")
+                .subject(user.getId())
+                .issuer("dl1803.com")
                 .issueTime(new Date())
                 .expirationTime(new Date(Instant.now()
                         .plus(VALID_DURATION, ChronoUnit.SECONDS)
