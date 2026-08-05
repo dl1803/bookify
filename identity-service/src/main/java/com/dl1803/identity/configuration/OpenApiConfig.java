@@ -1,5 +1,7 @@
 package com.dl1803.identity.configuration;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.servers.Server;
 import org.springframework.context.annotation.Configuration;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
@@ -19,7 +21,11 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
                 version = "1.0",
 
                 description = "REST API"
-        )
+        ),
+        servers = {
+        @Server(url = "http://localhost:8888/api/identity",
+                description = "Gateway Server")},
+        security = {@SecurityRequirement(name = "bearerAuth")}
 )
 
 
