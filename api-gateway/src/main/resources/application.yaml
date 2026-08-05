@@ -21,12 +21,28 @@ spring:
           - Path=${app.api-prefix}/profile/users/** # exclude /internal
         filters:
           - StripPrefix=1
+
+      - id: profile-swagger-ui
+        uri: http://localhost:8081
+        predicates:
+          - Path=${app.api-prefix}/profile/swagger-ui/**
+        filters:
+          - StripPrefix=1
+
+      - id: profile-api-docs
+        uri: http://localhost:8081
+        predicates:
+          - Path=${app.api-prefix}/profile/v3/api-docs/**
+        filters:
+          - StripPrefix=1
+
       - id: notification-service
         uri: http://localhost:8082
         predicates:
           - Path=${app.api-prefix}/notification/**
         filters:
           - StripPrefix=1
+
       - id: post-service
         uri: http://localhost:8083
         predicates:
@@ -40,5 +56,17 @@ app:
 server:
   port: 8888
 
+springdoc:
+  swagger-ui:
+    urls:
+      - name: Identity Service
+        url: /api/identity/v3/api-docs
 
+      - name: Profile Service
+        url: /api/profile/v3/api-docs
 
+      - name: Notification Service
+        url: /api/notification/v3/api-docs
+
+      - name: Post Service
+        url: /api/post/v3/api-docs
