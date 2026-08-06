@@ -1,17 +1,16 @@
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.hilt.android)
 }
 
 android {
     namespace 'com.example.bookify'
-    compileSdk {
-        version = release(36)
-    }
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.example.bookify"
         minSdk 24
-        targetSdk 36
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -35,6 +34,22 @@ dependencies {
     implementation libs.material
     implementation libs.activity
     implementation libs.constraintlayout
+    implementation libs.core.ktx
+    
+    // Hilt
+    implementation libs.hilt.android
+    annotationProcessor libs.hilt.compiler
+    
+    // Retrofit & OkHttp
+    implementation libs.retrofit
+    implementation libs.retrofit.converter.gson
+    implementation libs.retrofit.adapter.rxjava3
+    implementation libs.okhttp.logging.interceptor
+    
+    // RxJava 3
+    implementation libs.rxjava3
+    implementation libs.rxandroid3
+
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core

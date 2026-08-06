@@ -5,21 +5,38 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.bookify.data.model.UserModel;
+import com.example.bookify.data.remote.dto.UserCreationRequest;
 import com.example.bookify.data.repository.AuthRepository;
 
 import java.util.Calendar;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.lifecycle.HiltViewModel;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
+@HiltViewModel
 public class AuthViewModel extends ViewModel {
 
     private final AuthRepository authRepository;
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>(false);
     private final MutableLiveData<String> errorMessage = new MutableLiveData<>(null);
     private final MutableLiveData<UserModel> authSuccessUser = new MutableLiveData<>(null);
     private final MutableLiveData<Boolean> registerSuccess = new MutableLiveData<>(false);
 
-    public AuthViewModel() {
-        this.authRepository = AuthRepository.getInstance();
+    @Inject
+    public AuthViewModel(AuthRepository authRepository) {
+        this.authRepository = authRepository;
+    }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        compositeDisposable.clear();
     }
 
     public LiveData<Boolean> getIsLoading() {
@@ -59,19 +76,21 @@ public class AuthViewModel extends ViewModel {
         isLoading.setValue(true);
         errorMessage.setValue(null);
 
-        authRepository.login(username, password, new AuthRepository.AuthCallback() {
-            @Override
-            public void onSuccess(UserModel user) {
-                isLoading.setValue(false);
-                authSuccessUser.setValue(user);
-            }
-
-            @Override
-            public void onError(String err) {
-                isLoading.setValue(false);
-                errorMessage.setValue(err);
-            }
-        });
+        compositeDisposable.add(
+                authRepository.login(username, password)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                user -> {
+                                    isLoading.setValue(false);
+                                    authSuccessUser.setValue(user);
+                                },
+                                throwable -> {
+                                    isLoading.setValue(false);
+                                    errorMessage.setValue(throwable.getMessage());
+                                }
+                        )
+        );
     }
 
     public void register(String username, String email, String firstName, String lastName, String dob, String city, String password, String confirmPassword, boolean termsAccepted) {
@@ -131,21 +150,43 @@ public class AuthViewModel extends ViewModel {
         isLoading.setValue(true);
         errorMessage.setValue(null);
 
-        UserModel newUser = new UserModel(username, email, firstName, lastName, dob, city);
+        // Convert dob from dd/MM/yyyy to yyyy-MM-dd
+        String formattedDob = formatDob(dob);
 
-        authRepository.register(newUser, password, new AuthRepository.AuthCallback() {
-            @Override
-            public void onSuccess(UserModel user) {
-                isLoading.setValue(false);
-                registerSuccess.setValue(true);
-            }
+        UserCreationRequest request = new UserCreationRequest(
+                username, password, email, firstName, lastName, formattedDob, city
+        );
 
-            @Override
-            public void onError(String err) {
-                isLoading.setValue(false);
-                errorMessage.setValue(err);
+        compositeDisposable.add(
+                authRepository.register(request)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                response -> {
+                                    isLoading.setValue(false);
+                                    if (response.getCode() == 1000) { // Assuming 1000 is success code
+                                        registerSuccess.setValue(true);
+                                    } else {
+                                        errorMessage.setValue(response.getMessage());
+                                    }
+                                },
+                                throwable -> {
+                                    isLoading.setValue(false);
+                                    errorMessage.setValue(throwable.getMessage() != null ? throwable.getMessage() : "An error occurred");
+                                }
+                        )
+        );
+    }
+
+    private String formatDob(String dobStr) {
+        try {
+            String[] parts = dobStr.split("/");
+            if (parts.length == 3) {
+                // dd/MM/yyyy -> yyyy-MM-dd
+                return String.format("%s-%s-%s", parts[2], parts[1], parts[0]);
             }
-        });
+        } catch (Exception ignored) {}
+        return dobStr;
     }
 
     private boolean isAgeAtLeast18(String dobStr) {

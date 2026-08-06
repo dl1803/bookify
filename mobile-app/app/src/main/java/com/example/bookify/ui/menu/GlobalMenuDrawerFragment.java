@@ -19,7 +19,15 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.bookify.R;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class GlobalMenuDrawerFragment extends DialogFragment {
+
+    @Inject
+    com.example.bookify.data.repository.AuthRepository authRepository;
 
     public static GlobalMenuDrawerFragment newInstance() {
         return new GlobalMenuDrawerFragment();
@@ -72,7 +80,7 @@ public class GlobalMenuDrawerFragment extends DialogFragment {
         view.findViewById(R.id.btnMenuLogout).setOnClickListener(v -> {
             v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
             if (getActivity() != null) {
-                com.example.bookify.data.repository.AuthRepository.getInstance().logout();
+                authRepository.logout();
                 showToast(getString(R.string.menu_logout) + " successful");
                 android.content.Intent intent = new android.content.Intent(getActivity(), com.example.bookify.ui.auth.LoginActivity.class);
                 intent.setFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK | android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK);

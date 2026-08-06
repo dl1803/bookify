@@ -29,7 +29,15 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class ProfileActivity extends AppCompatActivity {
+
+    @Inject
+    com.example.bookify.data.repository.AuthRepository authRepository;
 
     private ProfileViewModel viewModel;
     private MaterialButton btnFriendPrimary;
@@ -128,7 +136,7 @@ public class ProfileActivity extends AppCompatActivity {
                 try {
                     avatarPickerLauncher.launch("image/*");
                 } catch (Exception e) {
-                    com.example.bookify.data.model.UserModel user = com.example.bookify.data.repository.AuthRepository.getInstance().getCurrentUser().getValue();
+                    com.example.bookify.data.model.UserModel user = authRepository.getCurrentUser().getValue();
                     if (user == null) {
                         user = new com.example.bookify.data.model.UserModel("emily", "emily@example.com", "Emily", "Reader", "15/08/1998", "Hanoi");
                     }
@@ -139,7 +147,7 @@ public class ProfileActivity extends AppCompatActivity {
                             (newFirstName, newLastName, newDob, newCity, newBio) -> {
                                 tvProfileName.setText(newFirstName + " " + newLastName);
                                 tvProfileBio.setText(newBio);
-                                com.example.bookify.data.model.UserModel u = com.example.bookify.data.repository.AuthRepository.getInstance().getCurrentUser().getValue();
+                                com.example.bookify.data.model.UserModel u = authRepository.getCurrentUser().getValue();
                                 if (u != null) {
                                     u.setFirstName(newFirstName);
                                     u.setLastName(newLastName);
@@ -176,7 +184,7 @@ public class ProfileActivity extends AppCompatActivity {
             BookifyDialogHelper.showProfileMoreOptionsBottomSheet(
                     this,
                     () -> {
-                        com.example.bookify.data.model.UserModel user = com.example.bookify.data.repository.AuthRepository.getInstance().getCurrentUser().getValue();
+                        com.example.bookify.data.model.UserModel user = authRepository.getCurrentUser().getValue();
                         if (user == null) {
                             user = new com.example.bookify.data.model.UserModel("emily", "emily@example.com", "Emily", "Reader", "15/08/1998", "Hanoi");
                         }
@@ -187,7 +195,7 @@ public class ProfileActivity extends AppCompatActivity {
                                 (newFirstName, newLastName, newDob, newCity, newBio) -> {
                                     tvProfileName.setText(newFirstName + " " + newLastName);
                                     tvProfileBio.setText(newBio);
-                                    com.example.bookify.data.model.UserModel u = com.example.bookify.data.repository.AuthRepository.getInstance().getCurrentUser().getValue();
+                                    com.example.bookify.data.model.UserModel u = authRepository.getCurrentUser().getValue();
                                     if (u != null) {
                                         u.setFirstName(newFirstName);
                                         u.setLastName(newLastName);

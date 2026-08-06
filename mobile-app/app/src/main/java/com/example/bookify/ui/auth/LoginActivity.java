@@ -21,6 +21,9 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.bookify.R;
 import com.example.bookify.ui.home.HomeActivity;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class LoginActivity extends AppCompatActivity {
 
     private EditText etUsername;

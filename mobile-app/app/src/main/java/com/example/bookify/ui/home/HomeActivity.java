@@ -33,7 +33,15 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class HomeActivity extends AppCompatActivity {
+
+    @Inject
+    com.example.bookify.data.repository.AuthRepository authRepository;
 
     private HomeViewModel viewModel;
     private PostAdapter adapter;
@@ -102,7 +110,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void performLogout() {
-        com.example.bookify.data.repository.AuthRepository.getInstance().logout();
+        authRepository.logout();
         Toast.makeText(this, "Logged out successfully", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(HomeActivity.this, com.example.bookify.ui.auth.LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
