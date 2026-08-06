@@ -24,6 +24,9 @@ import com.example.bookify.R;
 import java.util.Calendar;
 import java.util.Locale;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class RegisterActivity extends AppCompatActivity {
 
     private EditText etUsername;
@@ -298,12 +301,15 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void clearFieldError(EditText field) {
         field.setError(null);
-        field.setBackgroundResource(R.drawable.bg_input_field);
         if (field.getParent() instanceof View && ((View) field.getParent()).getId() != R.id.cardContainer) {
             View parent = (View) field.getParent();
             if (parent.getBackground() != null) {
                 parent.setBackgroundResource(R.drawable.bg_input_field);
+            } else {
+                field.setBackgroundResource(R.drawable.bg_input_field);
             }
+        } else {
+            field.setBackgroundResource(R.drawable.bg_input_field);
         }
     }
 
