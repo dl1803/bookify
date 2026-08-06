@@ -3,9 +3,11 @@ package com.dl1803.post.service;
 import com.dl1803.post.dto.request.PostRequest;
 import com.dl1803.post.dto.response.PageResponse;
 import com.dl1803.post.dto.response.PostResponse;
+import com.dl1803.post.dto.response.UserProfileResponse;
 import com.dl1803.post.entity.Post;
 import com.dl1803.post.mapper.PostMapper;
 import com.dl1803.post.repository.PostRepository;
+import com.dl1803.post.repository.httpClient.ProfileClient;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -28,6 +30,7 @@ public class PostService {
     PostRepository postRepository;
     PostMapper postMapper;
     DateTimeFormatter dateTimeFormatter;
+    ProfileClient profileClient;
 
     public PostResponse createPost(PostRequest request){
 
@@ -51,6 +54,16 @@ public class PostService {
 
         String userId = authentication.getName();
 
+        UserProfileResponse userProfile =  null;
+
+        try {
+            userProfile = profileClient.getProfile(userId).getResult();
+            log.info("Profile Data nhận được: {}", userProfile);
+        } catch (Exception e){
+            log.error("Error occurred while fetching user profile for user ID: {}", userId, e);
+        }
+
+
         // tạo cấu hình sắp xếp và phân trang để query data từ db thông qua repo
         Sort  s = Sort.by("createdDate").descending(); // yêu cầu db sort post theo attr createdDate và giảm dần
         Pageable pageable = PageRequest.of(page - 1,size, s); // tạo obj mô tả cách phân trang và sx data(trang X chứa bao nhiêu ptu, sx theo cách nào..)
@@ -58,9 +71,12 @@ public class PostService {
 
         var pageData = postRepository.findAllByUserId(userId, pageable); // Page
 
+        String username = (userProfile != null && userProfile.getUsername() != null) ? userProfile.getUsername() : "Anonymous";
+
         var postList = pageData.getContent().stream().map(post -> {
             var postResponse = postMapper.toPostResponse(post);
             postResponse.setCreated(dateTimeFormatter.format(post.getCreatedDate()));
+            postResponse.setUsername(username);
             return postResponse;
         }).toList();
 

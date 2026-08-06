@@ -70,7 +70,6 @@ public class UserController {
         return ApiResponse.<String>builder().result("User has been deleted!").build();
     }
 
-    @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/myInfo")
     ApiResponse<UserResponse> getMyInfo() {
         return ApiResponse.<UserResponse>builder()

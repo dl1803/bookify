@@ -58,6 +58,8 @@ public class UserService {
     public UserResponse createUser(UserCreationRequest request) {
 
         log.info("Service: Create User");
+        log.info("request = {}", request);
+
         User user = userMapper.toUser(request);
 
         user.setPassword(passwordEncoder.encode(request.getPassword()));
@@ -75,6 +77,8 @@ public class UserService {
         var profileRequest = profileMapper.toProfileCreationRequest(request);
 
         profileRequest.setUserId(user.getId());
+
+        log.info("profileRequest = {}", profileRequest);
 
         var profile = profileClient.createProfile(profileRequest);
 
@@ -128,8 +132,8 @@ public class UserService {
 
     public UserResponse getMyInfo() {
         var context = SecurityContextHolder.getContext();
-        String name = context.getAuthentication().getName();
-        User user = userRepository.findByUsername(name).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        String userId = context.getAuthentication().getName();
+        User user = userRepository.findById(userId).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
         return userMapper.toUserResponse(user);
     }
 }
