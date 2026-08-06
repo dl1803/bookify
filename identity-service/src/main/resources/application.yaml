@@ -25,5 +25,6 @@ jwt:
   refreshable-duration: 1800
 app:
   services:
-    profile: http://localhost:8081/profile
+    profile:
+      url: http://localhost:8081/profile
 
