@@ -6,6 +6,8 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.bookify.data.model.UserModel;
 import com.example.bookify.data.remote.api.IdentityApiService;
 import com.example.bookify.data.remote.dto.ApiResponse;
+import com.example.bookify.data.remote.dto.AuthenticationRequest;
+import com.example.bookify.data.remote.dto.AuthenticationResponse;
 import com.example.bookify.data.remote.dto.UserCreationRequest;
 import com.example.bookify.data.remote.dto.UserResponse;
 
@@ -29,26 +31,25 @@ public class AuthRepository {
         return currentUserLiveData;
     }
 
-    // Keep the mock login for now until we implement the real login API
     public Single<UserModel> login(String username, String password) {
-        return Single.create(emitter -> {
-            try {
-                Thread.sleep(1000); // Simulate network delay
-                if (username == null || username.trim().isEmpty()) {
-                    emitter.onError(new Exception("Username cannot be empty"));
-                    return;
-                }
-                if (password == null || password.length() < 4) {
-                    emitter.onError(new Exception("Password must be at least 4 characters"));
-                    return;
-                }
-                UserModel user = new UserModel(username, "emily@example.com", "Emily", "Reader", "15/08/1998", "Hanoi");
-                currentUserLiveData.postValue(user);
-                emitter.onSuccess(user);
-            } catch (Exception e) {
-                emitter.onError(e);
-            }
-        });
+        if (username == null || username.trim().isEmpty()) {
+            return Single.error(new Exception("Username cannot be empty"));
+        }
+        if (password == null || password.length() < 4) {
+            return Single.error(new Exception("Password must be at least 4 characters"));
+        }
+        
+        AuthenticationRequest request = new AuthenticationRequest(username, password);
+        return identityApiService.login(request)
+                .map(response -> {
+                    if (response.getCode() != 1000 || response.getResult() == null) {
+                        throw new Exception(response.getMessage() != null ? response.getMessage() : "Login failed");
+                    }
+                    // For now, returning a basic UserModel with username since we don't fetch full profile yet
+                    UserModel user = new UserModel(username, "", "", "", "", "");
+                    currentUserLiveData.postValue(user);
+                    return user;
+                });
     }
 
     public Single<ApiResponse<UserResponse>> register(UserCreationRequest request) {

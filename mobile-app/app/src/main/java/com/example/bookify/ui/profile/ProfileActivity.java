@@ -281,6 +281,7 @@ public class ProfileActivity extends AppCompatActivity {
                 if (itemId == R.id.nav_home) {
                     Intent intent = new Intent(ProfileActivity.this, HomeActivity.class);
                     startActivity(intent);
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     finish();
                     return true;
                 } else if (itemId == R.id.nav_profile) {
@@ -307,6 +308,7 @@ public class ProfileActivity extends AppCompatActivity {
             fabCreate.setOnClickListener(v -> {
                 Intent intent = new Intent(ProfileActivity.this, HomeActivity.class);
                 startActivity(intent);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 finish();
             });
         }

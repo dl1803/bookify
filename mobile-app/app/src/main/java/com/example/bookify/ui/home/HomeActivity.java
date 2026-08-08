@@ -248,6 +248,7 @@ public class HomeActivity extends AppCompatActivity {
                 } else if (itemId == R.id.nav_profile) {
                     Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
                     startActivity(intent);
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     return true;
                 } else if (itemId == R.id.nav_explore) {
                     Toast.makeText(this, "Explore section coming soon!", Toast.LENGTH_SHORT).show();
