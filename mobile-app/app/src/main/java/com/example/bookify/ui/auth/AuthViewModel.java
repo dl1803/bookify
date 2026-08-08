@@ -5,8 +5,10 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.bookify.data.model.UserModel;
+import com.example.bookify.data.remote.dto.ApiResponse;
 import com.example.bookify.data.remote.dto.UserCreationRequest;
 import com.example.bookify.data.repository.AuthRepository;
+import com.google.gson.Gson;
 
 import java.util.Calendar;
 
@@ -16,6 +18,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import retrofit2.HttpException;
 
 @HiltViewModel
 public class AuthViewModel extends ViewModel {
@@ -87,7 +90,17 @@ public class AuthViewModel extends ViewModel {
                                 },
                                 throwable -> {
                                     isLoading.setValue(false);
-                                    errorMessage.setValue(throwable.getMessage());
+                                    if (throwable instanceof HttpException) {
+                                        try {
+                                            String errorBody = ((HttpException) throwable).response().errorBody().string();
+                                            ApiResponse<?> apiResponse = new Gson().fromJson(errorBody, ApiResponse.class);
+                                            errorMessage.setValue(apiResponse.getMessage() != null ? apiResponse.getMessage() : "Login failed");
+                                        } catch (Exception e) {
+                                            errorMessage.setValue("Login failed: " + throwable.getMessage());
+                                        }
+                                    } else {
+                                        errorMessage.setValue(throwable.getMessage() != null ? throwable.getMessage() : "An error occurred");
+                                    }
                                 }
                         )
         );
@@ -150,7 +163,6 @@ public class AuthViewModel extends ViewModel {
         isLoading.setValue(true);
         errorMessage.setValue(null);
 
-        // Convert dob from dd/MM/yyyy to yyyy-MM-dd
         String formattedDob = formatDob(dob);
 
         UserCreationRequest request = new UserCreationRequest(
@@ -164,7 +176,7 @@ public class AuthViewModel extends ViewModel {
                         .subscribe(
                                 response -> {
                                     isLoading.setValue(false);
-                                    if (response.getCode() == 1000) { // Assuming 1000 is success code
+                                    if (response.getCode() == 1000) {
                                         registerSuccess.setValue(true);
                                     } else {
                                         errorMessage.setValue(response.getMessage());
@@ -182,7 +194,6 @@ public class AuthViewModel extends ViewModel {
         try {
             String[] parts = dobStr.split("/");
             if (parts.length == 3) {
-                // dd/MM/yyyy -> yyyy-MM-dd
                 return String.format("%s-%s-%s", parts[2], parts[1], parts[0]);
             }
         } catch (Exception ignored) {}

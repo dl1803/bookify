@@ -75,8 +75,7 @@ public class LoginActivity extends AppCompatActivity {
         tvForgotPassword = findViewById(R.id.tvForgotPassword);
         tvGoToRegister = findViewById(R.id.tvGoToRegister);
 
-        etUsername.setText("admin");
-        etPassword.setText("123456");
+        // Removed pre-filled credentials
     }
 
     private void initViewModel() {
@@ -102,7 +101,7 @@ public class LoginActivity extends AppCompatActivity {
         authViewModel.getAuthSuccessUser().observe(this, user -> {
             if (user != null) {
                 triggerHapticFeedback();
-                Toast.makeText(this, "Welcome " + user.getFullName() + "!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                 startActivity(intent);
                 finish();
