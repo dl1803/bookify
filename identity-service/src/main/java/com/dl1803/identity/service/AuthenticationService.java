@@ -59,10 +59,8 @@ public class AuthenticationService {
     @NonFinal
     protected long REFRESHABLE_DURATION;
 
-    public IntrospectResponse introspect(IntrospectRequest request)
-            throws JOSEException, ParseException {
+    public IntrospectResponse introspect(IntrospectRequest request) throws JOSEException, ParseException {
         var token = request.getToken();
-
 
         boolean isValid = true;
         try {
@@ -79,19 +77,14 @@ public class AuthenticationService {
         var user = userRepository
                 .findByUsername(request.getUsername())
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
-        boolean authenticated = passwordEncoder.matches(
-                request.getPassword(),
-                user.getPassword());
+        boolean authenticated = passwordEncoder.matches(request.getPassword(), user.getPassword());
         if (!authenticated) throw new AppException(ErrorCode.UNAUTHENTICATED);
 
         var token = generateToken(user);
         return AuthenticationResponse.builder().token(token).build();
     }
 
-    public void logout(
-            LogoutRequest
-                    request)
-            throws ParseException, JOSEException {
+    public void logout(LogoutRequest request) throws ParseException, JOSEException {
         try {
             var signToken = verifyToken(request.getToken(), true);
             String jit = signToken.getJWTClaimsSet().getJWTID();
@@ -106,8 +99,7 @@ public class AuthenticationService {
         }
     }
 
-    public AuthenticationResponse refreshToken(RefreshRequest request)
-            throws ParseException, JOSEException {
+    public AuthenticationResponse refreshToken(RefreshRequest request) throws ParseException, JOSEException {
         var signJWT = verifyToken(request.getToken(), true);
 
         var jit = signJWT.getJWTClaimsSet().getJWTID();
@@ -123,14 +115,11 @@ public class AuthenticationService {
         var user =
                 userRepository.findByUsername(username).orElseThrow(() -> new AppException(ErrorCode.UNAUTHENTICATED));
 
-        var token = generateToken(
-                user);
+        var token = generateToken(user);
         return AuthenticationResponse.builder().token(token).build();
     }
 
-    private SignedJWT verifyToken(
-            String token, boolean isRefresh)
-            throws JOSEException, ParseException {
+    private SignedJWT verifyToken(String token, boolean isRefresh) throws JOSEException, ParseException {
 
         JWSVerifier verifier = new MACVerifier(SIGNER_KEY.getBytes());
 
@@ -165,11 +154,9 @@ public class AuthenticationService {
                 .subject(user.getId())
                 .issuer("dl1803.com")
                 .issueTime(new Date())
-                .expirationTime(new Date(Instant.now()
-                        .plus(VALID_DURATION, ChronoUnit.SECONDS)
-                        .toEpochMilli()))
-                .jwtID(UUID.randomUUID()
-                        .toString())
+                .expirationTime(new Date(
+                        Instant.now().plus(VALID_DURATION, ChronoUnit.SECONDS).toEpochMilli()))
+                .jwtID(UUID.randomUUID().toString())
                 .claim("scope", buildScope(user))
                 .build();
 
@@ -178,9 +165,7 @@ public class AuthenticationService {
         JWSObject jwsObject = new JWSObject(jwsHeader, payload); // cần truyền header và payload
 
         try {
-            jwsObject.sign(new MACSigner(
-                    SIGNER_KEY
-                            .getBytes()));
+            jwsObject.sign(new MACSigner(SIGNER_KEY.getBytes()));
             return jwsObject.serialize();
         } catch (JOSEException e) {
             log.error("Cannot create token", e);
@@ -189,16 +174,13 @@ public class AuthenticationService {
     }
 
     private String buildScope(User user) {
-        StringJoiner stringJoiner = new StringJoiner(
-                " ");
-        if (!CollectionUtils.isEmpty(
-                user.getRoles())) {
+        StringJoiner stringJoiner = new StringJoiner(" ");
+        if (!CollectionUtils.isEmpty(user.getRoles())) {
             user.getRoles().forEach(role -> {
                 stringJoiner.add("ROLE_" + role.getName());
                 if (!CollectionUtils.isEmpty(role.getPermissions()))
                     role.getPermissions().forEach(permission -> stringJoiner.add(permission.getName()));
             });
-
         }
 
         return stringJoiner.toString();

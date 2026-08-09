@@ -13,10 +13,9 @@ import com.dl1803.identity.entity.Role;
 public interface RoleMapper {
 
     @Mapping(target = "permissions", ignore = true)
-    Role toRole(
-            RoleRequest request);
+    Role toRole(RoleRequest request);
 
-    RoleResponse toRoleResponse(
-            Role role);
+    RoleResponse toRoleResponse(Role role);
+
     List<RoleResponse> toListRoleResponse(List<Role> roles);
 }

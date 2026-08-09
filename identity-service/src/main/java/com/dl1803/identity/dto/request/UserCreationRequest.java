@@ -11,7 +11,6 @@ import com.dl1803.identity.validator.DobContraint;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,9 +26,7 @@ public class UserCreationRequest {
     String firstName;
     String lastName;
 
-    @DobContraint(
-            min = 18,
-            message = "INVALID_DOB")
+    @DobContraint(min = 18, message = "INVALID_DOB")
     LocalDate dob;
 
     @Email(message = "INVALID_EMAIL")

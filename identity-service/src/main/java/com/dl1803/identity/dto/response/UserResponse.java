@@ -1,6 +1,5 @@
 package com.dl1803.identity.dto.response;
 
-import java.time.LocalDate;
 import java.util.Set;
 
 import lombok.*;

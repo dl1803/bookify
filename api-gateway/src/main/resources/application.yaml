@@ -49,6 +49,12 @@ spring:
           - Path=${app.api-prefix}/post/**
         filters:
           - StripPrefix=1
+      - id: file_service
+        uri: http://localhost:8084
+        predicates:
+          - Path=${app.api-prefix}/file/**
+        filters:
+          - StripPrefix=1
 
 app:
   api-prefix: /api
@@ -70,3 +76,6 @@ springdoc:
 
       - name: Post Service
         url: /api/post/v3/api-docs
+
+      - name: File Service
+        url: /api/file/v3/api-docs
