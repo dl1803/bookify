@@ -106,42 +106,22 @@
                     android:textSize="14sp" />
             </FrameLayout>
 
-            <!-- Password Header (Label + Forgot Password) -->
-            <LinearLayout
-                android:layout_width="match_parent"
+            <!-- Password Label -->
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginBottom="6dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/label_password"
-                    android:textColor="@color/on_surface"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvForgotPassword"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/forgot_password"
-                    android:textColor="@color/brown_primary"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:padding="4dp" />
-            </LinearLayout>
+                android:text="@string/label_password"
+                android:textColor="@color/on_surface"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="6dp" />
 
             <!-- Password Input Field -->
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="@drawable/bg_input_field"
-                android:layout_marginBottom="24dp">
+                android:layout_marginBottom="8dp">
 
                 <ImageView
                     android:layout_width="20dp"
@@ -174,6 +154,22 @@
                     app:tint="@color/outline"
                     android:contentDescription="Toggle password visibility" />
             </FrameLayout>
+
+            <TextView
+                android:id="@+id/tvForgotPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="@string/forgot_password"
+                android:textColor="@color/brown_primary"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:clickable="true"
+                android:focusable="true"
+                android:paddingTop="4dp"
+                android:paddingBottom="16dp"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp" />
 
             <!-- Login Button -->
             <Button

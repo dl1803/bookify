@@ -4,15 +4,59 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.bookify.data.remote.dto.UpdateProfileRequest;
+import com.example.bookify.data.remote.dto.UserProfileResponse;
+import com.example.bookify.data.repository.ProfileRepository;
+
+import javax.inject.Inject;
+
+import dagger.hilt.android.lifecycle.HiltViewModel;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+import okhttp3.MultipartBody;
+
+@HiltViewModel
 public class ProfileViewModel extends ViewModel {
 
     public enum FriendState {
         SELF, NOT_FRIEND, REQUEST_SENT, FRIEND
     }
 
+    private final ProfileRepository profileRepository;
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
+
     private final MutableLiveData<FriendState> friendStateLiveData = new MutableLiveData<>(FriendState.SELF);
     private final MutableLiveData<Integer> selectedTabLiveData = new MutableLiveData<>(2); 
     private final MutableLiveData<Integer> followersCountLiveData = new MutableLiveData<>(1200);
+
+    // Profile Data
+    private final MutableLiveData<UserProfileResponse> profileData = new MutableLiveData<>(null);
+    private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>(false);
+    private final MutableLiveData<String> errorMessage = new MutableLiveData<>(null);
+
+    @Inject
+    public ProfileViewModel(ProfileRepository profileRepository) {
+        this.profileRepository = profileRepository;
+    }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        compositeDisposable.clear();
+    }
+
+    public LiveData<UserProfileResponse> getProfileData() {
+        return profileData;
+    }
+
+    public LiveData<Boolean> getIsLoading() {
+        return isLoading;
+    }
+
+    public LiveData<String> getErrorMessage() {
+        return errorMessage;
+    }
 
     public LiveData<FriendState> getFriendState() {
         return friendStateLiveData;
@@ -56,5 +100,77 @@ public class ProfileViewModel extends ViewModel {
 
     public void selectTab(int position) {
         selectedTabLiveData.setValue(position);
+    }
+
+    public void fetchMyProfile() {
+        isLoading.setValue(true);
+        errorMessage.setValue(null);
+        compositeDisposable.add(
+                profileRepository.getMyProfile()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                response -> {
+                                    isLoading.setValue(false);
+                                    if (response.getCode() == 1000) {
+                                        profileData.setValue(response.getResult());
+                                    } else {
+                                        errorMessage.setValue(response.getMessage());
+                                    }
+                                },
+                                throwable -> {
+                                    isLoading.setValue(false);
+                                    errorMessage.setValue("Error fetching profile: " + throwable.getMessage());
+                                }
+                        )
+        );
+    }
+
+    public void updateProfile(UpdateProfileRequest request) {
+        isLoading.setValue(true);
+        errorMessage.setValue(null);
+        compositeDisposable.add(
+                profileRepository.updateProfile(request)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                response -> {
+                                    isLoading.setValue(false);
+                                    if (response.getCode() == 1000) {
+                                        profileData.setValue(response.getResult());
+                                    } else {
+                                        errorMessage.setValue(response.getMessage());
+                                    }
+                                },
+                                throwable -> {
+                                    isLoading.setValue(false);
+                                    errorMessage.setValue("Error updating profile: " + throwable.getMessage());
+                                }
+                        )
+        );
+    }
+
+    public void uploadAvatar(MultipartBody.Part filePart) {
+        isLoading.setValue(true);
+        errorMessage.setValue(null);
+        compositeDisposable.add(
+                profileRepository.uploadAvatar(filePart)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                response -> {
+                                    isLoading.setValue(false);
+                                    if (response.getCode() == 1000) {
+                                        profileData.setValue(response.getResult());
+                                    } else {
+                                        errorMessage.setValue(response.getMessage());
+                                    }
+                                },
+                                throwable -> {
+                                    isLoading.setValue(false);
+                                    errorMessage.setValue("Error uploading avatar: " + throwable.getMessage());
+                                }
+                        )
+        );
     }
 }

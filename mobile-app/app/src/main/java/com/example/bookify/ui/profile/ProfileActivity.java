@@ -9,6 +9,16 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.request.RequestOptions;
+import com.example.bookify.data.remote.dto.UpdateProfileRequest;
+import com.example.bookify.data.remote.dto.UserProfileResponse;
+import com.example.bookify.utils.FileUtils;
+import com.example.bookify.utils.UrlUtils;
+
+import java.io.File;
+
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -45,6 +55,7 @@ public class ProfileActivity extends AppCompatActivity {
     private View layoutActionButtons;
     private NestedScrollView scrollViewContent;
     private TextView tvProfileName;
+    private TextView tvProfileLocation;
     private TextView tvProfileBio;
     private View layoutBooksGrid;
     private ShapeableImageView imgAvatar;
@@ -68,6 +79,7 @@ public class ProfileActivity extends AppCompatActivity {
         btnFriendChat = findViewById(R.id.btn_friend_chat);
         layoutActionButtons = findViewById(R.id.layout_action_buttons);
         tvProfileName = findViewById(R.id.tv_profile_name);
+        tvProfileLocation = findViewById(R.id.tv_profile_location);
         tvProfileBio = findViewById(R.id.tv_profile_bio);
         layoutBooksGrid = findViewById(R.id.layout_books_grid);
         imgAvatar = findViewById(R.id.img_avatar);
@@ -85,8 +97,14 @@ public class ProfileActivity extends AppCompatActivity {
                 new ActivityResultContracts.GetContent(),
                 uri -> {
                     if (uri != null && imgAvatar != null) {
-                        imgAvatar.setImageURI(uri);
-                        Toast.makeText(this, "Avatar updated successfully!", Toast.LENGTH_SHORT).show();
+                        try {
+                            File file = FileUtils.getFileFromUri(this, uri);
+                            okhttp3.RequestBody requestFile = okhttp3.RequestBody.create(okhttp3.MediaType.parse("image/*"), file);
+                            okhttp3.MultipartBody.Part body = okhttp3.MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+                            viewModel.uploadAvatar(body);
+                        } catch (Exception e) {
+                            Toast.makeText(this, "Failed to load image", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
         );
@@ -94,6 +112,48 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void setupViewModel() {
         viewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
+        
+        viewModel.fetchMyProfile();
+
+        viewModel.getProfileData().observe(this, profile -> {
+            if (profile != null) {
+                if (profile.getFirstName() != null && profile.getLastName() != null) {
+                    tvProfileName.setText(profile.getFirstName() + " " + profile.getLastName());
+                } else if (profile.getUsername() != null) {
+                    tvProfileName.setText(profile.getUsername());
+                }
+                
+                String locationInfo = profile.getCity() != null ? profile.getCity() : "Hanoi";
+                if (profile.getDob() != null) {
+                    locationInfo = locationInfo + " • " + profile.getDob();
+                }
+                tvProfileLocation.setText(locationInfo);
+
+                if (profile.getBio() != null && !profile.getBio().isEmpty()) {
+                    tvProfileBio.setText(profile.getBio());
+                    tvProfileBio.setVisibility(View.VISIBLE);
+                } else {
+                    tvProfileBio.setText("");
+                    tvProfileBio.setVisibility(View.GONE);
+                }
+
+                if (profile.getAvatar() != null && !profile.getAvatar().isEmpty()) {
+                    String url = UrlUtils.resolveLocalUrl(profile.getAvatar());
+                    Glide.with(this)
+                         .load(url)
+                         .apply(RequestOptions.bitmapTransform(new CircleCrop()))
+                         .placeholder(R.drawable.profile_avatar)
+                         .error(R.drawable.profile_avatar)
+                         .into(imgAvatar);
+                }
+            }
+        });
+
+        viewModel.getErrorMessage().observe(this, error -> {
+            if (error != null) {
+                Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+            }
+        });
 
         viewModel.getFriendState().observe(this, state -> {
             if (layoutActionButtons == null || btnFriendPrimary == null || btnFriendChat == null) return;
@@ -133,30 +193,7 @@ public class ProfileActivity extends AppCompatActivity {
     private void setupProfileInteractions() {
         if (imgAvatar != null) {
             imgAvatar.setOnClickListener(v -> {
-                try {
-                    avatarPickerLauncher.launch("image/*");
-                } catch (Exception e) {
-                    com.example.bookify.data.model.UserModel user = authRepository.getCurrentUser().getValue();
-                    if (user == null) {
-                        user = new com.example.bookify.data.model.UserModel("emily", "emily@example.com", "Emily", "Reader", "15/08/1998", "Hanoi");
-                    }
-                    BookifyDialogHelper.showEditProfileDialog(
-                            this,
-                            user,
-                            tvProfileBio.getText().toString(),
-                            (newFirstName, newLastName, newDob, newCity, newBio) -> {
-                                tvProfileName.setText(newFirstName + " " + newLastName);
-                                tvProfileBio.setText(newBio);
-                                com.example.bookify.data.model.UserModel u = authRepository.getCurrentUser().getValue();
-                                if (u != null) {
-                                    u.setFirstName(newFirstName);
-                                    u.setLastName(newLastName);
-                                    u.setDob(newDob);
-                                    u.setCity(newCity);
-                                }
-                            }
-                    );
-                }
+                avatarPickerLauncher.launch("image/*");
             });
         }
 
@@ -184,24 +221,23 @@ public class ProfileActivity extends AppCompatActivity {
             BookifyDialogHelper.showProfileMoreOptionsBottomSheet(
                     this,
                     () -> {
-                        com.example.bookify.data.model.UserModel user = authRepository.getCurrentUser().getValue();
-                        if (user == null) {
-                            user = new com.example.bookify.data.model.UserModel("emily", "emily@example.com", "Emily", "Reader", "15/08/1998", "Hanoi");
+                        UserProfileResponse currentProfile = viewModel.getProfileData().getValue();
+                        com.example.bookify.data.model.UserModel user;
+                        String currentBio = "";
+                        if (currentProfile != null) {
+                            user = new com.example.bookify.data.model.UserModel(currentProfile.getUsername(), currentProfile.getEmail(), currentProfile.getFirstName(), currentProfile.getLastName(), currentProfile.getDob(), currentProfile.getCity(), currentProfile.getBio());
+                            currentBio = currentProfile.getBio() != null ? currentProfile.getBio() : "";
+                        } else {
+                            user = new com.example.bookify.data.model.UserModel("emily", "emily@example.com", "Emily", "Reader", "15/08/1998", "Hanoi", "Lover of books");
+                            currentBio = "Lover of books";
                         }
                         BookifyDialogHelper.showEditProfileDialog(
                                 this,
                                 user,
-                                tvProfileBio.getText().toString(),
+                                currentBio,
                                 (newFirstName, newLastName, newDob, newCity, newBio) -> {
-                                    tvProfileName.setText(newFirstName + " " + newLastName);
-                                    tvProfileBio.setText(newBio);
-                                    com.example.bookify.data.model.UserModel u = authRepository.getCurrentUser().getValue();
-                                    if (u != null) {
-                                        u.setFirstName(newFirstName);
-                                        u.setLastName(newLastName);
-                                        u.setDob(newDob);
-                                        u.setCity(newCity);
-                                    }
+                                    UpdateProfileRequest req = new UpdateProfileRequest(user.getEmail(), newFirstName, newLastName, newDob, newCity, newBio);
+                                    viewModel.updateProfile(req);
                                 }
                         );
                     },

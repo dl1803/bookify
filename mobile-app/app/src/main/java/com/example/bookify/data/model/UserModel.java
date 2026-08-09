@@ -7,14 +7,16 @@ public class UserModel {
     private String lastName;
     private String dob;
     private String city;
+    private String bio;
 
-    public UserModel(String username, String email, String firstName, String lastName, String dob, String city) {
+    public UserModel(String username, String email, String firstName, String lastName, String dob, String city, String bio) {
         this.username = username;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.dob = dob;
         this.city = city;
+        this.bio = bio;
     }
 
     public String getUsername() {
@@ -70,5 +72,13 @@ public class UserModel {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
     }
 }

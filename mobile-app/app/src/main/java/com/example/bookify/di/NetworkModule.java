@@ -22,11 +22,12 @@ public class NetworkModule {
 
     @Provides
     @Singleton
-    public OkHttpClient provideOkHttpClient() {
+    public OkHttpClient provideOkHttpClient(AuthInterceptor authInterceptor) {
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
         return new OkHttpClient.Builder()
+                .addInterceptor(authInterceptor)
                 .addInterceptor(loggingInterceptor)
                 .build();
     }
@@ -46,5 +47,11 @@ public class NetworkModule {
     @Singleton
     public IdentityApiService provideIdentityApiService(Retrofit retrofit) {
         return retrofit.create(IdentityApiService.class);
+    }
+
+    @Provides
+    @Singleton
+    public com.example.bookify.data.remote.api.ProfileApiService provideProfileApiService(Retrofit retrofit) {
+        return retrofit.create(com.example.bookify.data.remote.api.ProfileApiService.class);
     }
 }
