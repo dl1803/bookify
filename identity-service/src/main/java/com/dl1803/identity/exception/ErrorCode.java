@@ -19,7 +19,6 @@ public enum ErrorCode {
     INVALID_EMAIL(1009, "Invalid email address", HttpStatus.BAD_REQUEST),
     EMAIL_IS_REQUIRED(1009, "Email is required", HttpStatus.BAD_REQUEST);
 
-
     ErrorCode(int code, String message, HttpStatusCode statusCode) {
         this.code = code;
         this.message = message;
@@ -28,6 +27,5 @@ public enum ErrorCode {
 
     private int code;
     private String message;
-    private HttpStatusCode
-            statusCode;
+    private HttpStatusCode statusCode;
 }

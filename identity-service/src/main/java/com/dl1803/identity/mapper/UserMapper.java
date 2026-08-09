@@ -11,9 +11,7 @@ import com.dl1803.identity.dto.request.UserUpdateRequest;
 import com.dl1803.identity.dto.response.UserResponse;
 import com.dl1803.identity.entity.User;
 
-@Mapper(
-        componentModel =
-                "spring")
+@Mapper(componentModel = "spring")
 public interface UserMapper {
     User toUser(UserCreationRequest request);
 
@@ -22,7 +20,5 @@ public interface UserMapper {
     List<UserResponse> toUserResponseList(List<User> users);
 
     @Mapping(target = "roles", ignore = true)
-    void updateUser(
-            @MappingTarget User user,
-            UserUpdateRequest request);
+    void updateUser(@MappingTarget User user, UserUpdateRequest request);
 }

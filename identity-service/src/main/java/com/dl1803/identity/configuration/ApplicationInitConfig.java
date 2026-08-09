@@ -2,13 +2,13 @@ package com.dl1803.identity.configuration;
 
 import java.util.HashSet;
 
-import com.dl1803.identity.entity.Role;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.dl1803.identity.entity.Role;
 import com.dl1803.identity.entity.User;
 import com.dl1803.identity.repository.RoleRepository;
 import com.dl1803.identity.repository.UserRepository;
@@ -30,9 +30,7 @@ public class ApplicationInitConfig {
     @ConditionalOnProperty(
             prefix = "spring",
             value = "datasource.driverClassName",
-            havingValue =
-                    "com.mysql.cj.jdbc.Driver")
-
+            havingValue = "com.mysql.cj.jdbc.Driver")
     ApplicationRunner applicationRunner(UserRepository userRepository, RoleRepository roleRepository) {
         log.info("Init application!");
         return args -> {

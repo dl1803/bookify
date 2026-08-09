@@ -1,9 +1,9 @@
 package com.dl1803.identity.dto.response;
 
+import java.util.Date;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.util.Date;
 
 @Data
 @NoArgsConstructor

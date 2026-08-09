@@ -1,6 +1,5 @@
 package com.dl1803.identity.exception;
 
-import java.text.ParseException;
 import java.util.Map;
 import java.util.Objects;
 
@@ -29,7 +28,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(apiResponse);
     }
 
-
     @ExceptionHandler(value = AppException.class)
     ResponseEntity<ApiResponse> handlingAppException(AppException e) {
         ErrorCode errorCode = e.getErrorCode();
@@ -50,16 +48,9 @@ public class GlobalExceptionHandler {
             errorCode = ErrorCode.valueOf(enumKey);
 
             var constraintViolation =
-                    e.getBindingResult()
-                            .getAllErrors()
-                            .getFirst()
-                            .unwrap(
-                                    ConstraintViolation
-                                            .class);
+                    e.getBindingResult().getAllErrors().getFirst().unwrap(ConstraintViolation.class);
 
-            attributes = constraintViolation
-                    .getConstraintDescriptor()
-                    .getAttributes();
+            attributes = constraintViolation.getConstraintDescriptor().getAttributes();
             log.info(attributes.toString());
 
         } catch (IllegalArgumentException excp) {
@@ -70,16 +61,14 @@ public class GlobalExceptionHandler {
         apiResponse.setCode(errorCode.getCode());
         apiResponse.setResult(
                 Objects.nonNull(attributes)
-                        ?
-                        mapAttribute(errorCode.getMessage(), attributes)
+                        ? mapAttribute(errorCode.getMessage(), attributes)
                         : errorCode.getMessage());
 
         return ResponseEntity.badRequest().body(apiResponse);
     }
 
     private String mapAttribute(String message, Map<String, Object> attributes) {
-        String minValue = String.valueOf(attributes.get(
-                MIN_ATTRIBUTE));
+        String minValue = String.valueOf(attributes.get(MIN_ATTRIBUTE));
         return message.replace("{" + MIN_ATTRIBUTE + "}", minValue);
     }
 
