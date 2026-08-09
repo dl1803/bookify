@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.bookify.data.model.UserModel;
 import com.example.bookify.data.remote.api.IdentityApiService;
+import com.example.bookify.utils.TokenManager;
 import com.example.bookify.data.remote.dto.ApiResponse;
 import com.example.bookify.data.remote.dto.AuthenticationRequest;
 import com.example.bookify.data.remote.dto.AuthenticationResponse;
@@ -20,11 +21,13 @@ import io.reactivex.rxjava3.core.Single;
 public class AuthRepository {
 
     private final IdentityApiService identityApiService;
+    private final TokenManager tokenManager;
     private final MutableLiveData<UserModel> currentUserLiveData = new MutableLiveData<>();
 
     @Inject
-    public AuthRepository(IdentityApiService identityApiService) {
+    public AuthRepository(IdentityApiService identityApiService, TokenManager tokenManager) {
         this.identityApiService = identityApiService;
+        this.tokenManager = tokenManager;
     }
 
     public LiveData<UserModel> getCurrentUser() {
@@ -45,8 +48,11 @@ public class AuthRepository {
                     if (response.getCode() != 1000 || response.getResult() == null) {
                         throw new Exception(response.getMessage() != null ? response.getMessage() : "Login failed");
                     }
+                    // Save token
+                    tokenManager.saveToken(response.getResult().getToken());
+                    
                     // For now, returning a basic UserModel with username since we don't fetch full profile yet
-                    UserModel user = new UserModel(username, "", "", "", "", "");
+                    UserModel user = new UserModel(username, "", "", "", "", "", "");
                     currentUserLiveData.postValue(user);
                     return user;
                 });
@@ -57,6 +63,7 @@ public class AuthRepository {
     }
 
     public void logout() {
+        tokenManager.clearToken();
         currentUserLiveData.setValue(null);
     }
 }
