@@ -25,6 +25,8 @@ public class UserProfile {
     @Property("userId")
     String userId; // userId của IdentityS
 
+    String avatar;
+
     String username;
     String email;
 
