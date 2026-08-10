@@ -1,5 +1,6 @@
 package com.dl1803.profile.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.neo4j.repository.Neo4jRepository;
@@ -10,4 +11,7 @@ import com.dl1803.profile.entity.UserProfile;
 @Repository
 public interface UserProfileRepository extends Neo4jRepository<UserProfile, String> {
     Optional<UserProfile> findByUserId(String userId);
+
+    // Tìm username chứa keyword (ignore case) AND userId != currentUserId
+    List<UserProfile> findByUsernameContainingIgnoreCaseAndUserIdNot(String username, String userId);
 }

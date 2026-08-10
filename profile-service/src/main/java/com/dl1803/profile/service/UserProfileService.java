@@ -2,6 +2,7 @@ package com.dl1803.profile.service;
 
 import java.util.List;
 
+import com.dl1803.profile.dto.request.SearchUserRequest;
 import com.dl1803.profile.dto.request.UpdateProfileRequest;
 import com.dl1803.profile.repository.httpClient.FileClient;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -87,5 +88,18 @@ public class UserProfileService {
         profile.setAvatar(response.getResult().getUrl());
 
         return userProfileMapper.toUserProfileResponse(userProfileRepository.save(profile));
+    }
+
+    public List<UserProfileResponse> search(SearchUserRequest request) {
+        String currentUserId = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        // Xử lý từ khóa để tìm kiếm, không phân biệt hoa thường
+        String keyword = (request.getKeyword() != null) ? request.getKeyword().trim() : "";
+
+        //Lọc chính mình + Tìm kiếm
+        List<UserProfile> userProfiles = userProfileRepository
+                .findByUsernameContainingIgnoreCaseAndUserIdNot(keyword, currentUserId);
+
+        return userProfileMapper.toListUserProfileResponse(userProfiles);
     }
 }
