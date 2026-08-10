@@ -20,4 +20,11 @@
     <color name="like_red">#E53935</color>
     <color name="text_dark_gray">#424242</color>
     <color name="error_red">#D32F2F</color>
+    
+    <!-- Messages UI -->
+    <color name="on_tertiary_fixed_variant">#5D4037</color>
+    <color name="online_green">#22c55e</color>
+    <color name="fab_message">#C36A4F</color>
+    <color name="badge_error">#ba1a1a</color>
+    <color name="badge_on_error">#ffffff</color>
 </resources>

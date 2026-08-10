@@ -45,6 +45,11 @@
             android:name=".ui.alerts.AlertsActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
+            
+        <activity
+            android:name=".ui.messages.MessagesActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>

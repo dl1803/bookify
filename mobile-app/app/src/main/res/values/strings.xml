@@ -76,4 +76,11 @@
     <string name="menu_groups">Groups</string>
     <string name="menu_account_settings">Account settings</string>
     <string name="menu_logout">Log out</string>
+
+    <!-- Messages Screen -->
+    <string name="title_messages">Bookify</string>
+    <string name="search_friends_hint">Search for friends...</string>
+    <string name="label_active_friends">FRIENDS</string>
+    <string name="label_messages">MESSAGES</string>
+    <string name="msg_developing">Developing...</string>
 </resources>

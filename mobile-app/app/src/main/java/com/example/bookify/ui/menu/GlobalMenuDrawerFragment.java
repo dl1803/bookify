@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,6 +29,9 @@ public class GlobalMenuDrawerFragment extends DialogFragment {
 
     @Inject
     com.example.bookify.data.repository.AuthRepository authRepository;
+    
+    @Inject
+    com.example.bookify.data.repository.ProfileRepository profileRepository;
 
     public static GlobalMenuDrawerFragment newInstance() {
         return new GlobalMenuDrawerFragment();
@@ -50,12 +54,41 @@ public class GlobalMenuDrawerFragment extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
         
         setupClickListeners(view);
+        fetchProfileAndPopulateUI(view);
+    }
+
+    @android.annotation.SuppressLint("CheckResult")
+    private void fetchProfileAndPopulateUI(View view) {
+        profileRepository.getMyProfile()
+                .subscribeOn(io.reactivex.rxjava3.schedulers.Schedulers.io())
+                .observeOn(io.reactivex.rxjava3.android.schedulers.AndroidSchedulers.mainThread())
+                .subscribe(response -> {
+                    if (response.getResult() != null) {
+                        TextView txtMenuUserName = view.findViewById(R.id.txtMenuUserName);
+                        com.google.android.material.imageview.ShapeableImageView imgMenuAvatar = view.findViewById(R.id.imgMenuAvatar);
+                        
+                        String fullName = response.getResult().getFirstName() + " " + response.getResult().getLastName();
+                        txtMenuUserName.setText(fullName.trim());
+                        
+                        if (response.getResult().getAvatar() != null && !response.getResult().getAvatar().isEmpty()) {
+                            com.bumptech.glide.Glide.with(this)
+                                    .load(com.example.bookify.utils.UrlUtils.resolveLocalUrl(response.getResult().getAvatar()))
+                                    .placeholder(R.drawable.ic_menu_avatar_placeholder)
+                                    .into(imgMenuAvatar);
+                        }
+                    }
+                }, throwable -> {
+                    // Ignore or log error
+                });
     }
 
     private void setupClickListeners(View view) {
         view.findViewById(R.id.btnMenuMessages).setOnClickListener(v -> {
             v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-            showToast(getString(R.string.menu_message));
+            if (getActivity() != null) {
+                android.content.Intent intent = new android.content.Intent(getActivity(), com.example.bookify.ui.messages.MessagesActivity.class);
+                startActivity(intent);
+            }
             dismiss();
         });
 

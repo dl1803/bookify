@@ -51,8 +51,7 @@
                 android:text="Bookifier"
                 android:textColor="@color/brown_primary"
                 android:textSize="36sp"
-                android:textStyle="bold"
-                android:fontFamily="serif" />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvSubtitle"

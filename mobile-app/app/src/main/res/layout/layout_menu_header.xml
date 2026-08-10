@@ -8,7 +8,7 @@
     android:paddingTop="48dp"
     android:paddingEnd="32dp"
     android:paddingBottom="32dp"
-    android:background="@color/surface_container_low">
+    android:background="@color/brown_bold">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -37,9 +37,8 @@
             android:layout_height="wrap_content"
             android:text="@string/profile_name"
             android:textSize="22sp"
-            android:fontFamily="serif"
             android:textStyle="bold"
-            android:textColor="@color/on_surface"/>
+            android:textColor="@color/white"/>
     </LinearLayout>
     
 </LinearLayout>
