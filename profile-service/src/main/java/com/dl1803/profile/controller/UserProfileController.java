@@ -2,6 +2,7 @@ package com.dl1803.profile.controller;
 
 import java.util.List;
 
+import com.dl1803.profile.dto.request.SearchUserRequest;
 import com.dl1803.profile.dto.request.UpdateProfileRequest;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,6 +53,13 @@ public class UserProfileController {
     ApiResponse<UserProfileResponse> updateAvatar(@RequestParam("file") MultipartFile file) {
         return ApiResponse.<UserProfileResponse>builder()
                 .result(userProfileService.updateAvatar(file))
+                .build();
+    }
+
+    @PostMapping("users/search")
+    ApiResponse<List<UserProfileResponse>> searchProfiles(@RequestBody SearchUserRequest request) {
+        return ApiResponse.<List<UserProfileResponse>>builder()
+                .result(userProfileService.search(request))
                 .build();
     }
 }
