@@ -41,7 +41,6 @@
                 android:id="@+id/dialogTvBookTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="serif"
                 android:text="The Silent Echo"
                 android:textColor="@color/on_surface"
                 android:textSize="20sp"

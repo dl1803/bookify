@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:padding="12dp"
+    android:layout_marginBottom="4dp"
+    android:background="@drawable/bg_message_thread">
+
+    <!-- Container for Avatar(s) -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clAvatarContainer"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <!-- Single Avatar -->
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivSingleAvatar"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
+            app:strokeWidth="2dp"
+            app:strokeColor="@color/surface_bg"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:src="@tools:sample/avatars" />
+
+        <!-- Unread Badge on Single Avatar -->
+        <TextView
+            android:id="@+id/tvUnreadBadge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="20dp"
+            android:paddingHorizontal="4dp"
+            android:paddingVertical="2dp"
+            android:background="@drawable/bg_unread_badge"
+            android:textColor="@color/badge_on_error"
+            android:textSize="10sp"
+            android:gravity="center"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="-4dp"
+            android:layout_marginEnd="-4dp"
+            tools:text="+1" />
+
+        <!-- Group Avatars Container -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clGroupAvatars"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:visibility="gone">
+
+            <!-- Circle 1: Bottom Left -->
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/ivGroupAvatar1"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:scaleType="centerCrop"
+                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
+                app:strokeWidth="2dp"
+                app:strokeColor="@color/surface_bg"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:src="@tools:sample/avatars" />
+
+            <!-- Circle 2: Bottom Right -->
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/ivGroupAvatar2"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:scaleType="centerCrop"
+                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
+                app:strokeWidth="2dp"
+                app:strokeColor="@color/surface_bg"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:src="@tools:sample/avatars" />
+
+            <!-- Circle 3: Top Center -->
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/ivGroupAvatar3"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:scaleType="centerCrop"
+                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
+                app:strokeWidth="2dp"
+                app:strokeColor="@color/surface_bg"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:elevation="2dp"
+                tools:src="@tools:sample/avatars" />
+
+            <!-- Unread Badge for Group -->
+            <TextView
+                android:id="@+id/tvUnreadBadgeGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="20dp"
+                android:paddingHorizontal="4dp"
+                android:paddingVertical="2dp"
+                android:background="@drawable/bg_unread_badge"
+                android:textColor="@color/badge_on_error"
+                android:textSize="10sp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:elevation="4dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="-4dp"
+                android:layout_marginEnd="-4dp"
+                tools:text="+1" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Header Row (Name & Time) -->
+    <LinearLayout
+        android:id="@+id/llHeader"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="2dp"
+        app:layout_constraintTop_toTopOf="@id/clAvatarContainer"
+        app:layout_constraintStart_toEndOf="@id/clAvatarContainer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/tvLastMessage">
+
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/on_surface"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:singleLine="true"
+            android:ellipsize="end"
+            tools:text="Emma" />
+
+        <TextView
+            android:id="@+id/tvTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/brown_primary"
+            android:textSize="12sp"
+            android:layout_marginStart="8dp"
+            tools:text="2m ago" />
+    </LinearLayout>
+
+    <!-- Message Preview -->
+    <TextView
+        android:id="@+id/tvLastMessage"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/on_surface"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:layout_marginStart="16dp"
+        app:layout_constraintTop_toBottomOf="@id/llHeader"
+        app:layout_constraintStart_toEndOf="@id/clAvatarContainer"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="Did you finish chapter 4? I can't believe..." />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

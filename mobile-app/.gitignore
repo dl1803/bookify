@@ -17,3 +17,7 @@ app/build/
 .vscode/
 .agents/
 .agent/
+
+design.html
+downloaded_menu.html
+*.html
