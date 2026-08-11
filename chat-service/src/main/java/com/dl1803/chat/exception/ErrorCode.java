@@ -10,7 +10,8 @@ public enum ErrorCode {
     INVALID_KEY(1001, "Invalid message key!", HttpStatus.BAD_REQUEST),
     UNAUTHENTICATED(1006, "Unauthenticated", HttpStatus.UNAUTHORIZED),
     UNAUTHORIZED(1007, "You do not have permission", HttpStatus.FORBIDDEN),
-    FILE_NOT_FOUND(1010, "File not found", HttpStatus.NOT_FOUND);
+    FILE_NOT_FOUND(1010, "File not found", HttpStatus.NOT_FOUND),
+    CONVERSATION_NOT_FOUND(1011, "Conversation not found", HttpStatus.NOT_FOUND);
 
     ErrorCode(int code, String message, HttpStatusCode statusCode) {
         this.code = code;

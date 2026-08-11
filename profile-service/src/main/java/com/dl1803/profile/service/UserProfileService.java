@@ -102,4 +102,14 @@ public class UserProfileService {
 
         return userProfileMapper.toListUserProfileResponse(userProfiles);
     }
+
+    public List<UserProfileResponse> getProfilesByUserIdIn(List<String> userIds) {
+        if (userIds == null || userIds.isEmpty()) {
+            return List.of();
+        }
+        // Tìm tất cả profile có userId nằm trong danh sách userIds
+        List<UserProfile> profiles = userProfileRepository.findAllByUserIdIn(userIds);
+
+        return userProfileMapper.toListUserProfileResponse(profiles);
+    }
 }
