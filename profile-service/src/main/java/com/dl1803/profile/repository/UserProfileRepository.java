@@ -14,4 +14,7 @@ public interface UserProfileRepository extends Neo4jRepository<UserProfile, Stri
 
     // Tìm username chứa keyword (ignore case) AND userId != currentUserId
     List<UserProfile> findByUsernameContainingIgnoreCaseAndUserIdNot(String username, String userId);
+
+    // WHERE user_id IN (userId1, userId2, ...)
+    List<UserProfile> findAllByUserIdIn(List<String> userIds);
 }

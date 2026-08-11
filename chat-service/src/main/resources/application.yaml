@@ -8,7 +8,7 @@ spring:
   data:
     mongodb:
       uri: mongodb://root:root@localhost:27017/chat-service?authSource=admin
-
+      auto-index-creation: true # cho phép Spring tự động tạo index cho entity khi dùng MongoDB
 app:
   services:
     profile:
