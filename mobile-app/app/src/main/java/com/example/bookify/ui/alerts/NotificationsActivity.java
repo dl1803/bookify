@@ -2,7 +2,6 @@ package com.example.bookify.ui.alerts;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -18,6 +17,7 @@ import com.example.bookify.R;
 import com.example.bookify.data.model.NotificationModel;
 import com.example.bookify.ui.alerts.adapter.NotificationAdapter;
 import com.example.bookify.ui.home.HomeActivity;
+import com.example.bookify.ui.menu.GlobalMenuDrawerFragment;
 import com.example.bookify.ui.profile.ProfileActivity;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -26,7 +26,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AlertsActivity extends AppCompatActivity {
+public class NotificationsActivity extends AppCompatActivity {
 
     private RecyclerView rvNotifications;
     private NotificationAdapter adapter;
@@ -37,7 +37,7 @@ public class AlertsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_alerts);
+        setContentView(R.layout.activity_notifications);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_alerts_root), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -60,7 +60,7 @@ public class AlertsActivity extends AppCompatActivity {
         MaterialToolbar topAppBar = findViewById(R.id.topAppBar);
         if (topAppBar != null) {
             topAppBar.setNavigationOnClickListener(v -> {
-                com.example.bookify.ui.menu.GlobalMenuDrawerFragment.newInstance()
+                GlobalMenuDrawerFragment.newInstance()
                         .show(getSupportFragmentManager(), "GlobalMenu");
             });
         }
@@ -73,12 +73,12 @@ public class AlertsActivity extends AppCompatActivity {
         adapter.setOnNotificationClickListener(new NotificationAdapter.OnNotificationClickListener() {
             @Override
             public void onNotificationClick(NotificationModel item, int position) {
-                Toast.makeText(AlertsActivity.this, "Opened notification: " + item.getUserName(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(NotificationsActivity.this, "Opened notification: " + item.getUserName(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onNotificationLongClick(NotificationModel item, int position) {
-                Toast.makeText(AlertsActivity.this, "Notification Options for " + item.getUserName(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(NotificationsActivity.this, "Notification Options for " + item.getUserName(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -156,13 +156,13 @@ public class AlertsActivity extends AppCompatActivity {
             bottomNav.setOnItemSelectedListener(item -> {
                 int itemId = item.getItemId();
                 if (itemId == R.id.nav_home) {
-                    Intent intent = new Intent(AlertsActivity.this, HomeActivity.class);
+                    Intent intent = new Intent(NotificationsActivity.this, HomeActivity.class);
                     startActivity(intent);
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     finish();
                     return true;
                 } else if (itemId == R.id.nav_profile) {
-                    Intent intent = new Intent(AlertsActivity.this, ProfileActivity.class);
+                    Intent intent = new Intent(NotificationsActivity.this, ProfileActivity.class);
                     startActivity(intent);
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     finish();
@@ -183,7 +183,7 @@ public class AlertsActivity extends AppCompatActivity {
         FloatingActionButton fabCreate = findViewById(R.id.fabCreate);
         if (fabCreate != null) {
             fabCreate.setOnClickListener(v -> {
-                Intent intent = new Intent(AlertsActivity.this, HomeActivity.class);
+                Intent intent = new Intent(NotificationsActivity.this, HomeActivity.class);
                 startActivity(intent);
                 finish();
             });

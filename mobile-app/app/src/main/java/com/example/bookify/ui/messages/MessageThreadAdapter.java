@@ -41,6 +41,13 @@ public class MessageThreadAdapter extends RecyclerView.Adapter<MessageThreadAdap
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         MessageThread thread = threadList.get(position);
         holder.bind(thread);
+        
+        holder.itemView.setOnClickListener(v -> {
+            v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+            String avatarUrl = (thread.getAvatarUrls() != null && !thread.getAvatarUrls().isEmpty()) ? thread.getAvatarUrls().get(0) : "";
+            android.content.Intent intent = ChatActivity.newIntent(v.getContext(), thread.getTitle(), avatarUrl);
+            v.getContext().startActivity(intent);
+        });
     }
 
     @Override
@@ -66,14 +73,6 @@ public class MessageThreadAdapter extends RecyclerView.Adapter<MessageThreadAdap
             tvLastMessage = itemView.findViewById(R.id.tvLastMessage);
             tvUnreadBadge = itemView.findViewById(R.id.tvUnreadBadge);
             tvUnreadBadgeGroup = itemView.findViewById(R.id.tvUnreadBadgeGroup);
-            
-            itemView.setOnClickListener(v -> {
-                int position = getAdapterPosition();
-                if (position != RecyclerView.NO_POSITION) {
-                    v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-                    Toast.makeText(v.getContext(), "Open thread: " + tvName.getText(), Toast.LENGTH_SHORT).show();
-                }
-            });
         }
 
         public void bind(MessageThread thread) {

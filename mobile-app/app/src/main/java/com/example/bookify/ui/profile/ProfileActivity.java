@@ -2,10 +2,8 @@ package com.example.bookify.ui.profile;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,6 +12,7 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.bookify.data.remote.dto.UpdateProfileRequest;
 import com.example.bookify.data.remote.dto.UserProfileResponse;
+import com.example.bookify.ui.alerts.NotificationsActivity;
 import com.example.bookify.utils.FileUtils;
 import com.example.bookify.utils.UrlUtils;
 
@@ -329,7 +328,7 @@ public class ProfileActivity extends AppCompatActivity {
                     Toast.makeText(this, "Explore feature coming soon!", Toast.LENGTH_SHORT).show();
                     return false;
                 } else if (itemId == R.id.nav_alerts) {
-                    Intent intent = new Intent(ProfileActivity.this, com.example.bookify.ui.alerts.AlertsActivity.class);
+                    Intent intent = new Intent(ProfileActivity.this, NotificationsActivity.class);
                     startActivity(intent);
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     finish();

@@ -1,6 +1,7 @@
 package com.example.bookify.di;
 
 import com.example.bookify.data.remote.api.IdentityApiService;
+import com.example.bookify.data.remote.api.ProfileApiService;
 
 import javax.inject.Singleton;
 
@@ -51,7 +52,7 @@ public class NetworkModule {
 
     @Provides
     @Singleton
-    public com.example.bookify.data.remote.api.ProfileApiService provideProfileApiService(Retrofit retrofit) {
-        return retrofit.create(com.example.bookify.data.remote.api.ProfileApiService.class);
+    public ProfileApiService provideProfileApiService(Retrofit retrofit) {
+        return retrofit.create(ProfileApiService.class);
     }
 }

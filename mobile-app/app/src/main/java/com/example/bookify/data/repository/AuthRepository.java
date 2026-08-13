@@ -51,7 +51,6 @@ public class AuthRepository {
                     // Save token
                     tokenManager.saveToken(response.getResult().getToken());
                     
-                    // For now, returning a basic UserModel with username since we don't fetch full profile yet
                     UserModel user = new UserModel(username, "", "", "", "", "", "");
                     currentUserLiveData.postValue(user);
                     return user;

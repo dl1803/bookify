@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/surface_bg"
     android:fitsSystemWindows="true"
-    tools:context=".ui.alerts.AlertsActivity">
+    tools:context=".ui.alerts.NotificationsActivity">
 
     <!-- Top App Bar (Identical to activity_home.xml) -->
     <com.google.android.material.appbar.AppBarLayout
