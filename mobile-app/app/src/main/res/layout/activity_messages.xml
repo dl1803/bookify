@@ -72,6 +72,7 @@
                     android:textColor="@color/on_surface"
                     android:textSize="16sp"
                     android:singleLine="true"
+                    android:focusable="false"
                     android:inputType="text" />
                     
                 <ImageView

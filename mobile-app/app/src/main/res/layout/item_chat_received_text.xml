@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp">
+
+    <!-- Avatar -->
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/ivAvatar"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:scaleType="centerCrop"
+        android:layout_marginEnd="4dp"
+        android:src="@drawable/ic_person"
+        app:strokeWidth="1dp"
+        app:strokeColor="@color/outline_variant_30"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Tail -->
+    <ImageView
+        android:id="@+id/ivTail"
+        android:layout_width="8dp"
+        android:layout_height="12dp"
+        android:src="@drawable/ic_chat_tail_left"
+        app:tint="@color/surface_container_high"
+        app:layout_constraintTop_toTopOf="@id/bubbleLayout"
+        app:layout_constraintStart_toEndOf="@id/ivAvatar" />
+
+    <!-- Bubble -->
+    <LinearLayout
+        android:id="@+id/bubbleLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_chat_bubble_received"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="12dp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintStart_toEndOf="@id/ivTail"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        android:layout_marginEnd="80dp">
+
+        <TextView
+            android:id="@+id/tvMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Hey! Did you finish reading the book I recommended?"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textColor="?attr/colorOnSurface"/>
+
+        <TextView
+            android:id="@+id/tvTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_gravity="end"
+            android:alpha="0.7"
+            tools:text="10:14 AM"
+            android:textAppearance="?attr/textAppearanceLabelSmall"
+            android:textColor="@color/on_surface_variant"/>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

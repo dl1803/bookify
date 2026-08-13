@@ -24,6 +24,7 @@ public class MessagesActivity extends AppCompatActivity {
     private androidx.recyclerview.widget.RecyclerView rvMessages;
     private com.google.android.material.appbar.MaterialToolbar toolbar;
     private android.widget.ImageButton fabNewMessage;
+    private android.widget.EditText etSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +40,7 @@ public class MessagesActivity extends AppCompatActivity {
         setupToolbar();
         setupRecyclerViews();
         setupFab();
+        setupSearch();
     }
 
     private void setupEdgeToEdge() {
@@ -100,7 +102,16 @@ public class MessagesActivity extends AppCompatActivity {
     private void setupFab() {
         fabNewMessage.setOnClickListener(v -> {
             v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-            Toast.makeText(this, getString(R.string.msg_developing), Toast.LENGTH_SHORT).show();
+            CreateConversationBottomSheet bottomSheet = CreateConversationBottomSheet.newInstance();
+            bottomSheet.show(getSupportFragmentManager(), "CreateConversationBottomSheet");
+        });
+    }
+
+    private void setupSearch() {
+        etSearch = findViewById(R.id.etSearch);
+        etSearch.setOnClickListener(v -> {
+            android.content.Intent intent = new android.content.Intent(MessagesActivity.this, SearchConversationActivity.class);
+            startActivity(intent);
         });
     }
 }

@@ -2,12 +2,10 @@ package com.example.bookify.ui.home;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -23,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bookify.R;
 import com.example.bookify.data.model.PostModel;
+import com.example.bookify.ui.alerts.NotificationsActivity;
 import com.example.bookify.ui.home.adapter.PostAdapter;
 import com.example.bookify.ui.profile.ProfileActivity;
 import com.example.bookify.utils.BookifyDialogHelper;
@@ -254,7 +253,7 @@ public class HomeActivity extends AppCompatActivity {
                     Toast.makeText(this, "Explore section coming soon!", Toast.LENGTH_SHORT).show();
                     return false;
                 } else if (itemId == R.id.nav_alerts) {
-                    Intent intent = new Intent(HomeActivity.this, com.example.bookify.ui.alerts.AlertsActivity.class);
+                    Intent intent = new Intent(HomeActivity.this, NotificationsActivity.class);
                     startActivity(intent);
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     return true;

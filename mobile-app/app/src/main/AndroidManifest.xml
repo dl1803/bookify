@@ -42,12 +42,22 @@
             android:windowSoftInputMode="adjustPan" />
 
         <activity
-            android:name=".ui.alerts.AlertsActivity"
+            android:name=".ui.alerts.NotificationsActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
             
         <activity
             android:name=".ui.messages.MessagesActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+            
+        <activity
+            android:name=".ui.messages.SearchConversationActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+            
+        <activity
+            android:name=".ui.messages.ChatActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
     </application>
