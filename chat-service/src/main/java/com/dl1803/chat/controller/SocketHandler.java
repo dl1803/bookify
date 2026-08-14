@@ -4,12 +4,14 @@ import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.annotation.OnConnect;
 import com.corundumstudio.socketio.annotation.OnDisconnect;
+import com.dl1803.chat.dto.request.IntrospectRequest;
+import com.dl1803.chat.dto.response.IntrospectResponse;
+import com.dl1803.chat.service.IdentityService;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 //nhận message từ socket
@@ -20,10 +22,28 @@ import org.springframework.stereotype.Component;
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE, makeFinal = true)
 public class SocketHandler {
     SocketIOServer server;
+    IdentityService identityService;
 
-    @OnConnect // khi 1 tbi connect vào port của server -> @ run -> cấp một mã đinh danh
+    @OnConnect // khi 1 tbi connect vào port của server -> @ run -> cấp một mã đinh danh trong SocketIOClient
+    // SocketIOClient là 1 obj đại diện cho client connect vào server (chứa các info: Id, handshakeData khi FE đính kèm(như query params, headers, cookies ,... ), ...)
     public void clientConnected(SocketIOClient client) {
-        log.info("Client connected: " + client.getSessionId());
+        // Get token from request param FE
+        String token = client.getHandshakeData().getSingleUrlParam("token");
+
+        // Verify token
+        var introspectResponse = identityService.introspect(
+                IntrospectRequest.builder()
+                        .token(token)
+                        .build()
+        );
+
+        // If token is invalid -> disconnect
+        if (introspectResponse.isValid()) {
+            log.info("Client connected: {}", client.getSessionId());
+        } else {
+            log.error("Authentication failed: {}", client.getSessionId());
+            client.disconnect(); // ngắt knoi tói socket và SocketIOServer sẽ goi @OnDisconnect
+        }
     }
 
     @OnDisconnect // khi 1 tbi disconnect ...

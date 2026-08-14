@@ -1,5 +1,7 @@
 package com.dl1803.profile.controller;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.*;
 
 import com.dl1803.profile.dto.request.ProfileCreationRequest;
@@ -10,8 +12,6 @@ import com.dl1803.profile.service.UserProfileService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
