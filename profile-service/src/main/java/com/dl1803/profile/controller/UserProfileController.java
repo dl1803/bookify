@@ -2,10 +2,11 @@ package com.dl1803.profile.controller;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.dl1803.profile.dto.request.SearchUserRequest;
 import com.dl1803.profile.dto.request.UpdateProfileRequest;
-import org.springframework.web.bind.annotation.*;
-
 import com.dl1803.profile.dto.response.ApiResponse;
 import com.dl1803.profile.dto.response.UserProfileResponse;
 import com.dl1803.profile.service.UserProfileService;
@@ -13,7 +14,6 @@ import com.dl1803.profile.service.UserProfileService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
