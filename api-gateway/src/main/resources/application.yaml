@@ -9,9 +9,9 @@ spring:
         predicates:
           - Path=${app.api-prefix}/identity/**
         filters:
-          - StripPrefix=1 # Cắt bỏ 1 segment đầu tiên của URL trước khi forward request.
+          - StripPrefix=2 # Cắt bỏ 2 segment đầu tiên của URL trước khi forward request.
             # Ví dụ:
-            # Client gọi:  /api/identity/users
+            # Client gọi:  /api/v1/identity/users
             # Gateway gửi service: /identity/users
             # tạo sự thống nhất, độc lập và hỗ trợ thay đổi version nếu có
 
@@ -20,52 +20,52 @@ spring:
         predicates:
           - Path=${app.api-prefix}/profile/users/** # exclude /internal
         filters:
-          - StripPrefix=1
+          - StripPrefix=2
 
       - id: profile-swagger-ui
         uri: http://localhost:8081
         predicates:
           - Path=${app.api-prefix}/profile/swagger-ui/**
         filters:
-          - StripPrefix=1
+          - StripPrefix=2
 
       - id: profile-api-docs
         uri: http://localhost:8081
         predicates:
           - Path=${app.api-prefix}/profile/v3/api-docs/**
         filters:
-          - StripPrefix=1
+          - StripPrefix=2
 
       - id: notification-service
         uri: http://localhost:8082
         predicates:
           - Path=${app.api-prefix}/notification/**
         filters:
-          - StripPrefix=1
+          - StripPrefix=2
 
       - id: post-service
         uri: http://localhost:8083
         predicates:
           - Path=${app.api-prefix}/post/**
         filters:
-          - StripPrefix=1
+          - StripPrefix=2
       - id: file_service
         uri: http://localhost:8084
         predicates:
           - Path=${app.api-prefix}/file/**
         filters:
-          - StripPrefix=1
+          - StripPrefix=2
       - id: chat_service
         uri: http://localhost:8085
         predicates:
           - Path=${app.api-prefix}/chat/**
         filters:
-          - StripPrefix=1
+          - StripPrefix=2
 
 
 
 app:
-  api-prefix: /api
+  api-prefix: /api/v1
 
 server:
   port: 8888
@@ -74,19 +74,19 @@ springdoc:
   swagger-ui:
     urls:
       - name: Identity Service
-        url: /api/identity/v3/api-docs
+        url: /api/v1/identity/v3/api-docs
 
       - name: Profile Service
-        url: /api/profile/v3/api-docs
+        url: /api/v1/profile/v3/api-docs
 
       - name: Notification Service
-        url: /api/notification/v3/api-docs
+        url: /api/v1/notification/v3/api-docs
 
       - name: Post Service
-        url: /api/post/v3/api-docs
+        url: /api/v1/post/v3/api-docs
 
       - name: File Service
-        url: /api/file/v3/api-docs
+        url: /api/v1/file/v3/api-docs
 
       - name: Chat Service
-        url: /api/chat/v3/api-docs
+        url: /api/v1/chat/v3/api-docs
