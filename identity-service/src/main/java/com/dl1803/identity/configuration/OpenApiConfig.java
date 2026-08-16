@@ -12,7 +12,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
 @Configuration
 @OpenAPIDefinition(
         info = @Info(title = "Identity API", version = "1.0", description = "REST API"),
-        servers = {@Server(url = "http://localhost:8888/api/identity", description = "Gateway Server")},
+        servers = {@Server(url = "http://localhost:8888/api/v1/identity", description = "Gateway Server")},
         security = {@SecurityRequirement(name = "bearerAuth")})
 @SecurityScheme(name = "bearerAuth", type = SecuritySchemeType.HTTP, scheme = "bearer", bearerFormat = "JWT")
 public class OpenApiConfig {}

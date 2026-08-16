@@ -22,7 +22,7 @@ import org.springframework.context.annotation.Configuration;
                 description = "REST API"
         ),
         servers = {
-                @Server(url = "http://localhost:8888/api/chat",
+                @Server(url = "http://localhost:8888/api/v1/chat",
                         description = "Gateway Server")
         },
         security = {@SecurityRequirement(name = "bearerAuth")}
