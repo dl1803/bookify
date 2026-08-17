@@ -54,6 +54,15 @@
 ### Relationships:
 * `(:user_profile)-[:FOLLOWS { createdDate: Instant }]->(:user_profile)`
 * `(:user_profile)-[:FRIEND_WITH { status: 'PENDING' | 'ACCEPTED' }]->(:user_profile)`
+* `(:user_profile)-[:BLOCKS { createdDate: Instant }]->(:user_profile)`
+
+### Node: `:report` *(Báo cáo người dùng)*
+* `id`: String [UUID]
+* `reporterId`: String [Index - Người báo cáo]
+* `targetProfileId`: String [Index - Người bị báo cáo]
+* `reason`: String
+* `description`: String
+* `createdDate`: Instant
 
 ---
 
@@ -85,6 +94,14 @@
 * `userId`: String [Index]
 * `createdDate`: Instant
 
+### Collection: `post_report` *(Bổ sung)*
+* `id`: String [PK, MongoId]
+* `postId`: String [Index]
+* `userId`: String [Index - Người báo cáo]
+* `reason`: String
+* `description`: String
+* `createdDate`: Instant
+
 ---
 
 ## 4. File Service (MongoDB)
@@ -93,6 +110,7 @@
 ### Collection: `file_mgmt`
 * `id`: String [PK, MongoId]
 * `ownerId`: String [Index]
+* `originalFileName`: String
 * `contentType`: String
 * `size`: Long
 * `path`: String
@@ -106,6 +124,8 @@
 ### Collection: `conversation`
 * `id`: String [PK, MongoId]
 * `type`: String (`direct` / `group`)
+* `name`: String [Nullable - Cho group]
+* `avatar`: String [Nullable - Cho group]
 * `participantsHash`: String [UNIQUE, Index]
 * `participants`: Array[Embedded Document `ParticipantInfo`]
   * `userId`: String
@@ -122,6 +142,12 @@
 * `conversationId`: String [Index]
 * `message`: String
 * `sender`: Embedded Document `ParticipantInfo`
+* `isEdited`: Boolean [DEFAULT false]
+* `editedDate`: Instant [Nullable]
+* `reactions`: Array[Embedded Document `Reaction`]
+  * `userId`: String
+  * `type`: String
+  * `createdDate`: Instant
 * `createdDate`: Instant [Index]
 
 ---
@@ -154,7 +180,25 @@
 * `genres`: Array[String]
 * `publishedYear`: Integer
 * `ratingAvg`: Double
+* `ratingCount`: Long [DEFAULT 0]
 * `createdDate`: Instant
+
+### Collection: `book_rating` *(Bổ sung)*
+* `id`: String [PK, MongoId]
+* `bookId`: String [Index]
+* `userId`: String [Index]
+* `rating`: Double
+* `createdDate`: Instant
+
+### Collection: `bookshelf_entry` *(Bổ sung)*
+* `id`: String [PK, MongoId]
+* `userId`: String [Index]
+* `bookId`: String [Index]
+* `status`: String (`WANT_TO_READ` / `READING` / `READ`)
+* `progress`: Integer [0-100]
+* `startDate`: Instant [Nullable]
+* `finishDate`: Instant [Nullable]
+* `addedDate`: Instant
 
 ---
 
