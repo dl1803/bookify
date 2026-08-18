@@ -1,21 +1,22 @@
 package com.dl1803.identity.service;
 
+import java.security.SecureRandom;
 import java.text.ParseException;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.StringJoiner;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import com.dl1803.identity.dto.request.AuthenticationRequest;
-import com.dl1803.identity.dto.request.IntrospectRequest;
-import com.dl1803.identity.dto.request.LogoutRequest;
-import com.dl1803.identity.dto.request.RefreshRequest;
+import com.dl1803.event.dto.NotificationEvent;
+import com.dl1803.identity.dto.request.*;
 import com.dl1803.identity.dto.response.AuthenticationResponse;
 import com.dl1803.identity.dto.response.IntrospectResponse;
 import com.dl1803.identity.entity.InvalidatedToken;
@@ -59,6 +60,10 @@ public class AuthenticationService {
     @NonFinal
     protected long REFRESHABLE_DURATION;
 
+    private final SecureRandom rd = new SecureRandom();
+
+    KafkaTemplate<String, Object> kafkaTemplate;
+
     public IntrospectResponse introspect(IntrospectRequest request) throws JOSEException, ParseException {
         var token = request.getToken();
 
@@ -77,6 +82,11 @@ public class AuthenticationService {
         var user = userRepository
                 .findByUsername(request.getUsername())
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+
+        if (!user.isEmailVerified()) {
+            throw new AppException(ErrorCode.USER_NOT_VERIFIED);
+        }
+
         boolean authenticated = passwordEncoder.matches(request.getPassword(), user.getPassword());
         if (!authenticated) throw new AppException(ErrorCode.UNAUTHENTICATED);
 
@@ -114,6 +124,10 @@ public class AuthenticationService {
 
         var user =
                 userRepository.findByUsername(username).orElseThrow(() -> new AppException(ErrorCode.UNAUTHENTICATED));
+
+        if (!user.isEmailVerified()) {
+            throw new AppException(ErrorCode.USER_NOT_VERIFIED);
+        }
 
         var token = generateToken(user);
         return AuthenticationResponse.builder().token(token).build();
@@ -184,5 +198,77 @@ public class AuthenticationService {
         }
 
         return stringJoiner.toString();
+    }
+
+    public void verifyEmail(VerifyEmailRequest request) {
+        User user = userRepository
+                .findByEmail(request.getEmail())
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+
+        if (user.isEmailVerified()) {
+            throw new AppException(ErrorCode.USER_ALREADY_VERIFIED);
+        }
+
+        if (user.getOtpAttemptCount() >= 5) {
+            throw new AppException(ErrorCode.TOO_MANY_OTP_ATTEMPTS);
+        }
+
+        if (user.getVerificationOtp() == null || 
+            !user.getVerificationOtp().equals(request.getOtp())) {
+            user.setOtpAttemptCount(user.getOtpAttemptCount() + 1);
+            userRepository.save(user);
+            throw new AppException(ErrorCode.INVALID_OTP);
+        }
+
+        if (user.getOtpExpiryTime() != null && LocalDateTime.now().isAfter(user.getOtpExpiryTime())) {
+            throw new AppException(ErrorCode.OTP_EXPIRED);
+        }
+
+        user.setEmailVerified(true);
+        user.setOtpExpiryTime(null);
+        user.setVerificationOtp(null);
+        user.setOtpAttemptCount(0);
+
+        userRepository.save(user);
+    }
+
+    public void resendVerification(ResendVerificationRequest request) {
+
+        User user = userRepository
+                .findByEmail(request.getEmail())
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+
+        if (user.isEmailVerified()) {
+            throw new AppException(ErrorCode.USER_ALREADY_VERIFIED);
+        }
+
+        String otpCode = generateAndSaveOTP(user);
+
+        NotificationEvent notificationEvent = NotificationEvent.builder()
+                .channel("EMAIL")
+                .recipient(user.getEmail())
+                .subject("Verify your email - Bookify")
+                .body("Hello " + user.getUsername() + "!\nYour new verification code is: " + otpCode)
+                .build();
+
+        kafkaTemplate.send("notification-delivery", notificationEvent);
+    }
+
+    public String generateAndSaveOTP(User user){
+        if (user.getLastOtpSentTime() != null && 
+            LocalDateTime.now().isBefore(user.getLastOtpSentTime().plusMinutes(1))) {
+            throw new AppException(ErrorCode.OTP_SEND_COOLDOWN);
+        }
+
+        String otp = String.format("%04d", rd.nextInt(10000));
+        user.setVerificationOtp(otp);
+
+        user.setOtpExpiryTime(LocalDateTime.now().plusMinutes(5));
+        user.setLastOtpSentTime(LocalDateTime.now());
+        user.setOtpAttemptCount(0);
+
+        userRepository.save(user);
+
+        return otp;
     }
 }
