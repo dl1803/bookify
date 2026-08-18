@@ -7,10 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dl1803.identity.dto.request.AuthenticationRequest;
-import com.dl1803.identity.dto.request.IntrospectRequest;
-import com.dl1803.identity.dto.request.LogoutRequest;
-import com.dl1803.identity.dto.request.RefreshRequest;
+import com.dl1803.identity.dto.request.*;
 import com.dl1803.identity.dto.response.ApiResponse;
 import com.dl1803.identity.dto.response.AuthenticationResponse;
 import com.dl1803.identity.dto.response.IntrospectResponse;
@@ -51,5 +48,23 @@ public class AuthenticationController {
     ApiResponse<Void> logout(@RequestBody LogoutRequest request) throws ParseException, JOSEException {
         authenticationService.logout(request);
         return ApiResponse.<Void>builder().build();
+    }
+
+    @PostMapping("/verify-email")
+    public ApiResponse<Void> verifyEmail(@RequestBody VerifyEmailRequest request) {
+        authenticationService.verifyEmail(request);
+        return ApiResponse.<Void>builder()
+                .code(1000)
+                .message("Email verified successfully")
+                .build();
+    }
+
+    @PostMapping("/resend-verification")
+    public ApiResponse<Void> resendVerification(@RequestBody ResendVerificationRequest request) {
+        authenticationService.resendVerification(request);
+        return ApiResponse.<Void>builder()
+                .code(1000)
+                .message("Verification email sent")
+                .build();
     }
 }

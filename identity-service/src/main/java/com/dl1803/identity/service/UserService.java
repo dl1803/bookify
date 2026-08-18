@@ -48,6 +48,8 @@ public class UserService {
 
     KafkaTemplate<String, Object> kafkaTemplate;
 
+    AuthenticationService authenticationService;
+
     public UserResponse createUser(UserCreationRequest request) {
 
         log.info("Service: Create User");
@@ -75,11 +77,13 @@ public class UserService {
 
         var profile = profileClient.createProfile(profileRequest);
 
+        String otpCode = authenticationService.generateAndSaveOTP(user);
+
         NotificationEvent notificationEvent = NotificationEvent.builder()
                 .channel("EMAIL")
                 .recipient(request.getEmail())
-                .subject("Welcom to bookify!!!")
-                .body("Hello, " + request.getUsername())
+                .subject("Verify your email - Bookify")
+                .body("Hello " + request.getUsername() + "!\nYour verification code is: " + otpCode)
                 .build();
 
         // public message to Kafka

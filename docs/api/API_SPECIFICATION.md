@@ -144,6 +144,8 @@ Tất cả API response đều dùng cấu trúc `ApiResponse<T>`:
 | `1030` | INVALID_RESET_TOKEN | 400 | Token đặt lại mật khẩu không hợp lệ |
 | `1031` | MESSAGE_NOT_FOUND | 404 | Tin nhắn không tồn tại |
 | `1032` | MESSAGE_EDIT_EXPIRED | 400 | Đã quá thời gian cho phép chỉnh sửa tin nhắn |
+| `1033` | INVALID_OTP | 400 | OTP không hợp lệ hoặc đã hết hạn |
+| `1034` | OTP_EXPIRED | 400 | OTP hết hạn |
 | `9999` | UNCATEGORIZED_EXCEPTION | 500 | Lỗi hệ thống không xác định |
 
 ---
@@ -247,12 +249,13 @@ Vô hiệu hóa token hiện tại (lưu vào `invalidated_token`).
 
 #### POST `/auth/verify-email` — Xác thực email
 
-Xác nhận email qua token gửi trong email.
+Xác nhận email qua mã OTP 4 số gửi trong email.
 
 **Request:**
 ```json
 {
-  "token": "string"
+  "email": "user@example.com",
+  "otp": "1234"
 }
 ```
 

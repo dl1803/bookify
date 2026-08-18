@@ -11,6 +11,10 @@
 * `password`: VARCHAR(255) [NOT NULL]
 * `email`: VARCHAR(255) [UNIQUE, NOT NULL]
 * `email_verified`: BOOLEAN [DEFAULT false]
+* `verification_otp`: VARCHAR(4) [Bổ sung: Mã OTP 4 số]
+* `otp_expiry_time`: DATETIME [Bổ sung: Thời hạn mã OTP]
+* `last_otp_sent_time`: DATETIME [Bổ sung: Thời gian gửi mã OTP gần nhất]
+* `otp_attempt_count`: INT [DEFAULT 0, Bổ sung: Số lần nhập sai OTP]
 
 ### Bảng: `role`
 * `name`: VARCHAR(255) [PK]
