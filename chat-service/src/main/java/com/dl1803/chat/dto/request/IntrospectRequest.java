@@ -1,14 +1,14 @@
-package com.dl1803.profile.dto.response;
+package com.dl1803.chat.dto.request;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class FileResponse {
-    String originalFileName;
-    String url;
+// verify token
+public class IntrospectRequest {
+    String token;
 }

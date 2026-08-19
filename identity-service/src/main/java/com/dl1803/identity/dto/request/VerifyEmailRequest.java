@@ -1,4 +1,4 @@
-package com.dl1803.profile.dto.response;
+package com.dl1803.identity.dto.request;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -8,7 +8,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class FileResponse {
-    String originalFileName;
-    String url;
+public class VerifyEmailRequest {
+    String email;
+    String otp;
 }

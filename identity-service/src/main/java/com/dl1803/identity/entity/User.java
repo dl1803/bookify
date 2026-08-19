@@ -1,5 +1,6 @@
 package com.dl1803.identity.entity;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import jakarta.persistence.*;
@@ -28,6 +29,21 @@ public class User {
 
     @Column(name = "email_verified", nullable = false, columnDefinition = "boolean default false")
     boolean emailVerified;
+
+    @Column(name = "verification_otp", columnDefinition = "VARCHAR(4)")
+    String verificationOtp;
+
+    @Column(name = "otp_expiry_time")
+    LocalDateTime otpExpiryTime;
+
+    @Column(name = "last_otp_sent_time")
+    LocalDateTime lastOtpSentTime;
+
+    @Column(name = "otp_attempt_count", columnDefinition = "INT DEFAULT 0")
+    int otpAttemptCount;
+
+    @Column(name = "password_change_at")
+    LocalDateTime passwordChangeAt;
 
     @ManyToMany
     Set<Role> roles;

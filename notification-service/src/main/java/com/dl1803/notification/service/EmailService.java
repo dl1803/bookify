@@ -30,7 +30,7 @@ public class EmailService {
     public EmailResponse sendEmail(SendEmailRequest request ){
         EmailRequest emailRequest = EmailRequest.builder()
                 .sender(Sender.builder()
-                        .name("dl1803")
+                        .name("BOOKIFY")
                         .email("loitran102030@gmail.com")
                         .build())
                 .to(List.of((request.getTo())))
