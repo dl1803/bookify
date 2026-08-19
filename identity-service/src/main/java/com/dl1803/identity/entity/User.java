@@ -42,6 +42,9 @@ public class User {
     @Column(name = "otp_attempt_count", columnDefinition = "INT DEFAULT 0")
     int otpAttemptCount;
 
+    @Column(name = "password_change_at")
+    LocalDateTime passwordChangeAt;
+
     @ManyToMany
     Set<Role> roles;
 }
