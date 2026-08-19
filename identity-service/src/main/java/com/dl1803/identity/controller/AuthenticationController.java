@@ -2,6 +2,8 @@ package com.dl1803.identity.controller;
 
 import java.text.ParseException;
 
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -65,6 +67,34 @@ public class AuthenticationController {
         return ApiResponse.<Void>builder()
                 .code(1000)
                 .message("Verification email sent")
+                .build();
+    }
+
+    @PostMapping("/forgot-password")
+    public ApiResponse<Void> forgotPassword(@RequestBody @Valid ForgotPasswordRequest request) {
+        authenticationService.forgotPassword(request);
+        return ApiResponse.<Void>builder()
+                .code(1000)
+                .message("If the email exists in our system, an OTP has been sent.")
+                .build();
+    }
+
+    @PostMapping("/reset-password")
+    public ApiResponse<Void> resetPassword(@RequestBody @Valid ResetPasswordRequest request) {
+        authenticationService.resetPassword(request);
+        return ApiResponse.<Void>builder()
+                .code(1000)
+                .message("Password has been reset")
+                .build();
+    }
+
+    @PostMapping("/change-password")
+    public ApiResponse<AuthenticationResponse> changePassword(@RequestBody @Valid ChangePasswordRequest request) {
+        AuthenticationResponse result = authenticationService.changePassword(request);
+        return ApiResponse.<AuthenticationResponse>builder()
+                .code(1000)
+                .message("Password changed successfully")
+                .result(result)
                 .build();
     }
 }

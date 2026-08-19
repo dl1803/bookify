@@ -23,6 +23,8 @@ public class SecurityConfig {
         "/auth/refresh",
         "/auth/verify-email",
         "/auth/resend-verification",
+        "/auth/forgot-password",
+        "/auth/reset-password",
         "/swagger-ui/**",
         "/v3/api-docs/**"
     };

@@ -141,7 +141,6 @@ Tất cả API response đều dùng cấu trúc `ApiResponse<T>`:
 | `1027` | USER_BLOCKED | 403 | User đã bị block |
 | `1028` | INVALID_FILE_TYPE | 400 | Loại file không được hỗ trợ |
 | `1029` | FILE_TOO_LARGE | 400 | File vượt quá dung lượng cho phép |
-| `1030` | INVALID_RESET_TOKEN | 400 | Token đặt lại mật khẩu không hợp lệ |
 | `1031` | MESSAGE_NOT_FOUND | 404 | Tin nhắn không tồn tại |
 | `1032` | MESSAGE_EDIT_EXPIRED | 400 | Đã quá thời gian cho phép chỉnh sửa tin nhắn |
 | `1033` | INVALID_OTP | 400 | OTP không hợp lệ hoặc đã hết hạn |
@@ -296,18 +295,19 @@ Xác nhận email qua mã OTP 4 số gửi trong email.
 ```json
 {
   "code": 1000,
-  "message": "Password reset email sent"
+  "message": "If the email exists in our system, an OTP has been sent."
 }
 ```
 
----
+
 
 #### POST `/auth/reset-password` — Đặt lại mật khẩu
 
 **Request:**
 ```json
 {
-  "resetToken": "string",
+  "email": "user@example.com",
+  "otp": "1234",
   "newPassword": "string"
 }
 ```
@@ -320,7 +320,7 @@ Xác nhận email qua mã OTP 4 số gửi trong email.
 }
 ```
 
-**Errors:** `1030` INVALID_RESET_TOKEN, `1004` PASSWORD_INVALID
+**Errors:** `1033` INVALID_OTP, `1034` OTP_EXPIRED, `1004` PASSWORD_INVALID
 
 ---
 
@@ -340,7 +340,11 @@ Xác nhận email qua mã OTP 4 số gửi trong email.
 ```json
 {
   "code": 1000,
-  "message": "Password changed successfully"
+  "message": "Password changed successfully",
+  "result": {
+    "token": "eyJhbGciOiJIUzUxMiJ9...",
+    "expiryTime": "2026-08-19T23:59:59.000+00:00"
+  }
 }
 ```
 
