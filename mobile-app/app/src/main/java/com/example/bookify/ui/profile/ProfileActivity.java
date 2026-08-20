@@ -167,20 +167,20 @@ public class ProfileActivity extends AppCompatActivity {
             switch (state) {
                 case NOT_FRIEND:
                     btnFriendPrimary.setText("Add Friend");
-                    btnFriendPrimary.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.brown_primary)));
+                    btnFriendPrimary.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.primary)));
                     btnFriendPrimary.setTextColor(ContextCompat.getColor(this, R.color.white));
                     btnFriendChat.setVisibility(View.GONE);
                     break;
                 case REQUEST_SENT:
                     btnFriendPrimary.setText("Cancel");
                     btnFriendPrimary.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.surface_container)));
-                    btnFriendPrimary.setTextColor(ContextCompat.getColor(this, R.color.brown_primary));
+                    btnFriendPrimary.setTextColor(ContextCompat.getColor(this, R.color.primary));
                     btnFriendChat.setVisibility(View.GONE);
                     break;
                 case FRIEND:
                     btnFriendPrimary.setText("Friend ✓");
                     btnFriendPrimary.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.surface_container)));
-                    btnFriendPrimary.setTextColor(ContextCompat.getColor(this, R.color.brown_primary));
+                    btnFriendPrimary.setTextColor(ContextCompat.getColor(this, R.color.primary));
                     btnFriendChat.setVisibility(View.VISIBLE);
                     break;
                 default:

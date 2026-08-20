@@ -38,6 +38,8 @@ dependencies {
     
     // Hilt
     implementation libs.hilt.android
+    implementation libs.navigation.fragment
+    implementation libs.navigation.ui
     annotationProcessor libs.hilt.compiler
     
     // Retrofit & OkHttp
@@ -57,4 +59,7 @@ dependencies {
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
+    
+    // PinView
+    implementation libs.pinview
 }
